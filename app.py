@@ -687,28 +687,21 @@ def init_db():
         
     c.execute("SELECT COUNT(*) FROM admin_users WHERE username = 'admin'")
 
-if c.fetchone()[0] == 0:
-    c.execute("""
-        INSERT INTO admin_users
-        (username, password_hash, salt, full_name, role)
-        VALUES (?, ?, ?, ?, ?)
-    """, (
-        "admin",
-        def_hash,
-        def_salt,
-        "ผู้ดูแลระบบ (Admin)",
-        "admin"
-    ))
-else:
+    if c.fetchone()[0] == 0:
+        c.execute("""
+            INSERT INTO admin_users(username, password_hash, salt, full_name, role)
+            VALUES (?, ?, ?, ?, ?)
+    """, ("admin",def_hash,def_salt,"ผู้ดูแลระบบ (Admin)","admin"))
+    else:
     # ถ้ามีบัญชีอยู่แล้ว ให้อัปเดตรหัสผ่านใหม่เข้าไปแทนที่ทันที
-    c.execute("""
-        UPDATE admin_users
-        SET password_hash = ?, salt = ?
-        WHERE username = 'admin'
-    """, (def_hash, def_salt))
+        c.execute("""
+            UPDATE admin_users
+            SET password_hash = ?, salt = ?
+            WHERE username = 'admin'
+        """, (def_hash, def_salt))
 
-conn.commit()
-conn.close()
+    conn.commit()
+    conn.close()
 
 
 # เรียกใช้งานเพื่อเตรียมฐานข้อมูลพร้อมใช้งานทันทีที่เริ่มโปรแกรม
