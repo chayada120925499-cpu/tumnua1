@@ -684,10 +684,21 @@ def init_db():
     # สร้างบัญชีผู้ดูแลระบบเริ่มต้น (Default Admin) หากยังไม่มี
     def_salt = "fahsai_salt_secure_2026"
     def_hash = hashlib.sha256((def_salt + "adminfahsaitumnua@12").encode('utf-8')).hexdigest()
-        c.execute("""
-            INSERT INTO admin_users (username, password_hash, salt, full_name, role)
-            VALUES (?, ?, ?, ?, ?)
-        """, ("admin", def_hash, def_salt, "ผู้ดูแลระบบ (Admin)", "admin"))
+        
+    c.execute("SELECT COUNT(*) FROM admin_users WHERE username = 'admin'")
+
+if c.fetchone()[0] == 0:
+    c.execute("""
+        INSERT INTO admin_users
+        (username, password_hash, salt, full_name, role)
+        VALUES (?, ?, ?, ?, ?)
+    """, (
+        "admin",
+        def_hash,
+        def_salt,
+        "ผู้ดูแลระบบ (Admin)",
+        "admin"
+    ))
 else:
     # ถ้ามีบัญชีอยู่แล้ว ให้อัปเดตรหัสผ่านใหม่เข้าไปแทนที่ทันที
     c.execute("""
