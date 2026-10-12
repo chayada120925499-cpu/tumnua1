@@ -683,7 +683,7 @@ def init_db():
 
     # สร้างบัญชีผู้ดูแลระบบเริ่มต้น (Default Admin) หากยังไม่มี
     def_salt = "fahsai_salt_secure_2026"
-        def_hash = hashlib.sha256((def_salt + "adminfahsaitumnua@12").encode('utf-8')).hexdigest()
+    def_hash = hashlib.sha256((def_salt + "adminfahsaitumnua@12").encode('utf-8')).hexdigest()
         c.execute("""
             INSERT INTO admin_users (username, password_hash, salt, full_name, role)
             VALUES (?, ?, ?, ?, ?)
