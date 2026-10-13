@@ -362,6 +362,35 @@ div[data-baseweb="tab-list"] > button:nth-of-type(4)[aria-selected="true"] p {
     font-weight: 700 !important;
 }
 
+/* 🟠 แท็บที่ 5: จัดการเมนูอาหาร -> สีส้มแสด (Coral / Amber Bookmark) */
+div[data-testid="stTabs"] button[role="tab"]:nth-child(5),
+div[data-baseweb="tab-list"] > button:nth-of-type(5) {
+    background-color: #fff7ed !important;
+    color: #c2410c !important;
+    border-color: #fed7aa !important;
+}
+div[data-testid="stTabs"] button[role="tab"]:nth-child(5) p,
+div[data-baseweb="tab-list"] > button:nth-of-type(5) p {
+    color: #c2410c !important;
+}
+div[data-testid="stTabs"] button[role="tab"]:nth-child(5):hover,
+div[data-baseweb="tab-list"] > button:nth-of-type(5):hover {
+    background-color: #ffedd5 !important;
+    color: #ea580c !important;
+}
+div[data-testid="stTabs"] button[role="tab"]:nth-child(5)[aria-selected="true"],
+div[data-baseweb="tab-list"] > button:nth-of-type(5)[aria-selected="true"] {
+    background: linear-gradient(180deg, #ea580c 0%, #c2410c 100%) !important;
+    color: #ffffff !important;
+    box-shadow: 0 -3px 12px rgba(234, 88, 12, 0.35) !important;
+    border-color: #c2410c !important;
+}
+div[data-testid="stTabs"] button[role="tab"]:nth-child(5)[aria-selected="true"] p,
+div[data-baseweb="tab-list"] > button:nth-of-type(5)[aria-selected="true"] p {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+}
+
 /* ซ่อนแถบเมนูที่ไม่จำเป็นของ Streamlit เพื่อประสบการณ์แบบ App แท้ */
 #MainMenu {visibility: hidden;}
 footer {visibility: hidden;}
@@ -659,9 +688,10 @@ def init_db():
         ("น้ำลำไย", "เครื่องดื่ม", 35, 12, "static/img/menu/menu123.png", "น้ำลำไยเนื้อแน่น หวานหอมกลมกล่อม")
     ]
     
-    # อัปเดตรายการอาหารให้ตรงกับชุดเมนูล่าสุด
-    c.execute('DELETE FROM menu_items')
-    c.executemany('INSERT OR REPLACE INTO menu_items (name, category, price, cost, image, description) VALUES (?, ?, ?, ?, ?, ?)', fahsai_menu)
+    # บันทึกข้อมูลเมนูอาหารเริ่มต้น (เฉพาะเมื่อตารางยังว่างอยู่ เพื่อไม่ให้ล้างข้อมูลที่แอดมินเพิ่ม/ลบ)
+    c.execute("SELECT COUNT(*) FROM menu_items")
+    if c.fetchone()[0] == 0:
+        c.executemany('INSERT INTO menu_items (name, category, price, cost, image, description) VALUES (?, ?, ?, ?, ?, ?)', fahsai_menu)
 
     # 👥 ข้อมูลสมาชิกจำลองเริ่มต้น 10 คน (ถ้ายังไม่มีสมาชิกในระบบ)
     c.execute("SELECT COUNT(*) FROM members")
@@ -702,19 +732,11 @@ def init_db():
     def_hash = hashlib.sha256((def_salt + "adminfahsaitumnua@12").encode('utf-8')).hexdigest()
         
     c.execute("SELECT COUNT(*) FROM admin_users WHERE username = 'admin'")
-
     if c.fetchone()[0] == 0:
         c.execute("""
             INSERT INTO admin_users(username, password_hash, salt, full_name, role)
             VALUES (?, ?, ?, ?, ?)
         """, ("admin", def_hash, def_salt, "ผู้ดูแลระบบ (Admin)", "admin"))
-    else:
-        # ถ้ามีบัญชีอยู่แล้ว ให้อัปเดตรหัสผ่านใหม่เข้าไปแทนที่ทันที
-        c.execute("""
-            UPDATE admin_users
-            SET password_hash = ?, salt = ?
-            WHERE username = 'admin'
-        """, (def_hash, def_salt))
 
     conn.commit()
     conn.close()
@@ -1494,24 +1516,62 @@ if is_admin_mode:
     '''
     st.markdown(header_html, unsafe_allow_html=True)
 
-    # แถบผู้ใช้งานเข้าสู่ระบบ & ปุ่มออกจากระบบ
-    col_u1, col_u2 = st.columns([3, 1])
+    # แถบผู้ใช้งานเข้าสู่ระบบ & ปุ่มเปลี่ยนรหัสผ่าน & ปุ่มออกจากระบบ
+    col_u1, col_u2, col_u3 = st.columns([2.2, 1.1, 1.1])
     with col_u1:
         st.markdown(f"<div style='font-size: 15px; color: #166534; font-weight: 600; padding-top: 6px;'>🟢 เข้าสู่ระบบในนาม: <b>{u_name}</b> (สิทธิ์: {u_role})</div>", unsafe_allow_html=True)
     with col_u2:
-        if st.button("🚪 ออกจากระบบ (Logout)", key="btn_admin_logout", use_container_width=True):
+        with st.popover("🔑 เปลี่ยนรหัสผ่าน", use_container_width=True):
+            st.markdown("### 🔑 เปลี่ยนรหัสผ่าน")
+            st.caption(f"เปลี่ยนรหัสผ่านสำหรับ: **{u_info.get('username', 'admin')}**")
+            with st.form("form_change_admin_pw", clear_on_submit=True):
+                old_pw = st.text_input("รหัสผ่านเดิม:", type="password", key="chg_old_pw")
+                new_pw = st.text_input("รหัสผ่านใหม่ (อย่างน้อย 6 ตัวอักษร):", type="password", key="chg_new_pw")
+                cfm_pw = st.text_input("ยืนยันรหัสผ่านใหม่:", type="password", key="chg_cfm_pw")
+                btn_sub_pw = st.form_submit_button("💾 บันทึกรหัสผ่านใหม่", type="primary", use_container_width=True)
+                
+                if btn_sub_pw:
+                    if not old_pw:
+                        st.error("กรุณาระบุรหัสผ่านเดิมค่ะ")
+                    elif not new_pw:
+                        st.error("กรุณาระบุรหัสผ่านใหม่ค่ะ")
+                    elif len(new_pw) < 6:
+                        st.error("รหัสผ่านใหม่ต้องมีความยาวอย่างน้อย 6 ตัวอักษรค่ะ")
+                    elif new_pw != cfm_pw:
+                        st.error("รหัสผ่านใหม่และการยืนยันรหัสผ่านไม่ตรงกันค่ะ")
+                    else:
+                        conn_pw = sqlite3.connect(DB_NAME)
+                        c_pw = conn_pw.cursor()
+                        c_pw.execute("SELECT id, password_hash, salt FROM admin_users WHERE id = ?", (u_info.get('id', 1),))
+                        u_rec = c_pw.fetchone()
+                        
+                        if not u_rec or not verify_password(old_pw.strip(), u_rec[1], u_rec[2]):
+                            st.error("❌ รหัสผ่านเดิมไม่ถูกต้อง กรุณาตรวจสอบอีกครั้งค่ะ")
+                            conn_pw.close()
+                        else:
+                            new_hash, new_salt = hash_password(new_pw.strip())
+                            c_pw.execute("UPDATE admin_users SET password_hash = ?, salt = ? WHERE id = ?", (new_hash, new_salt, u_info.get('id', 1)))
+                            conn_pw.commit()
+                            conn_pw.close()
+                            st.toast("🎉 เปลี่ยนรหัสผ่านสำเร็จเรียบร้อยแล้ว!", icon="✅")
+                            st.success("🎉 เปลี่ยนรหัสผ่านสำเร็จเรียบร้อยแล้ว! รหัสผ่านใหม่จะมีผลทันทีค่ะ")
+                            st.rerun()
+
+    with col_u3:
+        if st.button("🚪 ออกจากระบบ", key="btn_admin_logout", use_container_width=True):
             st.session_state['admin_logged_in'] = False
             st.session_state['admin_user_info'] = None
             st.rerun()
 
     st.write("---")
 
-    # แยก 4 แท็บสำหรับจัดการหลังร้าน
-    tab_tbl, tab_pos, tab_rep, tab_mem = st.tabs([
+    # แยก 5 แท็บสำหรับจัดการหลังร้าน
+    tab_tbl, tab_pos, tab_rep, tab_mem, tab_menu = st.tabs([
         "🪑 จัดการโต๊ะอาหาร & เคลียร์โต๊ะ", 
         "🍳 จอครัว & เคาน์เตอร์คิดเงิน", 
         "🏆 เมนูขายดี",
-        "👥 ประวัติลูกค้า"
+        "👥 ประวัติลูกค้า",
+        "🍲 จัดการเมนูอาหาร"
     ])
 
 
@@ -1911,6 +1971,187 @@ if is_admin_mode:
                         st.caption(f"ยอดซื้อสะสม: **฿{int(spent):,}**")
 
         conn_mem.close()
+
+    # --------------------------------------------------------------------------
+    # แท็บที่ 5: 🍲 จัดการเมนูอาหาร (เพิ่ม / ลบ / ค้นหารายการอาหาร)
+    # --------------------------------------------------------------------------
+    with tab_menu:
+        st.subheader("🍲 จัดการรายการอาหาร (เพิ่ม / ลบ / ค้นหา)")
+        st.caption("ระบบจัดการเมนูของร้าน เพิ่มเมนูใหม่ กำหนดราคาขาย ต้นทุน รูปภาพ คำอธิบาย และลบเมนูที่ไม่จำหน่ายแล้ว")
+
+        conn_mng = sqlite3.connect(DB_NAME)
+        c_mng = conn_mng.cursor()
+
+        # ดึงหมวดหมู่ที่มีอยู่ในปัจจุบันจากฐานข้อมูล
+        c_mng.execute("SELECT DISTINCT category FROM menu_items ORDER BY category ASC")
+        db_cats = [r[0] for r in c_mng.fetchall()]
+        default_cat_options = [
+            "ตำนัว", 
+            "ตำพรีเมียม", 
+            "ยำแซ่บ", 
+            "ลาบ & ก้อย & น้ำตก", 
+            "ย่าง & ทอด", 
+            "ต้มแซ่บ & แกงอีสาน", 
+            "อาหารจานเดียว", 
+            "ของหวาน", 
+            "เครื่องเคียง & ข้าว", 
+            "เครื่องดื่ม"
+        ]
+        all_cat_options = [c for c in default_cat_options if c in db_cats]
+        for c in db_cats:
+            if c not in all_cat_options:
+                all_cat_options.append(c)
+        for c in default_cat_options:
+            if c not in all_cat_options:
+                all_cat_options.append(c)
+
+        # =========================================================
+        # 1. ฟอร์มเพิ่มเมนูอาหารใหม่
+        # =========================================================
+        with st.expander("➕ เพิ่มรายการอาหารใหม่", expanded=True):
+            st.markdown("#### 📝 กรอกข้อมูลเมนูใหม่")
+            with st.form("form_add_new_menu", clear_on_submit=True):
+                col_n1, col_n2 = st.columns([1.5, 1])
+                with col_n1:
+                    new_name = st.text_input("ชื่อเมนูอาหาร *", placeholder="เช่น ตำถาดทะเลเดือด, กุ้งแช่น้ำปลา", key="in_new_menu_name")
+                    
+                    cat_select_list = all_cat_options + ["➕ เพิ่มหมวดหมู่ใหม่..."]
+                    sel_cat_choice = st.selectbox("หมวดหมู่อาหาร *", cat_select_list, index=0, key="in_new_menu_cat_sel")
+                    
+                    custom_cat_val = ""
+                    if sel_cat_choice == "➕ เพิ่มหมวดหมู่ใหม่...":
+                        custom_cat_val = st.text_input("ระบุชื่อหมวดหมู่ใหม่:", placeholder="เช่น เมนูแนะนำพิเศษ, อาหารทานเล่น", key="in_new_custom_cat")
+                
+                with col_n2:
+                    new_price = st.number_input("ราคาขาย (บาท) *", min_value=0.0, value=60.0, step=5.0, format="%.2f", key="in_new_menu_price")
+                    new_cost = st.number_input("ต้นทุนวัตถุดิบ (บาท)", min_value=0.0, value=25.0, step=5.0, format="%.2f", key="in_new_menu_cost")
+                    margin_val = new_price - new_cost
+                    margin_pct = (margin_val / new_price * 100) if new_price > 0 else 0
+                    st.caption(f"กำไรเบื้องต้น: **฿{margin_val:,.2f}** ({margin_pct:.1f}%)")
+
+                new_img = st.text_input(
+                    "URL หรือ Path รูปภาพอาหาร", 
+                    placeholder="เช่น https://example.com/dish.jpg หรือ static/img/menu/menu50.png", 
+                    key="in_new_menu_img"
+                )
+
+                new_desc = st.text_area(
+                    "คำอธิบายเมนูอาหาร", 
+                    placeholder="เช่น ส้มตำรสเด็ดใส่เครื่องแน่น รสจัดจ้านถึงใจ ทานคู่กับผักสด...", 
+                    key="in_new_menu_desc"
+                )
+
+                btn_add_menu = st.form_submit_button("💾 บันทึกและเพิ่มรายการอาหาร", type="primary", use_container_width=True)
+                if btn_add_menu:
+                    final_name = new_name.strip()
+                    final_cat = custom_cat_val.strip() if sel_cat_choice == "➕ เพิ่มหมวดหมู่ใหม่..." else sel_cat_choice
+                    final_img = new_img.strip()
+                    final_desc = new_desc.strip()
+
+                    if not final_name:
+                        st.error("กรุณาระบุ 'ชื่อเมนูอาหาร' ให้เรียบร้อยค่ะ")
+                    elif not final_cat:
+                        st.error("กรุณาระบุ 'หมวดหมู่อาหาร' ให้เรียบร้อยค่ะ")
+                    else:
+                        c_mng.execute("SELECT id FROM menu_items WHERE name = ?", (final_name,))
+                        exist_m = c_mng.fetchone()
+                        if exist_m:
+                            st.error(f"❌ มีเมนูชื่อ '{final_name}' อยู่ในระบบแล้ว กรุณาใช้ชื่ออื่นค่ะ")
+                        else:
+                            try:
+                                c_mng.execute(
+                                    "INSERT INTO menu_items (name, category, price, cost, image, description) VALUES (?, ?, ?, ?, ?, ?)",
+                                    (final_name, final_cat, new_price, new_cost, final_img, final_desc)
+                                )
+                                conn_mng.commit()
+                                st.success(f"🎉 เพิ่มเมนู **'{final_name}'** (หมวด: {final_cat}, ราคา: ฿{new_price:,.2f}) สำเร็จเรียบร้อยแล้วค่ะ!")
+                                st.rerun()
+                            except Exception as err:
+                                st.error(f"เกิดข้อผิดพลาดในการบันทึก: {err}")
+
+        st.write("---")
+
+        # =========================================================
+        # 2. รายการเมนูอาหารทั้งหมด & ค้นหา & ลบเมนู
+        # =========================================================
+        st.markdown("### 📋 รายการอาหารทั้งหมดในระบบ & จัดการลบ")
+        
+        f_c1, f_c2 = st.columns([2, 1.5])
+        with f_c1:
+            search_menu_kw = st.text_input("🔍 ค้นหาตามชื่อเมนู หรือคำอธิบาย:", placeholder="พิมพ์ชื่อเมนูเพื่อค้นหา...", key="in_search_menu_kw").strip()
+        with f_c2:
+            filter_cat_choice = st.selectbox("📂 กรองตามหมวดหมู่:", ["ทั้งหมด"] + all_cat_options, key="sel_filter_cat_choice")
+
+        query_sql = "SELECT id, name, category, price, cost, image, description FROM menu_items WHERE 1=1"
+        query_params = []
+        if filter_cat_choice != "ทั้งหมด":
+            query_sql += " AND category = ?"
+            query_params.append(filter_cat_choice)
+        if search_menu_kw:
+            query_sql += " AND (name LIKE ? OR description LIKE ?)"
+            kw_param = f"%{search_menu_kw}%"
+            query_params.extend([kw_param, kw_param])
+        
+        query_sql += " ORDER BY category ASC, id ASC"
+        c_mng.execute(query_sql, query_params)
+        found_menus = c_mng.fetchall()
+
+        c_mng.execute("SELECT COUNT(*), AVG(price), AVG(cost) FROM menu_items")
+        tot_cnt, avg_p, avg_c = c_mng.fetchone()
+        tot_cnt = tot_cnt or 0
+        avg_p = avg_p or 0
+        avg_c = avg_c or 0
+
+        m_stat1, m_stat2, m_stat3, m_stat4 = st.columns(4)
+        m_stat1.metric("🍲 รายการทั้งหมด", f"{tot_cnt} เมนู")
+        m_stat2.metric("🎯 ตรงตามตัวกรอง", f"{len(found_menus)} เมนู")
+        m_stat3.metric("🏷️ ราคาเฉลี่ย", f"฿{avg_p:,.1f}")
+        m_stat4.metric("📦 ต้นทุนเฉลี่ย", f"฿{avg_c:,.1f}")
+
+        st.caption(f"แสดงผล {len(found_menus)} รายการ (กดที่ปุ่ม '🗑️ ลบ' เพื่อลบเมนูที่ไม่ต้องการ)")
+
+        if not found_menus:
+            st.warning("ไม่พบรายการอาหารที่ตรงกับเงื่อนไขการค้นหา")
+        else:
+            for item_id, m_name, m_cat, m_price, m_cost, m_img, m_desc in found_menus:
+                with st.container(border=True):
+                    row_img, row_info, row_price, row_action = st.columns([1.1, 3.2, 1.8, 1.1])
+                    
+                    with row_img:
+                        if m_img and (m_img.startswith("http") or os.path.exists(m_img)):
+                            st.image(m_img, use_container_width=True)
+                        else:
+                            st.markdown("<div style='font-size: 2.2rem; text-align: center; line-height: 65px; background: #fff7ed; border-radius: 8px;'>🍲</div>", unsafe_allow_html=True)
+                    
+                    with row_info:
+                        st.markdown(f"**{m_name}** <span style='font-size: 0.8rem; background: #fef3c7; color: #92400e; padding: 2px 8px; border-radius: 999px; margin-left: 6px; font-weight: 600;'>{m_cat}</span>", unsafe_allow_html=True)
+                        if m_desc:
+                            st.caption(m_desc)
+                        if m_img:
+                            st.caption(f"🖼️ `{m_img}`")
+                    
+                    with row_price:
+                        st.markdown(f"ราคา: <b style='color: #ea580c; font-size: 1.1rem;'>฿{m_price:,.2f}</b>", unsafe_allow_html=True)
+                        p_margin = m_price - (m_cost or 0)
+                        st.caption(f"ต้นทุน: ฿{m_cost or 0:,.2f} (กำไร: ฿{p_margin:,.2f})")
+                    
+                    with row_action:
+                        with st.popover("🗑️ ลบ", use_container_width=True):
+                            st.markdown(f"⚠️ **ยืนยันลบเมนู?**")
+                            st.caption(f"ต้องการลบ **'{m_name}'** ออกจากระบบหรือไม่?")
+                            if st.button("🔥 ยืนยันลบ", key=f"btn_del_menu_{item_id}", type="primary", use_container_width=True):
+                                try:
+                                    conn_del = sqlite3.connect(DB_NAME)
+                                    c_del = conn_del.cursor()
+                                    c_del.execute("DELETE FROM menu_items WHERE id = ?", (item_id,))
+                                    conn_del.commit()
+                                    conn_del.close()
+                                    st.success(f"ลบเมนู '{m_name}' เรียบร้อยแล้ว")
+                                    st.rerun()
+                                except Exception as err:
+                                    st.error(f"เกิดข้อผิดพลาดในการลบ: {err}")
+
+        conn_mng.close()
 
     # Footer ล่างสุดสำหรับหน้าระบบจัดการหลังร้าน (?mode=admin)
     render_app_footer()
