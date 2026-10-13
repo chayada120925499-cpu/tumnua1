@@ -253,8 +253,8 @@ div[data-baseweb="tab-list"] > button {
     color: #7c2d12 !important;                  /* ตัวอักษรสีน้ำตาลเข้ม */
     border: 1.5px solid #fed7aa !important;
     border-bottom: none !important;
-    padding: 10px 18px !important;
-    margin-right: 4px !important;
+    padding: 11px 26px !important;              /* เพิ่มระยะขอบซ้าย-ขวาให้โปร่งสบาย ไม่อึดอัด */
+    margin-right: 6px !important;
     font-size: 15px !important;
     font-weight: 600 !important;
     transition: all 0.2s ease-in-out !important;
@@ -303,6 +303,7 @@ div[data-baseweb="tab-list"] > button[aria-selected="true"] {
     border-top-right-radius: 12px !important;
     border-bottom-left-radius: 0px !important;
     border-bottom-right-radius: 0px !important;
+    padding: 11px 26px !important;
     box-shadow: 0 -4px 12px rgba(234, 88, 12, 0.35) !important;
     font-weight: 700 !important;
 }
