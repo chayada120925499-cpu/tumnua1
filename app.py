@@ -683,6 +683,12 @@ def init_db():
             WHERE id = ?
         """, (def_hash, def_salt, existing_admin[0]))
 
+    # 🪑 สร้างโต๊ะอาหารเริ่มต้น 10 โต๊ะ (หากยังไม่มีโต๊ะในระบบ)
+    c.execute("SELECT COUNT(*) FROM tables")
+    if c.fetchone()[0] == 0:
+        default_tables = [(i, f"โต๊ะที่ {i}", "available") for i in range(1, 11)]
+        c.executemany("INSERT INTO tables (table_number, name, status) VALUES (?, ?, ?)", default_tables)
+
     conn.commit()
     conn.close()
 
@@ -2188,6 +2194,21 @@ else:
     </div>
     '''
     st.markdown(header_html, unsafe_allow_html=True)
+
+    # ปุ่มสลับ / เปลี่ยนโต๊ะอาหาร (สำหรับกรณีทดสอบโต๊ะอื่นๆ หรือลูกค้าเดินเข้าร้านเลือกโต๊ะเอง)
+    col_sw1, col_sw2, col_sw3 = st.columns([1, 1.8, 1])
+    with col_sw2:
+        with st.popover("🔄 สลับ / เปลี่ยนโต๊ะอาหาร", use_container_width=True):
+            st.markdown("##### 🪑 เลือกโต๊ะอาหารที่ท่านนั่ง")
+            st.caption("สามารถเลือกหมายเลขโต๊ะเพื่อสั่งอาหารของโต๊ะนั้นๆ ได้เลยค่ะ")
+            table_select_options = [f"โต๊ะที่ {num} ({table_names_map.get(num, f'โต๊ะที่ {num}')})" for num in valid_tables]
+            curr_idx = valid_tables.index(current_table_num) if current_table_num in valid_tables else 0
+            sel_new_t = st.selectbox("เลือกโต๊ะ:", table_select_options, index=curr_idx, key="sb_switch_table")
+            if st.button("✨ ยืนยันเปลี่ยนโต๊ะ", type="primary", use_container_width=True, key="btn_confirm_switch_t"):
+                chosen_num = int(sel_new_t.split(" ")[1])
+                st.query_params["table"] = chosen_num
+                st.rerun()
+
     st.write("---")
 
     # ==========================================================================
@@ -2439,6 +2460,7 @@ else:
                     new_order_id = c.lastrowid
                     for iname, idata in st.session_state.cart.items():
                         c.execute("INSERT INTO order_items (order_id, item_name, price, quantity, note, status) VALUES (?, ?, ?, ?, ?, 'pending')", (new_order_id, iname, idata['price'], idata['qty'], idata['note']))
+                    c.execute("UPDATE tables SET status = 'busy' WHERE table_number = ?", (current_table_num,))
                     conn.commit()
                     st.session_state.cart = {}
                     st.success(f"🎉 ส่งออเดอร์ #{new_order_id} เรียบร้อยแล้วค่ะ!")
