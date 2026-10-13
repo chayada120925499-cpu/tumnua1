@@ -730,13 +730,22 @@ def init_db():
     # สร้างบัญชีผู้ดูแลระบบเริ่มต้น (Default Admin) หากยังไม่มี
     def_salt = "fahsai_salt_secure_2026"
     def_hash = hashlib.sha256((def_salt + "adminfahsaitumnua@12").encode('utf-8')).hexdigest()
+    old_hash = hashlib.sha256((def_salt + "admin1234").encode('utf-8')).hexdigest()
         
-    c.execute("SELECT COUNT(*) FROM admin_users WHERE username = 'admin'")
-    if c.fetchone()[0] == 0:
+    c.execute("SELECT id, password_hash FROM admin_users WHERE LOWER(username) = 'admin'")
+    existing_admin = c.fetchone()
+    if not existing_admin:
         c.execute("""
             INSERT INTO admin_users(username, password_hash, salt, full_name, role)
             VALUES (?, ?, ?, ?, ?)
         """, ("admin", def_hash, def_salt, "ผู้ดูแลระบบ (Admin)", "admin"))
+    elif existing_admin[1] == old_hash:
+        # หากในฐานข้อมูลยังคงเป็นรหัสผ่านเดิมสมัยแรก (admin1234) ให้อัปเกรดเป็น adminfahsaitumnua@12 อัตโนมัติ
+        c.execute("""
+            UPDATE admin_users
+            SET password_hash = ?, salt = ?
+            WHERE id = ?
+        """, (def_hash, def_salt, existing_admin[0]))
 
     conn.commit()
     conn.close()
@@ -1480,7 +1489,7 @@ if is_admin_mode:
                         else:
                             conn_auth = sqlite3.connect(DB_NAME)
                             c_auth = conn_auth.cursor()
-                            c_auth.execute("SELECT id, username, password_hash, salt, full_name, role FROM admin_users WHERE username = ?", (input_user.strip(),))
+                            c_auth.execute("SELECT id, username, password_hash, salt, full_name, role FROM admin_users WHERE LOWER(username) = LOWER(?)", (input_user.strip(),))
                             user_record = c_auth.fetchone()
                             conn_auth.close()
 
