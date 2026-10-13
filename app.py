@@ -688,10 +688,17 @@ def init_db():
         ("น้ำลำไย", "เครื่องดื่ม", 35, 12, "static/img/menu/menu123.png", "น้ำลำไยเนื้อแน่น หวานหอมกลมกล่อม")
     ]
     
-    # บันทึกข้อมูลเมนูอาหารเริ่มต้น (เฉพาะเมื่อตารางยังว่างอยู่ เพื่อไม่ให้ล้างข้อมูลที่แอดมินเพิ่ม/ลบ)
+    # ตรวจสอบว่าตารางว่างเปล่า หรือยังมีเมนูค้างจากระบบเก่าที่ใช้รูปลิงก์ Unsplash หรือไม่
+    c.execute("SELECT COUNT(*) FROM menu_items WHERE image LIKE '%unsplash%'")
+    has_old_unsplash = (c.fetchone()[0] > 0)
+    
     c.execute("SELECT COUNT(*) FROM menu_items")
-    if c.fetchone()[0] == 0:
-        c.executemany('INSERT INTO menu_items (name, category, price, cost, image, description) VALUES (?, ?, ?, ?, ?, ?)', fahsai_menu)
+    is_empty = (c.fetchone()[0] == 0)
+
+    if is_empty or has_old_unsplash:
+        # อัปเดตชุดเมนูหลัก 131 รายการให้ใช้ไฟล์ภาพใน static/img/menu/ ทั้งหมด
+        c.execute('DELETE FROM menu_items')
+        c.executemany('INSERT OR REPLACE INTO menu_items (name, category, price, cost, image, description) VALUES (?, ?, ?, ?, ?, ?)', fahsai_menu)
 
     # 👥 ข้อมูลสมาชิกจำลองเริ่มต้น 10 คน (ถ้ายังไม่มีสมาชิกในระบบ)
     c.execute("SELECT COUNT(*) FROM members")
