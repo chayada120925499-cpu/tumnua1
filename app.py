@@ -216,177 +216,105 @@ div[data-testid="stRadio"] label[data-baseweb="radio"][aria-checked="true"] span
 }
 
 /* 🔖 แถบเมนูแท็บสไตล์ที่คั่นหนังสือ (Bookmark Tabs) ขอบบนมน 2 มุม */
-div[data-testid="stTabs"] div[role="tablist"],
-div[data-baseweb="tab-list"] {
-    gap: 8px !important;
+.stTabs [data-baseweb="tab-list"],
+div[data-testid="stTabs"] [data-baseweb="tab-list"],
+div[data-baseweb="tab-list"],
+div[role="tablist"] {
+    gap: 6px !important;
     background-color: transparent !important;
-    border-bottom: 2px solid #fed7aa !important;
+    border-bottom: 2.5px solid #ea580c !important;
     padding-bottom: 0px !important;
+    align-items: flex-end !important;
 }
 
-div[data-testid="stTabs"] div[data-baseweb="tab-highlight"],
-div[data-baseweb="tab-highlight"] {
-    display: none !important; /* ซ่อนเส้นขีดสีแดงเดิม */
+/* ซ่อนเส้นขีดสีแดงเดิมของ Streamlit และเส้นใต้ทุกแบบ */
+.stTabs [data-baseweb="tab-highlight"],
+.stTabs [data-baseweb="tab-border"],
+div[data-baseweb="tab-highlight"],
+div[data-baseweb="tab-border"],
+div[data-testid="stTabs"] hr {
+    display: none !important;
+    height: 0px !important;
+    visibility: hidden !important;
+    border: none !important;
 }
 
-/* สไตล์พื้นฐานของแท็บทั้งหมด (ทั้ง button และ [role="tab"]) */
+/* 🔖 สไตล์ของแท็บทั้งหมด (Unselected) - สี่เหลี่ยมมุมบนมน 2 มุม */
+.stTabs [data-baseweb="tab"],
+.stTabs button[role="tab"],
 div[data-testid="stTabs"] button[role="tab"],
 button[data-baseweb="tab"],
 div[data-baseweb="tab-list"] > button {
-    border-top-left-radius: 14px !important;   /* มนมุมบนซ้าย */
-    border-top-right-radius: 14px !important;  /* มนมุมบนขวา */
+    border-top-left-radius: 12px !important;   /* มนมุมบนซ้าย */
+    border-top-right-radius: 12px !important;  /* มนมุมบนขวา */
     border-bottom-left-radius: 0px !important;
     border-bottom-right-radius: 0px !important;
-    padding: 10px 18px !important;
-    margin-right: 6px !important;
-    font-weight: 600 !important;
-    font-size: 15px !important;
-    transition: all 0.2s ease-in-out !important;
-    border: 2px solid transparent !important;
+    background-color: #fff7ed !important;       /* พื้นหลังสีครีมส้มอ่อน */
+    color: #7c2d12 !important;                  /* ตัวอักษรสีน้ำตาลเข้ม */
+    border: 1.5px solid #fed7aa !important;
     border-bottom: none !important;
+    padding: 10px 18px !important;
+    margin-right: 4px !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    transition: all 0.2s ease-in-out !important;
+    box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.04) !important;
 }
 
-/* 🟢 แท็บที่ 1: จัดการโต๊ะอาหาร & เคลียร์โต๊ะ -> สีเขียว (Green Bookmark) */
-div[data-testid="stTabs"] button[role="tab"]:nth-child(1),
-div[data-baseweb="tab-list"] > button:nth-of-type(1) {
-    background-color: #ecfdf5 !important;
-    color: #065f46 !important;
-    border-color: #a7f3d0 !important;
-}
-div[data-testid="stTabs"] button[role="tab"]:nth-child(1) p,
-div[data-baseweb="tab-list"] > button:nth-of-type(1) p {
-    color: #065f46 !important;
-}
-div[data-testid="stTabs"] button[role="tab"]:nth-child(1):hover,
-div[data-baseweb="tab-list"] > button:nth-of-type(1):hover {
-    background-color: #d1fae5 !important;
-    color: #047857 !important;
-}
-div[data-testid="stTabs"] button[role="tab"]:nth-child(1)[aria-selected="true"],
-div[data-baseweb="tab-list"] > button:nth-of-type(1)[aria-selected="true"] {
-    background: linear-gradient(180deg, #10b981 0%, #059669 100%) !important;
-    color: #ffffff !important;
-    box-shadow: 0 -3px 12px rgba(16, 185, 129, 0.35) !important;
-    border-color: #047857 !important;
-}
-div[data-testid="stTabs"] button[role="tab"]:nth-child(1)[aria-selected="true"] p,
-div[data-baseweb="tab-list"] > button:nth-of-type(1)[aria-selected="true"] p {
-    color: #ffffff !important;
-    font-weight: 700 !important;
+.stTabs [data-baseweb="tab"] p,
+.stTabs [data-baseweb="tab"] span,
+.stTabs button[role="tab"] p,
+div[data-testid="stTabs"] button[role="tab"] p {
+    color: #7c2d12 !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    margin: 0 !important;
 }
 
-/* 🟤 แท็บที่ 2: จอครัว & เคาน์เตอร์คิดเงิน -> สีน้ำตาล (Warm Brown Bookmark) */
-div[data-testid="stTabs"] button[role="tab"]:nth-child(2),
-div[data-baseweb="tab-list"] > button:nth-of-type(2) {
-    background-color: #fef3c7 !important;
-    color: #78350f !important;
-    border-color: #fde68a !important;
-}
-div[data-testid="stTabs"] button[role="tab"]:nth-child(2) p,
-div[data-baseweb="tab-list"] > button:nth-of-type(2) p {
-    color: #78350f !important;
-}
-div[data-testid="stTabs"] button[role="tab"]:nth-child(2):hover,
-div[data-baseweb="tab-list"] > button:nth-of-type(2):hover {
-    background-color: #fde68a !important;
-    color: #78350f !important;
-}
-div[data-testid="stTabs"] button[role="tab"]:nth-child(2)[aria-selected="true"],
-div[data-baseweb="tab-list"] > button:nth-of-type(2)[aria-selected="true"] {
-    background: linear-gradient(180deg, #854d0e 0%, #713f12 100%) !important;
-    color: #ffffff !important;
-    box-shadow: 0 -3px 12px rgba(133, 77, 14, 0.35) !important;
-    border-color: #713f12 !important;
-}
-div[data-testid="stTabs"] button[role="tab"]:nth-child(2)[aria-selected="true"] p,
-div[data-baseweb="tab-list"] > button:nth-of-type(2)[aria-selected="true"] p {
-    color: #ffffff !important;
-    font-weight: 700 !important;
-}
-
-/* 🔵 แท็บที่ 3: เมนูขายดี -> สีฟ้า (Sky Blue Bookmark) */
-div[data-testid="stTabs"] button[role="tab"]:nth-child(3),
-div[data-baseweb="tab-list"] > button:nth-of-type(3) {
-    background-color: #e0f2fe !important;
-    color: #0369a1 !important;
-    border-color: #bae6fd !important;
-}
-div[data-testid="stTabs"] button[role="tab"]:nth-child(3) p,
-div[data-baseweb="tab-list"] > button:nth-of-type(3) p {
-    color: #0369a1 !important;
-}
-div[data-testid="stTabs"] button[role="tab"]:nth-child(3):hover,
-div[data-baseweb="tab-list"] > button:nth-of-type(3):hover {
-    background-color: #bae6fd !important;
-    color: #0284c7 !important;
-}
-div[data-testid="stTabs"] button[role="tab"]:nth-child(3)[aria-selected="true"],
-div[data-baseweb="tab-list"] > button:nth-of-type(3)[aria-selected="true"] {
-    background: linear-gradient(180deg, #0284c7 0%, #0369a1 100%) !important;
-    color: #ffffff !important;
-    box-shadow: 0 -3px 12px rgba(2, 132, 199, 0.35) !important;
-    border-color: #0284c7 !important;
-}
-div[data-testid="stTabs"] button[role="tab"]:nth-child(3)[aria-selected="true"] p,
-div[data-baseweb="tab-list"] > button:nth-of-type(3)[aria-selected="true"] p {
-    color: #ffffff !important;
-    font-weight: 700 !important;
-}
-
-/* 🟣 แท็บที่ 4: ประวัติลูกค้า -> สีม่วง/พาสเทล */
-div[data-testid="stTabs"] button[role="tab"]:nth-child(4),
-div[data-baseweb="tab-list"] > button:nth-of-type(4) {
-    background-color: #faf5ff !important;
-    color: #6b21a8 !important;
-    border-color: #e9d5ff !important;
-}
-div[data-testid="stTabs"] button[role="tab"]:nth-child(4) p,
-div[data-baseweb="tab-list"] > button:nth-of-type(4) p {
-    color: #6b21a8 !important;
-}
-div[data-testid="stTabs"] button[role="tab"]:nth-child(4):hover,
-div[data-baseweb="tab-list"] > button:nth-of-type(4):hover {
-    background-color: #f3e8ff !important;
-    color: #7e22ce !important;
-}
-div[data-testid="stTabs"] button[role="tab"]:nth-child(4)[aria-selected="true"],
-div[data-baseweb="tab-list"] > button:nth-of-type(4)[aria-selected="true"] {
-    background: linear-gradient(180deg, #9333ea 0%, #7e22ce 100%) !important;
-    color: #ffffff !important;
-    box-shadow: 0 -3px 12px rgba(147, 51, 234, 0.35) !important;
-    border-color: #7e22ce !important;
-}
-div[data-testid="stTabs"] button[role="tab"]:nth-child(4)[aria-selected="true"] p,
-div[data-baseweb="tab-list"] > button:nth-of-type(4)[aria-selected="true"] p {
-    color: #ffffff !important;
-    font-weight: 700 !important;
-}
-
-/* 🟠 แท็บที่ 5: จัดการเมนูอาหาร -> สีส้มแสด (Coral / Amber Bookmark) */
-div[data-testid="stTabs"] button[role="tab"]:nth-child(5),
-div[data-baseweb="tab-list"] > button:nth-of-type(5) {
-    background-color: #fff7ed !important;
-    color: #c2410c !important;
-    border-color: #fed7aa !important;
-}
-div[data-testid="stTabs"] button[role="tab"]:nth-child(5) p,
-div[data-baseweb="tab-list"] > button:nth-of-type(5) p {
-    color: #c2410c !important;
-}
-div[data-testid="stTabs"] button[role="tab"]:nth-child(5):hover,
-div[data-baseweb="tab-list"] > button:nth-of-type(5):hover {
+/* สไตล์เมื่อนำเมาส์ไปชี้ (Hover) */
+.stTabs [data-baseweb="tab"]:hover,
+.stTabs button[role="tab"]:hover,
+div[data-testid="stTabs"] button[role="tab"]:hover,
+button[data-baseweb="tab"]:hover {
     background-color: #ffedd5 !important;
     color: #ea580c !important;
+    border-color: #fdba74 !important;
 }
-div[data-testid="stTabs"] button[role="tab"]:nth-child(5)[aria-selected="true"],
-div[data-baseweb="tab-list"] > button:nth-of-type(5)[aria-selected="true"] {
+
+.stTabs [data-baseweb="tab"]:hover p,
+.stTabs [data-baseweb="tab"]:hover span,
+.stTabs button[role="tab"]:hover p,
+div[data-testid="stTabs"] button[role="tab"]:hover p {
+    color: #ea580c !important;
+}
+
+/* 🌟 สไตล์แท็บที่ถูกเลือก/คลิกใช้งาน (Active / Selected Tab) - แถบสีพื้นหลังเด่นชัด ทรงมุมบนมน 2 มุม */
+.stTabs [data-baseweb="tab"][aria-selected="true"],
+.stTabs button[role="tab"][aria-selected="true"],
+.stTabs [aria-selected="true"],
+div[data-testid="stTabs"] button[role="tab"][aria-selected="true"],
+div[data-baseweb="tab-list"] > button[aria-selected="true"] {
     background: linear-gradient(180deg, #ea580c 0%, #c2410c 100%) !important;
+    background-color: #ea580c !important;
     color: #ffffff !important;
-    box-shadow: 0 -3px 12px rgba(234, 88, 12, 0.35) !important;
-    border-color: #c2410c !important;
+    border: 1.5px solid #c2410c !important;
+    border-bottom: none !important;
+    border-top-left-radius: 12px !important;
+    border-top-right-radius: 12px !important;
+    border-bottom-left-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
+    box-shadow: 0 -4px 12px rgba(234, 88, 12, 0.35) !important;
+    font-weight: 700 !important;
 }
-div[data-testid="stTabs"] button[role="tab"]:nth-child(5)[aria-selected="true"] p,
-div[data-baseweb="tab-list"] > button:nth-of-type(5)[aria-selected="true"] p {
+
+.stTabs [data-baseweb="tab"][aria-selected="true"] p,
+.stTabs [data-baseweb="tab"][aria-selected="true"] span,
+.stTabs [data-baseweb="tab"][aria-selected="true"] div,
+.stTabs [aria-selected="true"] p,
+.stTabs [aria-selected="true"] span,
+.stTabs [aria-selected="true"] div,
+.stTabs button[role="tab"][aria-selected="true"] p,
+div[data-testid="stTabs"] button[role="tab"][aria-selected="true"] p {
     color: #ffffff !important;
     font-weight: 700 !important;
 }
