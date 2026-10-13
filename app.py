@@ -1,5 +1,5 @@
 # ==============================================================================
-#  🌶️ ฟ้าใสตำนัว (Fahsai Tum Nua) - ระบบสั่งอาหารโต๊ะ & จอครัวอัจฉริยะ (Smart POS)
+# 🌶️ ฟ้าใสตำนัว (Fahsai Tum Nua) - ระบบสั่งอาหารโต๊ะ & จอครัวอัจฉริยะ (Smart POS)
 # ==============================================================================
 # โครงสร้างการทำงานของโปรแกรม:
 # 1. 🗄️ ฐานข้อมูล SQLite (restaurant.db): บันทึกเมนูอาหาร, โต๊ะ, ออเดอร์ และใบเสร็จ
@@ -36,7 +36,7 @@ def get_thai_now():
 # --- ตั้งค่าหน้าเว็บ Streamlit เบื้องต้น ---
 st.set_page_config(
     page_title="ฟ้าใสตำนัว",               # ชื่อที่จะแสดงบนแท็บของเบราว์เซอร์
-    page_icon="static/img/favicon.ico",                         # ไอคอน Favicon ของแท็บเว็บ
+    page_icon="static/img/favicon.ico" if os.path.exists("static/img/favicon.ico") else "🌶️", # ไอคอน Favicon ของแท็บเว็บ
     layout="wide",                          # ใช้พื้นที่หน้าจอแบบเต็มความกว้าง (Wide mode)
     initial_sidebar_state="collapsed"       # ซ่อนแถบเมนูด้านข้างเริ่มต้น เพื่อให้ดูเหมือน App มือถือ
 )
@@ -506,7 +506,6 @@ def init_db():
         c.execute("ALTER TABLE orders ADD COLUMN member_phone TEXT DEFAULT NULL")
 
     # บันทึกชุดเมนูอาหารทั้งหมดของร้าน "ฟ้าใสตำนัว" (10 หมวดหมู่ 131 เมนูแซ่บ)
-    # บันทึกชุดเมนูอาหารทั้งหมดของร้าน "ฟ้าใสตำนัว" (10 หมวดหมู่ 131 เมนูแซ่บ)
     fahsai_menu = [
         # --- 1. หมวด "ตำนัว" (16 เมนู) ---
         ("ตำไทย", "ตำนัว", 50, 18, "static/img/menu/menu1.png", "รสเปรี้ยวหวานกลมกล่อม ถั่วคั่วใหม่ กุ้งแห้งเกรดเอ"),
@@ -708,9 +707,9 @@ def init_db():
         c.execute("""
             INSERT INTO admin_users(username, password_hash, salt, full_name, role)
             VALUES (?, ?, ?, ?, ?)
-    """, ("admin",def_hash,def_salt,"ผู้ดูแลระบบ (Admin)","admin"))
+        """, ("admin", def_hash, def_salt, "ผู้ดูแลระบบ (Admin)", "admin"))
     else:
-    # ถ้ามีบัญชีอยู่แล้ว ให้อัปเดตรหัสผ่านใหม่เข้าไปแทนที่ทันที
+        # ถ้ามีบัญชีอยู่แล้ว ให้อัปเดตรหัสผ่านใหม่เข้าไปแทนที่ทันที
         c.execute("""
             UPDATE admin_users
             SET password_hash = ?, salt = ?
@@ -1290,7 +1289,7 @@ def render_pos_dashboard():
                         with st.container(border=True):
                             it_c1, it_c2 = st.columns([1.1, 2.3])
                             with it_c1:
-                                if dish_img:
+                                if dish_img and (dish_img.startswith("http") or os.path.exists(dish_img)):
                                     st.image(dish_img, use_container_width=True)
                                 else:
                                     st.markdown("<div style='font-size: 2.2rem; text-align: center; line-height: 60px;'>🍲</div>", unsafe_allow_html=True)
@@ -1736,7 +1735,7 @@ if is_admin_mode:
                 with podium_cols[p_idx]:
                     with st.container(border=True):
                         st.markdown(f"<div style='background: {badge_bg[p_idx]}; border: 1.5px solid {badge_border[p_idx]}; border-radius: 6px; padding: 4px 8px; text-align: center; font-weight: bold; font-size: 1rem; margin-bottom: 8px;'>{medals[p_idx]}</div>", unsafe_allow_html=True)
-                        if p_img:
+                        if p_img and (p_img.startswith("http") or os.path.exists(p_img)):
                             st.image(p_img, use_container_width=True)
                         st.markdown(f"**{p_name}**")
                         st.caption(f"หมวดหมู่: {p_cat}")
@@ -1763,7 +1762,7 @@ if is_admin_mode:
                             r_badge = f"#{rank}"
                         st.markdown(f"<div style='font-size: 1.3rem; font-weight: 800; line-height: 60px; text-align: center; color: #ea580c;'>{r_badge}</div>", unsafe_allow_html=True)
                     with rc2:
-                        if iimg:
+                        if iimg and (iimg.startswith("http") or os.path.exists(iimg)):
                             st.image(iimg, use_container_width=True)
                         else:
                             st.markdown("<div style='font-size: 2.2rem; text-align: center; line-height: 60px;'>🍲</div>", unsafe_allow_html=True)
@@ -2132,14 +2131,14 @@ else:
         ORDER BY 
             CASE category 
                 WHEN 'ตำนัว' THEN 1 
-                WHEN 'ตำแซ่บ' THEN 2 
-                WHEN 'เมนูทอด' THEN 3 
-                WHEN 'เมนูย่าง' THEN 4 
-                WHEN 'เมนูลาบ / น้ำตก' THEN 5 
-                WHEN 'เมนูอีสาน' THEN 6 
-                WHEN 'ข้าว / เส้น' THEN 7 
-                WHEN 'เพิ่มท็อปปิ้ง' THEN 8 
-                WHEN 'เครื่องเคียง' THEN 9 
+                WHEN 'ตำพรีเมียม' THEN 2 
+                WHEN 'ยำแซ่บ' THEN 3 
+                WHEN 'ลาบ & ก้อย & น้ำตก' THEN 4 
+                WHEN 'ย่าง & ทอด' THEN 5 
+                WHEN 'ต้มแซ่บ & แกงอีสาน' THEN 6 
+                WHEN 'อาหารจานเดียว' THEN 7 
+                WHEN 'ของหวาน' THEN 8 
+                WHEN 'เครื่องเคียง & ข้าว' THEN 9 
                 WHEN 'เครื่องดื่ม' THEN 10 
                 ELSE 11 
             END, id ASC
@@ -2148,14 +2147,14 @@ else:
     
     cat_order_list = [
         "ตำนัว", 
-        "ตำแซ่บ", 
-        "เมนูทอด", 
-        "เมนูย่าง", 
-        "เมนูลาบ / น้ำตก", 
-        "เมนูอีสาน", 
-        "ข้าว / เส้น", 
-        "เพิ่มท็อปปิ้ง", 
-        "เครื่องเคียง", 
+        "ตำพรีเมียม", 
+        "ยำแซ่บ", 
+        "ลาบ & ก้อย & น้ำตก", 
+        "ย่าง & ทอด", 
+        "ต้มแซ่บ & แกงอีสาน", 
+        "อาหารจานเดียว", 
+        "ของหวาน", 
+        "เครื่องเคียง & ข้าว", 
         "เครื่องดื่ม"
     ]
 
@@ -2166,9 +2165,10 @@ else:
             categories.append(cat)
     
     st.markdown("<p style='text-align: center; font-weight: 600; color: #44403c; margin-bottom: 4px; font-size: 1.05rem;'>🍽️ เลือกหมวดหมู่อาหาร</p>", unsafe_allow_html=True)
-    sel_cat = st.pills("เลือกหมวดหมู่อาหาร:", ["ทั้งหมด"] + categories, default="ทั้งหมด", key="pills_cat_sel", label_visibility="collapsed")
+    default_cat = categories[0] if categories else "ทั้งหมด"
+    sel_cat = st.pills("เลือกหมวดหมู่อาหาร:", categories + ["ทั้งหมด"], default=default_cat, key="pills_cat_sel", label_visibility="collapsed")
     if not sel_cat:
-        sel_cat = "ทั้งหมด"
+        sel_cat = default_cat
     
     # คำนวณยอดตะกร้า
     total_cart_qty = sum(item['qty'] for item in st.session_state.cart.values())
@@ -2265,7 +2265,10 @@ else:
         with st.container(border=True):
             mc_img, mc_info, mc_btn = st.columns([1.2, 3.2, 1.6])
             with mc_img:
-                st.image(img, use_container_width=True)
+                if img and (img.startswith("http") or os.path.exists(img)):
+                    st.image(img, use_container_width=True)
+                else:
+                    st.markdown("<div style='font-size: 2.5rem; text-align: center; line-height: 75px; background: #fff7ed; border-radius: 12px;'>🍲</div>", unsafe_allow_html=True)
             with mc_info:
                 st.markdown(f"**{name}**")
                 st.caption(desc)
