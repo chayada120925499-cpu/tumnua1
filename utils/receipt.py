@@ -263,14 +263,14 @@ def render_receipt_box(oid, conn):
         SELECT table_id, total_price, created_at, status,
                COALESCE(subtotal, total_price), COALESCE(discount, 0),
                COALESCE(points_used, 0), COALESCE(points_earned, 0),
-               member_phone
+               member_phone, slip_image, slip_uploaded_at
         FROM orders WHERE id = ?
     """, (oid,))
     row = c.fetchone()
     if not row:
         st.session_state['active_receipt_oid'] = None
         return
-    t_id, total, otime, st_code, subtotal, discount, pts_used, pts_earned, m_phone = row
+    t_id, total, otime, st_code, subtotal, discount, pts_used, pts_earned, m_phone, slip_img, slip_time = row
     c.execute("SELECT item_name, quantity, price FROM order_items WHERE order_id = ?", (oid,))
     items = c.fetchall()
     
@@ -295,6 +295,12 @@ def render_receipt_box(oid, conn):
         st.markdown(f"### ใบเสร็จรับเงินอย่างย่อ — โต๊ะที่ {t_id} (บิล #{oid})")
         st.caption("สามารถกดปุ่ม **สั่งพิมพ์ใบเสร็จ / บันทึกเป็น PDF** ด้านล่างนี้ หรือดาวน์โหลดไฟล์ได้ทันทีค่ะ")
         
+        # แสดงสลิปโอนเงินที่ลูกค้าแนบมา (ถ้ามี)
+        if slip_img and os.path.exists(slip_img):
+            with st.expander("สลิปโอนเงินที่ลูกค้าแนบมา (คลิกเพื่อตรวจยอดเงิน)", expanded=True):
+                st.caption(f"เวลาที่ลูกค้าส่งสลิป: {slip_time or '-'}")
+                st.image(slip_img, width=280)
+
         components.html(receipt_html, height=750, scrolling=True)
         
         # ส่วนแสดง/ผูกข้อมูลสมาชิกที่เคาน์เตอร์คิดเงิน
