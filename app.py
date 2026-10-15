@@ -32,11 +32,9 @@ params = st.query_params
 raw_mode = str(params.get("mode", ""))
 is_admin_mode = ("admin" in raw_mode.lower())
 
-# ปรับคลีน URL พารามิเตอร์ไม่ให้มีค่าซ้ำซ้อน และคง embed=true ไว้เสมอ
+# ปรับคลีน URL พารามิเตอร์ไม่ให้มีค่าซ้ำซ้อน
 if is_admin_mode and params.get("mode") != "admin":
     st.query_params["mode"] = "admin"
-if params.get("embed") != "true":
-    st.query_params["embed"] = "true"
 
 # --- 5. สลับหน้าจอตามโหมดผู้ใช้งาน ---
 if is_admin_mode:

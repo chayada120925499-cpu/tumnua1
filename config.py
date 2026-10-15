@@ -651,8 +651,8 @@ button[aria-label*="fork"] {
             } catch(e) {}
         }
 
-        // 2. ถ้า URL หลักยังไม่มี embed=true ให้ใส่ embed=true เพื่อซ่อนแถบ Streamlit Cloud อัตโนมัติ
-        if (!currentSearch.includes('embed=true')) {
+        // 2. ถ้า URL หลักบน Streamlit Cloud ยังไม่มี embed=true ให้ใส่ embed=true เพื่อซ่อนแถบอัตโนมัติ
+        if (window.location.hostname.includes('streamlit.app') && !currentSearch.includes('embed=true')) {
             var sep = currentSearch ? '&' : '?';
             var newUrl = window.location.pathname + currentSearch + sep + 'embed=true';
             window.location.replace(newUrl);
