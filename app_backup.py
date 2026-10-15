@@ -1,12 +1,12 @@
 # ==============================================================================
-# 🌶️ ฟ้าใสตำนัว (Fahsai Tum Nua) - ระบบสั่งอาหารโต๊ะ & จอครัวอัจฉริยะ (Smart POS)
+#  ฟ้าใสตำนัว (Fahsai Tum Nua) - ระบบสั่งอาหารโต๊ะ & จอครัวอัจฉริยะ (Smart POS)
 # ==============================================================================
 # โครงสร้างการทำงานของโปรแกรม:
-# 1. 🗄️ ฐานข้อมูล SQLite (restaurant.db): บันทึกเมนูอาหาร, โต๊ะ, ออเดอร์ และใบเสร็จ
-# 2. 🪑 จัดการโต๊ะอาหาร & QR-Code: เพิ่ม/ลบโต๊ะ สร้าง QR-Code อัตโนมัติ และเคลียร์โต๊ะ
-# 3. 🍳 จอครัว & เคาน์เตอร์คิดเงิน (KDS): แสดงออเดอร์สด อัปเดตทุก 3 วินาที พร้อมเสียงเตือน
-# 4. 🏆 เมนูขายดี: จัดอันดับเมนูยอดนิยม ยอดขายรวม และสรุปตามหมวดหมู่อาหาร
-# 5. 📱 ฝั่งลูกค้า: สแกน QR Code เข้ามาสั่งอาหาร จัดการตะกร้า และติดตามสถานะแบบเรียลไทม์
+# 1.  ฐานข้อมูล SQLite (restaurant.db): บันทึกเมนูอาหาร, โต๊ะ, ออเดอร์ และใบเสร็จ
+# 2.  จัดการโต๊ะอาหาร & QR-Code: เพิ่ม/ลบโต๊ะ สร้าง QR-Code อัตโนมัติ และเคลียร์โต๊ะ
+# 3.  จอครัว & เคาน์เตอร์คิดเงิน (KDS): แสดงออเดอร์สด อัปเดตทุก 3 วินาที พร้อมเสียงเตือน
+# 4.  เมนูขายดี: จัดอันดับเมนูยอดนิยม ยอดขายรวม และสรุปตามหมวดหมู่อาหาร
+# 5.  ฝั่งลูกค้า: สแกน QR Code เข้ามาสั่งอาหาร จัดการตะกร้า และติดตามสถานะแบบเรียลไทม์
 # ==============================================================================
 
 # --- ไลบรารีที่จำเป็นสำหรับระบบ ---
@@ -36,7 +36,7 @@ def get_thai_now():
 # --- ตั้งค่าหน้าเว็บ Streamlit เบื้องต้น ---
 st.set_page_config(
     page_title="ฟ้าใสตำนัว",               # ชื่อที่จะแสดงบนแท็บของเบราว์เซอร์
-    page_icon="static/img/favicon.ico" if os.path.exists("static/img/favicon.ico") else "🌶️", # ไอคอน Favicon ของแท็บเว็บ
+    page_icon="static/img/favicon.ico" if os.path.exists("static/img/favicon.ico") else "", # ไอคอน Favicon ของแท็บเว็บ
     layout="wide",                          # ใช้พื้นที่หน้าจอแบบเต็มความกว้าง (Wide mode)
     initial_sidebar_state="collapsed"       # ซ่อนแถบเมนูด้านข้างเริ่มต้น เพื่อให้ดูเหมือน App มือถือ
 )
@@ -147,7 +147,7 @@ div[data-testid="stVerticalBlockBorderWrapper"]:hover {
     box-shadow: 0 6px 20px rgba(234, 88, 12, 0.12) !important;
 }
 
-/* 📱 สไตล์การ์ดอาหาร: Responsive Flex Grid ชิดกัน เว้นระยะห่างเล็กน้อย จำนวนตามความกว้างหน้าจอ */
+/*  สไตล์การ์ดอาหาร: Responsive Flex Grid ชิดกัน เว้นระยะห่างเล็กน้อย จำนวนตามความกว้างหน้าจอ */
 div[class*="st-key-menu_grid_flex"] > div,
 div[class*="st-key-menu_grid_flex"] {
     display: flex !important;
@@ -346,7 +346,7 @@ img {
     object-fit: cover !important;
 }
 
-/* 🔶 ปุ่มเลือกหมวดหมู่อาหาร ให้เป็นปุ่มทรงเหลี่ยมชัดเจน สีสันสดใส */
+/*  ปุ่มเลือกหมวดหมู่อาหาร ให้เป็นปุ่มทรงเหลี่ยมชัดเจน สีสันสดใส */
 div[data-testid="stPills"], div[data-testid="stRadio"] {
     display: flex !important;
     justify-content: center !important;
@@ -432,7 +432,7 @@ div[data-testid="stRadio"] label[data-baseweb="radio"][aria-checked="true"] span
     font-weight: 700 !important;
 }
 
-/* 🔖 แถบเมนูแท็บสไตล์ที่คั่นหนังสือ (Bookmark Tabs) ขอบบนมน 2 มุม */
+/*  แถบเมนูแท็บสไตล์ที่คั่นหนังสือ (Bookmark Tabs) ขอบบนมน 2 มุม */
 .stTabs [data-baseweb="tab-list"],
 div[data-testid="stTabs"] [data-baseweb="tab-list"],
 div[data-baseweb="tab-list"],
@@ -456,7 +456,7 @@ div[data-testid="stTabs"] hr {
     border: none !important;
 }
 
-/* 🔖 สไตล์ของแท็บทั้งหมด (Unselected) - สี่เหลี่ยมมุมบนมน 2 มุม */
+/*  สไตล์ของแท็บทั้งหมด (Unselected) - สี่เหลี่ยมมุมบนมน 2 มุม */
 .stTabs [data-baseweb="tab"],
 .stTabs button[role="tab"],
 div[data-testid="stTabs"] button[role="tab"],
@@ -505,7 +505,7 @@ div[data-testid="stTabs"] button[role="tab"]:hover p {
     color: #ea580c !important;
 }
 
-/* 🌟 สไตล์แท็บที่ถูกเลือก/คลิกใช้งาน (Active / Selected Tab) - แถบสีพื้นหลังเด่นชัด ทรงมุมบนมน 2 มุม */
+/*  สไตล์แท็บที่ถูกเลือก/คลิกใช้งาน (Active / Selected Tab) - แถบสีพื้นหลังเด่นชัด ทรงมุมบนมน 2 มุม */
 .stTabs [data-baseweb="tab"][aria-selected="true"],
 .stTabs button[role="tab"][aria-selected="true"],
 .stTabs [aria-selected="true"],
@@ -578,7 +578,7 @@ header {visibility: hidden;}
 """, unsafe_allow_html=True)
 
 # ==============================================================================
-# 🗄️ การจัดการฐานข้อมูล SQLite (Database Setup)
+#  การจัดการฐานข้อมูล SQLite (Database Setup)
 # ==============================================================================
 # ระบบใช้ SQLite ซึ่งเก็บข้อมูลทั้งหมดไว้ในไฟล์เดียวชื่อ "restaurant.db"
 # ข้อดี: เบา รวดเร็ว พกพาง่าย ไม่ต้องติดตั้ง Database Server เพิ่มเติม
@@ -846,7 +846,7 @@ def init_db():
         c.execute('DELETE FROM menu_items')
         c.executemany('INSERT OR REPLACE INTO menu_items (name, category, price, cost, image, description) VALUES (?, ?, ?, ?, ?, ?)', fahsai_menu)
 
-    # 👥 ข้อมูลสมาชิกจำลองเริ่มต้น 10 คน (ถ้ายังไม่มีสมาชิกในระบบ)
+    #  ข้อมูลสมาชิกจำลองเริ่มต้น 10 คน (ถ้ายังไม่มีสมาชิกในระบบ)
     c.execute("SELECT COUNT(*) FROM members")
     if c.fetchone()[0] == 0:
         sample_members = [
@@ -900,7 +900,7 @@ def init_db():
             WHERE id = ?
         """, (def_hash, def_salt, existing_admin[0]))
 
-    # 🪑 สร้างโต๊ะอาหารเริ่มต้น 10 โต๊ะ (หากยังไม่มีโต๊ะในระบบ)
+    #  สร้างโต๊ะอาหารเริ่มต้น 10 โต๊ะ (หากยังไม่มีโต๊ะในระบบ)
     c.execute("SELECT COUNT(*) FROM tables")
     if c.fetchone()[0] == 0:
         default_tables = [(i, f"โต๊ะที่ {i}", "available") for i in range(1, 11)]
@@ -914,7 +914,7 @@ def init_db():
 init_db()
 
 # ==============================================================================
-# 🔀 ตรวจสอบโหมดการแสดงผล (Admin หรือ ลูกค้า) ผ่าน URL Parameter
+#  ตรวจสอบโหมดการแสดงผล (Admin หรือ ลูกค้า) ผ่าน URL Parameter
 # ==============================================================================
 # ตัวอย่าง:
 # - หน้าจัดการหลังร้าน: https://domain/?mode=admin
@@ -933,7 +933,7 @@ logo_path = "static/img/logo.png"
 
 
 # ==============================================================================
-# 🛠️ ฟังก์ชันช่วยเหลือ (Utility / Helper Functions)
+#  ฟังก์ชันช่วยเหลือ (Utility / Helper Functions)
 # ==============================================================================
 
 def get_base64_image(image_path):
@@ -1025,7 +1025,7 @@ def play_order_sound():
 
 
 # ==============================================================================
-# 📌 ฟังก์ชันแสดง Footer เครดิตผู้พัฒนาระบบ
+#  ฟังก์ชันแสดง Footer เครดิตผู้พัฒนาระบบ
 # ==============================================================================
 def render_app_footer():
     """แสดง Footer เครดิตผู้พัฒนาระบบด้านล่างสุดของหน้าจอ จัดกึ่งกลาง"""
@@ -1041,7 +1041,7 @@ def render_app_footer():
 
 
 # ==============================================================================
-# 🧾 ฟังก์ชันสร้างใบเสร็จรับเงินอย่างย่อ (HTML / Print / PDF)
+#  ฟังก์ชันสร้างใบเสร็จรับเงินอย่างย่อ (HTML / Print / PDF)
 # ==============================================================================
 def get_payment_qr_base64():
     """ดึงรูปภาพ QR ธนาคาร/พร้อมเพย์ (payment.jpg) จากโฟลเดอร์ static มาแปลงเป็น Base64 สำหรับแสดงในใบเสร็จ HTML"""
@@ -1075,7 +1075,7 @@ def generate_receipt_html(order_id, table_id, items, total_price, order_time, su
         <div class="dashed"></div>
         <div class="text-center" style="margin: 8px 0;">
             <div style="font-size: 13px; font-weight: bold; color: #1e3a8a; margin-bottom: 2px;">
-                📲 สแกน QR เพื่อชำระเงิน
+                 สแกน QR เพื่อชำระเงิน
             </div>
             <div style="font-size: 11px; color: #64748b; margin-bottom: 6px;">
                 (PromptPay / สแกนผ่านแอปธนาคาร)
@@ -1116,7 +1116,7 @@ def generate_receipt_html(order_id, table_id, items, total_price, order_time, su
         member_info_html = f"""
         <div class="dashed"></div>
         <div style="font-size: 11.5px; background: #fff7ed; padding: 6px 8px; border-radius: 5px; border: 1px dashed #fdba74; margin-top: 4px;">
-            <div style="font-weight: bold; color: #c2410c;">💎 ข้อมูลสมาชิกสะสมแต้ม</div>
+            <div style="font-weight: bold; color: #c2410c;"> ข้อมูลสมาชิกสะสมแต้ม</div>
             <div>ลูกค้า: <strong>{member_name or 'สมาชิก'}</strong> ({member_phone})</div>
             {pts_used_txt}
             <div>• ได้รับคะแนนบิลนี้: <strong style="color: #16a34a;">+{points_earned}</strong> แต้ม (ทุก 100บ. = 1 แต้ม)</div>
@@ -1213,11 +1213,11 @@ def generate_receipt_html(order_id, table_id, items, total_price, order_time, su
     </head>
     <body>
         <div class="no-print" style="margin-bottom: 12px;">
-            <button class="btn-print" onclick="window.print()">🖨️ สั่งพิมพ์ใบเสร็จ / บันทึกเป็น PDF</button>
+            <button class="btn-print" onclick="window.print()"> สั่งพิมพ์ใบเสร็จ / บันทึกเป็น PDF</button>
         </div>
         
         <div class="text-center">
-            <div style="font-size: 18px; font-weight: bold; color: #c2410c;">🌶️ ฟ้าใสตำนัว</div>
+            <div style="font-size: 18px; font-weight: bold; color: #c2410c;"> ฟ้าใสตำนัว</div>
             <div style="font-size: 11px; color: #444;">(FAHSAI TUM NUA)</div>
             <div style="font-size: 12px; margin-top: 3px; font-weight: bold;">ใบเสร็จรับเงิน / ใบกำกับภาษีอย่างย่อ</div>
             <div style="font-size: 11px; color: #666;">โทร. 093-773-4851 • ยินดีให้บริการ</div>
@@ -1283,7 +1283,7 @@ def generate_receipt_html(order_id, table_id, items, total_price, order_time, su
         
         <div class="text-center" style="font-size: 11px; color: #444;">
             <div>ชำระโดย: เงินสด / โอนเงินผ่าน QR ธนาคาร</div>
-            <div style="margin-top: 4px; font-weight: bold; color: #111;">ขอบพระคุณที่มาอุดหนุนค่ะ 🙏</div>
+            <div style="margin-top: 4px; font-weight: bold; color: #111;">ขอบพระคุณที่มาอุดหนุนค่ะ </div>
             <div>โอกาสหน้าเชิญใหม่นะคะ แซ่บนัวทุกจาน!</div>
         </div>
     </body>
@@ -1326,23 +1326,23 @@ def render_receipt_box(oid, conn):
     )
     
     with st.container(border=True):
-        st.markdown(f"### 🧾 ใบเสร็จรับเงินอย่างย่อ — โต๊ะที่ {t_id} (บิล #{oid})")
-        st.caption("สามารถกดปุ่ม **🖨️ สั่งพิมพ์ใบเสร็จ / บันทึกเป็น PDF** ด้านล่างนี้ หรือดาวน์โหลดไฟล์ได้ทันทีค่ะ")
+        st.markdown(f"###  ใบเสร็จรับเงินอย่างย่อ — โต๊ะที่ {t_id} (บิล #{oid})")
+        st.caption("สามารถกดปุ่ม ** สั่งพิมพ์ใบเสร็จ / บันทึกเป็น PDF** ด้านล่างนี้ หรือดาวน์โหลดไฟล์ได้ทันทีค่ะ")
         
         components.html(receipt_html, height=750, scrolling=True)
         
         # ส่วนแสดง/ผูกข้อมูลสมาชิกที่เคาน์เตอร์คิดเงิน
         if st_code != 'paid':
             if m_phone:
-                st.info(f"💎 สมาชิก: **{m_name}** ({m_phone}) | ใช้แลกส่วนลด: **{pts_used}** แต้ม (-฿{int(discount):,}) | ได้รับแต้มบิลนี้: **+{pts_earned}** แต้ม")
+                st.info(f" สมาชิก: **{m_name}** ({m_phone}) | ใช้แลกส่วนลด: **{pts_used}** แต้ม (-฿{int(discount):,}) | ได้รับแต้มบิลนี้: **+{pts_earned}** แต้ม")
             else:
-                with st.expander("💎 เพิ่มสมาชิกสะสมแต้มสำหรับบิลนี้ (ที่เคาน์เตอร์)", expanded=False):
+                with st.expander(" เพิ่มสมาชิกสะสมแต้มสำหรับบิลนี้ (ที่เคาน์เตอร์)", expanded=False):
                     c_ph_in, c_ph_btn = st.columns([3, 1.2])
                     with c_ph_in:
                         attach_phone = st.text_input("เบอร์โทรศัพท์ลูกค้า:", key=f"attach_ph_input_{oid}", placeholder="เช่น 0937734851")
                     with c_ph_btn:
                         st.write("")
-                        attach_btn = st.button("🔗 บันทึกเบอร์", key=f"btn_attach_ph_{oid}", use_container_width=True)
+                        attach_btn = st.button(" บันทึกเบอร์", key=f"btn_attach_ph_{oid}", use_container_width=True)
                     if attach_btn and attach_phone.strip():
                         cl_ph = attach_phone.strip().replace("-", "").replace(" ", "")
                         c.execute("SELECT id, first_name, last_name, points FROM members WHERE phone = ?", (cl_ph,))
@@ -1354,12 +1354,12 @@ def render_receipt_box(oid, conn):
                             st.success(f"ผูกสมาชิก คุณ {m_f[1]} {m_f[2]} (แต้มปัจจุบัน: {m_f[3]}) สำเร็จ!")
                             st.rerun()
                         else:
-                            st.warning("ไม่พบเบอร์นี้ในระบบสมาชิกค่ะ สามารถสมัครสมาชิกใหม่ได้ที่แท็บ '👥 ประวัติลูกค้า' นะคะ")
+                            st.warning("ไม่พบเบอร์นี้ในระบบสมาชิกค่ะ สามารถสมัครสมาชิกใหม่ได้ที่แท็บ ' ประวัติลูกค้า' นะคะ")
 
         rc1, rc2, rc3 = st.columns([1.5, 1.5, 1])
         with rc1:
             st.download_button(
-                label="💾 ดาวน์โหลดไฟล์ใบเสร็จ (.html)",
+                label=" ดาวน์โหลดไฟล์ใบเสร็จ (.html)",
                 data=receipt_html,
                 file_name=f"receipt_table{t_id}_order{oid}.html",
                 mime="text/html",
@@ -1368,7 +1368,7 @@ def render_receipt_box(oid, conn):
             )
         with rc2:
             if st_code != 'paid':
-                if st.button("💵 ยืนยันรับเงิน (ปิดบิล)", key=f"pay_confirm_btn_{oid}", type="primary", use_container_width=True):
+                if st.button(" ยืนยันรับเงิน (ปิดบิล)", key=f"pay_confirm_btn_{oid}", type="primary", use_container_width=True):
                     c.execute("UPDATE orders SET status = 'paid' WHERE id = ?", (oid,))
                     # อัปเดตคะแนนสะสมของสมาชิก
                     if m_phone:
@@ -1376,17 +1376,17 @@ def render_receipt_box(oid, conn):
                         c.execute("UPDATE members SET points = MAX(0, points + ?) WHERE phone = ?", (net_pts_change, m_phone))
                     conn.commit()
                     st.session_state['active_receipt_oid'] = None
-                    st.toast(f"ปิดบิลโต๊ะ {t_id} เรียบร้อยแล้วค่ะ!", icon="✅")
+                    st.toast(f"ปิดบิลโต๊ะ {t_id} เรียบร้อยแล้วค่ะ!", icon="")
                     st.rerun()
             else:
-                st.info("✅ บิลนี้ชำระเงินเรียบร้อยแล้ว")
+                st.info(" บิลนี้ชำระเงินเรียบร้อยแล้ว")
         with rc3:
-            if st.button("❌ ปิดหน้าต่างใบเสร็จ", key=f"close_receipt_btn_{oid}", use_container_width=True):
+            if st.button(" ปิดหน้าต่างใบเสร็จ", key=f"close_receipt_btn_{oid}", use_container_width=True):
                 st.session_state['active_receipt_oid'] = None
                 st.rerun()
 
 # ==============================================================================
-# 🍳 จอครัว & เคาน์เตอร์คิดเงิน (Fragment ทำงานอัตโนมัติทุก 3 วินาที)
+#  จอครัว & เคาน์เตอร์คิดเงิน (Fragment ทำงานอัตโนมัติทุก 3 วินาที)
 # ==============================================================================
 @st.fragment(run_every=3)
 def render_pos_dashboard():
@@ -1403,17 +1403,17 @@ def render_pos_dashboard():
     elif cur_max > st.session_state['last_seen_pending_id']:
         st.session_state['last_seen_pending_id'] = cur_max
         play_order_sound()
-        st.toast(f"🔔 มีออเดอร์ใหม่ #{cur_max} เข้ามาในครัวแล้วค่ะ!", icon="🛎️")
-        st.warning(f"🔔 **มีออเดอร์ใหม่ #{cur_max} เพิ่งส่งเข้ามาในครัว!** กำลังรอให้เตรียมอาหาร")
+        st.toast(f" มีออเดอร์ใหม่ #{cur_max} เข้ามาในครัวแล้วค่ะ!", icon="")
+        st.warning(f" **มีออเดอร์ใหม่ #{cur_max} เพิ่งส่งเข้ามาในครัว!** กำลังรอให้เตรียมอาหาร")
 
     # แถบแสดงสถานะอัปเดตสดแบบเรียลไทม์
     top_c1, top_c2 = st.columns([3, 1])
     with top_c1:
-        st.markdown(f"**⚡ สถานะระบบ:** :green[**● เชื่อมต่อสด • อัปเดตออเดอร์อัตโนมัติทุก 3 วินาที**] <span style='color: #64748b; font-size: 0.85rem;'>(เวลาปัจจุบัน: {get_thai_now().strftime('%H:%M:%S')})</span>", unsafe_allow_html=True)
+        st.markdown(f"** สถานะระบบ:** :green[**● เชื่อมต่อสด • อัปเดตออเดอร์อัตโนมัติทุก 3 วินาที**] <span style='color: #64748b; font-size: 0.85rem;'>(เวลาปัจจุบัน: {get_thai_now().strftime('%H:%M:%S')})</span>", unsafe_allow_html=True)
     with top_c2:
-        if st.button("🔔 ทดสอบเสียงกระดิ่ง", key="btn_test_sound", use_container_width=True):
+        if st.button(" ทดสอบเสียงกระดิ่ง", key="btn_test_sound", use_container_width=True):
             play_order_sound()
-            st.toast("ทดสอบเสียงกระดิ่งเตือนออเดอร์แล้ว 🔔", icon="🛎️")
+            st.toast("ทดสอบเสียงกระดิ่งเตือนออเดอร์แล้ว ", icon="")
 
     c.execute("SELECT COALESCE(SUM(total_price), 0), COUNT(*) FROM orders WHERE status IN ('paid', 'archived')")
     revenue, paid_cnt = c.fetchone()
@@ -1422,10 +1422,10 @@ def render_pos_dashboard():
     
     # Responsive Metrics
     s1, s2, s3, s4 = st.columns(4)
-    s1.metric("💰 ยอดขายรวม", f"฿{int(revenue):,}")
-    s2.metric("🍳 กำลังปรุง/เสิร์ฟ", f"{active_cnt} บิล")
-    s3.metric("🪑 นั่งทาน", f"{active_tables} โต๊ะ")
-    s4.metric("✅ เช็คบิลแล้ว", f"{paid_cnt} บิล")
+    s1.metric(" ยอดขายรวม", f"฿{int(revenue):,}")
+    s2.metric(" กำลังปรุง/เสิร์ฟ", f"{active_cnt} บิล")
+    s3.metric(" นั่งทาน", f"{active_tables} โต๊ะ")
+    s4.metric(" เช็คบิลแล้ว", f"{paid_cnt} บิล")
     
     st.write("---")
     
@@ -1450,7 +1450,7 @@ def render_pos_dashboard():
     orders_to_manage = c.fetchall()
     
     if not orders_to_manage:
-        st.success("🎉 ไม่มีออเดอร์ค้างในครัว น้องฟ้าใสพร้อมรับออเดอร์ใหม่เสมอค่ะ 🌶️")
+        st.success(" ไม่มีออเดอร์ค้างในครัว น้องฟ้าใสพร้อมรับออเดอร์ใหม่เสมอค่ะ ")
     else:
         grid_cols = st.columns(3)
         for idx, (oid, t_id, st_code, total, otime) in enumerate(orders_to_manage):
@@ -1459,11 +1459,11 @@ def render_pos_dashboard():
                     # หัวการ์ดโต๊ะในจอครัวแบบมีสีสันสดใสไล่เฉด (Vibrant KDS Table Header)
                     st.markdown(f"""
                     <div style="background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%); padding: 8px 14px; border-radius: 10px; margin-bottom: 10px; box-shadow: 0 3px 10px rgba(234, 88, 12, 0.28); display: flex; justify-content: space-between; align-items: center;">
-                        <span style="color: #ffffff; font-weight: 800; font-size: 1.25rem; letter-spacing: 0.5px;">🪑 โต๊ะที่ {t_id}</span>
+                        <span style="color: #ffffff; font-weight: 800; font-size: 1.25rem; letter-spacing: 0.5px;"> โต๊ะที่ {t_id}</span>
                         <span style="background: #ffffff; color: #ea580c; padding: 2px 8px; border-radius: 6px; font-weight: 800; font-size: 0.85rem;">บิล #{oid}</span>
                     </div>
                     """, unsafe_allow_html=True)
-                    st.caption(f"🕒 เวลาสั่งอาหาร: {otime}")
+                    st.caption(f" เวลาสั่งอาหาร: {otime}")
                     
                     c.execute("""
                         SELECT oi.id, oi.item_name, oi.quantity, oi.note, oi.price, COALESCE(oi.status, 'pending'), mi.image
@@ -1478,7 +1478,7 @@ def render_pos_dashboard():
                     cooked_items = sum(1 for it in items_in_order if it[5] == 'cooked')
                     all_items_served = (total_items > 0) and (served_items == total_items)
                     
-                    st.markdown("**📋 รายการอาหารในบิล:**")
+                    st.markdown("** รายการอาหารในบิล:**")
                     for oi_id, iname, iqty, inote, iprice, istatus, dish_img in items_in_order:
                         with st.container(border=True):
                             it_c1, it_c2 = st.columns([1.1, 2.3])
@@ -1486,31 +1486,31 @@ def render_pos_dashboard():
                                 if dish_img and (dish_img.startswith("http") or os.path.exists(dish_img)):
                                     st.image(dish_img, use_container_width=True)
                                 else:
-                                    st.markdown("<div style='font-size: 2.2rem; text-align: center; line-height: 60px;'>🍲</div>", unsafe_allow_html=True)
+                                    st.markdown("<div style='font-size: 2.2rem; text-align: center; line-height: 60px;'></div>", unsafe_allow_html=True)
                             with it_c2:
                                 st.markdown(f"**{iname}** <span style='color: #ea580c; font-weight: bold;'>x{iqty}</span>", unsafe_allow_html=True)
                                 st.caption(f"฿{int(iprice * iqty):,}")
                                 if inote:
-                                    st.caption(f"⚠️ {inote}")
+                                    st.caption(f" {inote}")
                                 
                                 if istatus == 'pending':
-                                    st.markdown("<span style='background: #fff7ed; color: #c2410c; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; border: 1px solid #fdba74;'>⏳ กำลังปรุง</span>", unsafe_allow_html=True)
+                                    st.markdown("<span style='background: #fff7ed; color: #c2410c; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; border: 1px solid #fdba74;'> กำลังปรุง</span>", unsafe_allow_html=True)
                                 elif istatus == 'cooked':
-                                    st.markdown("<span style='background: #f3e8ff; color: #7e22ce; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; border: 1px solid #d8b4fe;'>🍳 เสร็จแล้ว</span>", unsafe_allow_html=True)
+                                    st.markdown("<span style='background: #f3e8ff; color: #7e22ce; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; border: 1px solid #d8b4fe;'> เสร็จแล้ว</span>", unsafe_allow_html=True)
                                 elif istatus == 'served':
-                                    st.markdown("<span style='background: #f0fdf4; color: #15803d; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; border: 1px solid #86efac;'>✅ เสิร์ฟแล้ว</span>", unsafe_allow_html=True)
+                                    st.markdown("<span style='background: #f0fdf4; color: #15803d; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; border: 1px solid #86efac;'> เสิร์ฟแล้ว</span>", unsafe_allow_html=True)
                             
                             # ปุ่มเปลี่ยนสถานะแต่ละเมนู: เสร็จแล้ว / นำเสิร์ฟแล้ว
                             act_c1, act_c2 = st.columns(2)
                             if istatus == 'pending':
                                 with act_c1:
-                                    if st.button("🍳 เสร็จ", key=f"btn_ck_{oi_id}", use_container_width=True, help="เปลี่ยนสถานะเป็นปรุงเสร็จแล้ว"):
+                                    if st.button(" เสร็จ", key=f"btn_ck_{oi_id}", use_container_width=True, help="เปลี่ยนสถานะเป็นปรุงเสร็จแล้ว"):
                                         c.execute("UPDATE order_items SET status = 'cooked' WHERE id = ?", (oi_id,))
                                         c.execute("UPDATE orders SET status = 'cooked' WHERE id = ? AND status IN ('pending', 'accepted')", (oid,))
                                         conn.commit()
                                         st.rerun()
                                 with act_c2:
-                                    if st.button("🍽️ เสิร์ฟ", key=f"btn_sv_{oi_id}", type="primary", use_container_width=True, help="เปลี่ยนสถานะเป็นนำเสิร์ฟแล้ว"):
+                                    if st.button(" เสิร์ฟ", key=f"btn_sv_{oi_id}", type="primary", use_container_width=True, help="เปลี่ยนสถานะเป็นนำเสิร์ฟแล้ว"):
                                         c.execute("UPDATE order_items SET status = 'served' WHERE id = ?", (oi_id,))
                                         c.execute("SELECT COUNT(*) FROM order_items WHERE order_id = ? AND status != 'served'", (oid,))
                                         if c.fetchone()[0] == 0:
@@ -1523,7 +1523,7 @@ def render_pos_dashboard():
                                 with act_c1:
                                     st.caption("รอพนักงานยกเสิร์ฟ")
                                 with act_c2:
-                                    if st.button("🍽️ เสิร์ฟ", key=f"btn_sv_{oi_id}", type="primary", use_container_width=True, help="เปลี่ยนสถานะเป็นนำเสิร์ฟแล้ว"):
+                                    if st.button(" เสิร์ฟ", key=f"btn_sv_{oi_id}", type="primary", use_container_width=True, help="เปลี่ยนสถานะเป็นนำเสิร์ฟแล้ว"):
                                         c.execute("UPDATE order_items SET status = 'served' WHERE id = ?", (oi_id,))
                                         c.execute("SELECT COUNT(*) FROM order_items WHERE order_id = ? AND status != 'served'", (oid,))
                                         if c.fetchone()[0] == 0:
@@ -1534,7 +1534,7 @@ def render_pos_dashboard():
                                 with act_c1:
                                     st.write("")
                                 with act_c2:
-                                    if st.button("↩️ ยกเลิก", key=f"btn_un_{oi_id}", use_container_width=True, help="ย้อนกลับเป็นกำลังปรุง"):
+                                    if st.button("↩ ยกเลิก", key=f"btn_un_{oi_id}", use_container_width=True, help="ย้อนกลับเป็นกำลังปรุง"):
                                         c.execute("UPDATE order_items SET status = 'pending' WHERE id = ?", (oi_id,))
                                         c.execute("UPDATE orders SET status = 'cooked' WHERE id = ?", (oid,))
                                         conn.commit()
@@ -1542,11 +1542,11 @@ def render_pos_dashboard():
                     
                     # ปุ่มทางลัด: เสิร์ฟทุกเมนูพร้อมกัน
                     if not all_items_served:
-                        if st.button("⚡ เสิร์ฟทุกเมนูทันที", key=f"btn_all_srv_{oid}", use_container_width=True):
+                        if st.button(" เสิร์ฟทุกเมนูทันที", key=f"btn_all_srv_{oid}", use_container_width=True):
                             c.execute("UPDATE order_items SET status = 'served' WHERE order_id = ?", (oid,))
                             c.execute("UPDATE orders SET status = 'served' WHERE id = ?", (oid,))
                             conn.commit()
-                            st.toast(f"เสิร์ฟอาหารโต๊ะ {t_id} ครบทุกเมนูแล้วค่ะ!", icon="🍽️")
+                            st.toast(f"เสิร์ฟอาหารโต๊ะ {t_id} ครบทุกเมนูแล้วค่ะ!", icon="")
                             st.rerun()
 
                     st.write("---")
@@ -1554,25 +1554,25 @@ def render_pos_dashboard():
                     
                     # Requirement: เช็คบิลได้เฉพาะเมื่อเสิร์ฟครบทุกเมนูแล้วเท่านั้น
                     if not all_items_served:
-                        st.warning(f"⚠️ เสิร์ฟแล้ว {served_items}/{total_items} เมนู (ปุ่มเช็คบิลจะเปิดเมื่อเสิร์ฟครบ)")
-                        st.button(f"🧾 เช็คบิลโต๊ะ {t_id} (รอเสิร์ฟครบ)", key=f"btn_bill_{oid}", disabled=True, use_container_width=True)
+                        st.warning(f" เสิร์ฟแล้ว {served_items}/{total_items} เมนู (ปุ่มเช็คบิลจะเปิดเมื่อเสิร์ฟครบ)")
+                        st.button(f" เช็คบิลโต๊ะ {t_id} (รอเสิร์ฟครบ)", key=f"btn_bill_{oid}", disabled=True, use_container_width=True)
                     else:
-                        st.success(f"🍽️ เสิร์ฟครบ {served_items}/{total_items} เมนูแล้ว พร้อมเช็คบิลค่ะ!")
-                        if st.button(f"🧾 เช็คบิล & ออกใบเสร็จอย่างย่อ (โต๊ะ {t_id})", key=f"btn_bill_{oid}", type="primary", use_container_width=True):
+                        st.success(f" เสิร์ฟครบ {served_items}/{total_items} เมนูแล้ว พร้อมเช็คบิลค่ะ!")
+                        if st.button(f" เช็คบิล & ออกใบเสร็จอย่างย่อ (โต๊ะ {t_id})", key=f"btn_bill_{oid}", type="primary", use_container_width=True):
                             st.session_state['active_receipt_oid'] = oid
                             st.rerun()
 
                     # ปุ่มเคลียร์โต๊ะรับลูกค้าใหม่
                     st.write("")
-                    if st.button(f"🧹 เคลียร์โต๊ะ {t_id}", key=f"adm_clr_{oid}", use_container_width=True, help="ล้างสถานะเพื่อรับลูกค้าใหม่"):
+                    if st.button(f" เคลียร์โต๊ะ {t_id}", key=f"adm_clr_{oid}", use_container_width=True, help="ล้างสถานะเพื่อรับลูกค้าใหม่"):
                         c.execute("UPDATE orders SET status = 'archived' WHERE table_id = ?", (t_id,))
                         conn.commit()
-                        st.toast(f"เคลียร์โต๊ะ {t_id} เรียบร้อยแล้ว โต๊ะพร้อมรับลูกค้าใหม่!", icon="✨")
+                        st.toast(f"เคลียร์โต๊ะ {t_id} เรียบร้อยแล้ว โต๊ะพร้อมรับลูกค้าใหม่!", icon="")
                         st.rerun()
 
     # Expander: ประวัติบิลที่ชำระแล้ววันนี้
     st.write("---")
-    with st.expander("📜 ประวัติบิลที่ชำระแล้ววันนี้ (ดู/พิมพ์ใบเสร็จย้อนหลัง)", expanded=False):
+    with st.expander(" ประวัติบิลที่ชำระแล้ววันนี้ (ดู/พิมพ์ใบเสร็จย้อนหลัง)", expanded=False):
         c.execute("""
             SELECT id, table_id, total_price, created_at, status 
             FROM orders 
@@ -1588,14 +1588,14 @@ def render_pos_dashboard():
                 st_p_col1.markdown(f"**บิล #{p_id}** — โต๊ะที่ {p_tid} (เวลา: {p_time})")
                 st_p_col2.markdown(f"**฿{int(p_tot):,}**")
                 with st_p_col3:
-                    if st.button("🧾 พิมพ์ใบเสร็จ", key=f"btn_reprint_{p_id}", use_container_width=True):
+                    if st.button(" พิมพ์ใบเสร็จ", key=f"btn_reprint_{p_id}", use_container_width=True):
                         st.session_state['active_receipt_oid'] = p_id
                         st.rerun()
                         
     conn.close()
 
 # ==============================================================================
-# 🔴 ฝั่งร้านค้า (เคาน์เตอร์ & ครัว & เมนูขายดี) -> https://.../?mode=admin
+#  ฝั่งร้านค้า (เคาน์เตอร์ & ครัว & เมนูขายดี) -> https://.../?mode=admin
 # ==============================================================================
 # หน้านี้สำหรับพนักงานและเจ้าของร้าน โดยเข้าใช้งานผ่านการเติม ?mode=admin ท้าย URL
 # ประกอบด้วย 3 แท็บหลัก:
@@ -1619,9 +1619,9 @@ if is_admin_mode:
     elif os.path.exists(logo_path):
         logo_html = f'<div style="text-align: center; margin-bottom: 8px;"><img src="{logo_path}" style="width: 145px; height: 145px; object-fit: cover; border-radius: 50%; border: 4px solid #ffedd5; box-shadow: 0 6px 20px rgba(234, 88, 12, 0.32); display: inline-block;" alt="โลโก้ฟ้าใสตำนัว" /></div>'
     else:
-        logo_html = '<div style="text-align: center; font-size: 75px; margin-bottom: 4px;">🌶️</div>'
+        logo_html = '<div style="text-align: center; font-size: 75px; margin-bottom: 4px;"></div>'
 
-    # 🔒 กรณีที่ยังไม่ได้ลงชื่อเข้าใช้: แสดงฟอร์ม Login ปลอดภัย
+    #  กรณีที่ยังไม่ได้ลงชื่อเข้าใช้: แสดงฟอร์ม Login ปลอดภัย
     if not st.session_state['admin_logged_in']:
         login_header_html = f'''
         {logo_html}
@@ -1629,7 +1629,7 @@ if is_admin_mode:
             ฟ้าใสตำนัว (ระบบจัดการหลังร้าน)
         </h1>
         <p style="text-align: center; color: #78716c; font-size: 1.05rem; margin: 0 0 16px 0;">
-            🔐 กรุณาลงชื่อเข้าใช้งานเพื่อเข้าถึงระบบจัดการร้าน จอครัว และเคาน์เตอร์คิดเงิน
+             กรุณาลงชื่อเข้าใช้งานเพื่อเข้าถึงระบบจัดการร้าน จอครัว และเคาน์เตอร์คิดเงิน
         </p>
         '''
         st.markdown(login_header_html, unsafe_allow_html=True)
@@ -1642,9 +1642,9 @@ if is_admin_mode:
                 st.caption("ป้อนชื่อผู้ใช้งานและรหัสผ่านเพื่อยืนยันสิทธิ์")
                 
                 with st.form("admin_login_form"):
-                    input_user = st.text_input("👤 ชื่อผู้ใช้ (Username):", placeholder="เช่น admin", key="inp_admin_user")
-                    input_pass = st.text_input("🔑 รหัสผ่าน (Password):", type="password", placeholder="ป้อนรหัสผ่าน", key="inp_admin_pass")
-                    submit_login = st.form_submit_button("🔓 ลงชื่อเข้าใช้", type="primary", use_container_width=True)
+                    input_user = st.text_input(" ชื่อผู้ใช้ (Username):", placeholder="เช่น admin", key="inp_admin_user")
+                    input_pass = st.text_input(" รหัสผ่าน (Password):", type="password", placeholder="ป้อนรหัสผ่าน", key="inp_admin_pass")
+                    submit_login = st.form_submit_button(" ลงชื่อเข้าใช้", type="primary", use_container_width=True)
 
                     if submit_login:
                         if not input_user.strip() or not input_pass.strip():
@@ -1664,15 +1664,15 @@ if is_admin_mode:
                                     'full_name': user_record[4],
                                     'role': user_record[5]
                                 }
-                                st.toast(f"ยินดีต้อนรับ {user_record[4]} เข้าสู่ระบบค่ะ! 🎉", icon="✅")
+                                st.toast(f"ยินดีต้อนรับ {user_record[4]} เข้าสู่ระบบค่ะ! ", icon="")
                                 st.rerun()
                             else:
-                                st.error("❌ ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง กรุณาลองใหม่อีกครั้งค่ะ")
+                                st.error(" ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง กรุณาลองใหม่อีกครั้งค่ะ")
 
         render_app_footer()
         st.stop()
 
-    # 🔓 กรณีที่ลงชื่อเข้าใช้สำเร็จแล้ว: แสดงแถบข้อมูลผู้ใช้งาน + ปุ่มออกจากระบบ
+    #  กรณีที่ลงชื่อเข้าใช้สำเร็จแล้ว: แสดงแถบข้อมูลผู้ใช้งาน + ปุ่มออกจากระบบ
     u_info = st.session_state.get('admin_user_info') or {}
     u_name = u_info.get('full_name', 'ผู้ดูแลระบบ')
     u_role = u_info.get('role', 'admin')
@@ -1683,7 +1683,7 @@ if is_admin_mode:
         ฟ้าใสตำนัว (ระบบจัดการหลังร้าน)
     </h1>
     <p style="text-align: center; color: #78716c; font-size: 1.05rem; margin: 0 0 10px 0;">
-        👨‍🍳 หน้าจอเคาน์เตอร์คิดเงิน • ครัวปรุงอาหาร • อันดับเมนูขายดี
+         หน้าจอเคาน์เตอร์คิดเงิน • ครัวปรุงอาหาร • อันดับเมนูขายดี
     </p>
     '''
     st.markdown(header_html, unsafe_allow_html=True)
@@ -1691,16 +1691,16 @@ if is_admin_mode:
     # แถบผู้ใช้งานเข้าสู่ระบบ & ปุ่มเปลี่ยนรหัสผ่าน & ปุ่มออกจากระบบ
     col_u1, col_u2, col_u3 = st.columns([2.2, 1.1, 1.1])
     with col_u1:
-        st.markdown(f"<div style='font-size: 15px; color: #166534; font-weight: 600; padding-top: 6px;'>🟢 เข้าสู่ระบบในนาม: <b>{u_name}</b> (สิทธิ์: {u_role})</div>", unsafe_allow_html=True)
+        st.markdown(f"<div style='font-size: 15px; color: #166534; font-weight: 600; padding-top: 6px;'> เข้าสู่ระบบในนาม: <b>{u_name}</b> (สิทธิ์: {u_role})</div>", unsafe_allow_html=True)
     with col_u2:
-        with st.popover("🔑 เปลี่ยนรหัสผ่าน", use_container_width=True):
-            st.markdown("### 🔑 เปลี่ยนรหัสผ่าน")
+        with st.popover(" เปลี่ยนรหัสผ่าน", use_container_width=True):
+            st.markdown("###  เปลี่ยนรหัสผ่าน")
             st.caption(f"เปลี่ยนรหัสผ่านสำหรับ: **{u_info.get('username', 'admin')}**")
             with st.form("form_change_admin_pw", clear_on_submit=True):
                 old_pw = st.text_input("รหัสผ่านเดิม:", type="password", key="chg_old_pw")
                 new_pw = st.text_input("รหัสผ่านใหม่ (อย่างน้อย 6 ตัวอักษร):", type="password", key="chg_new_pw")
                 cfm_pw = st.text_input("ยืนยันรหัสผ่านใหม่:", type="password", key="chg_cfm_pw")
-                btn_sub_pw = st.form_submit_button("💾 บันทึกรหัสผ่านใหม่", type="primary", use_container_width=True)
+                btn_sub_pw = st.form_submit_button(" บันทึกรหัสผ่านใหม่", type="primary", use_container_width=True)
                 
                 if btn_sub_pw:
                     if not old_pw:
@@ -1718,19 +1718,19 @@ if is_admin_mode:
                         u_rec = c_pw.fetchone()
                         
                         if not u_rec or not verify_password(old_pw.strip(), u_rec[1], u_rec[2]):
-                            st.error("❌ รหัสผ่านเดิมไม่ถูกต้อง กรุณาตรวจสอบอีกครั้งค่ะ")
+                            st.error(" รหัสผ่านเดิมไม่ถูกต้อง กรุณาตรวจสอบอีกครั้งค่ะ")
                             conn_pw.close()
                         else:
                             new_hash, new_salt = hash_password(new_pw.strip())
                             c_pw.execute("UPDATE admin_users SET password_hash = ?, salt = ? WHERE id = ?", (new_hash, new_salt, u_info.get('id', 1)))
                             conn_pw.commit()
                             conn_pw.close()
-                            st.toast("🎉 เปลี่ยนรหัสผ่านสำเร็จเรียบร้อยแล้ว!", icon="✅")
-                            st.success("🎉 เปลี่ยนรหัสผ่านสำเร็จเรียบร้อยแล้ว! รหัสผ่านใหม่จะมีผลทันทีค่ะ")
+                            st.toast(" เปลี่ยนรหัสผ่านสำเร็จเรียบร้อยแล้ว!", icon="")
+                            st.success(" เปลี่ยนรหัสผ่านสำเร็จเรียบร้อยแล้ว! รหัสผ่านใหม่จะมีผลทันทีค่ะ")
                             st.rerun()
 
     with col_u3:
-        if st.button("🚪 ออกจากระบบ", key="btn_admin_logout", use_container_width=True):
+        if st.button(" ออกจากระบบ", key="btn_admin_logout", use_container_width=True):
             st.session_state['admin_logged_in'] = False
             st.session_state['admin_user_info'] = None
             st.rerun()
@@ -1739,19 +1739,19 @@ if is_admin_mode:
 
     # แยก 5 แท็บสำหรับจัดการหลังร้าน
     tab_tbl, tab_pos, tab_rep, tab_mem, tab_menu = st.tabs([
-        "🪑 จัดการโต๊ะอาหาร & เคลียร์โต๊ะ", 
-        "🍳 จอครัว & เคาน์เตอร์คิดเงิน", 
-        "🏆 เมนูขายดี",
-        "👥 ประวัติลูกค้า",
-        "🍲 จัดการเมนูอาหาร"
+        " จัดการโต๊ะอาหาร & เคลียร์โต๊ะ", 
+        " จอครัว & เคาน์เตอร์คิดเงิน", 
+        " เมนูขายดี",
+        " ประวัติลูกค้า",
+        " จัดการเมนูอาหาร"
     ])
 
 
     # --------------------------------------------------------------------------
-    # แท็บที่ 1: 🪑 จัดการโต๊ะอาหาร & เคลียร์โต๊ะ (พร้อมสร้าง QR-Code)
+    # แท็บที่ 1:  จัดการโต๊ะอาหาร & เคลียร์โต๊ะ (พร้อมสร้าง QR-Code)
     # --------------------------------------------------------------------------
     with tab_tbl:
-        st.subheader("🪑 จัดการโต๊ะอาหาร & เคลียร์โต๊ะ (พร้อมสร้าง QR-Code)")
+        st.subheader(" จัดการโต๊ะอาหาร & เคลียร์โต๊ะ (พร้อมสร้าง QR-Code)")
         st.caption("เพิ่มหรือลบโต๊ะอาหารในร้าน สร้าง QR-Code ติดโต๊ะให้ลูกค้าสแกนสั่งอาหาร และกดล้างสถานะโต๊ะเพื่อรับลูกค้ารายใหม่")
         
         conn_tb = sqlite3.connect(DB_NAME)
@@ -1776,36 +1776,36 @@ if is_admin_mode:
         base_url_for_qr = get_current_base_url()
 
         # ส่วนที่ 1: เมนู เพิ่ม / ลบ โต๊ะอาหารในร้าน
-        st.markdown("### ⚙️ 1. เพิ่ม / ลบ โต๊ะอาหารในร้าน")
+        st.markdown("###  1. เพิ่ม / ลบ โต๊ะอาหารในร้าน")
         t_c1, t_c2 = st.columns(2)
         
         with t_c1:
             with st.container(border=True):
-                st.markdown("#### ➕ เพิ่มโต๊ะใหม่")
+                st.markdown("####  เพิ่มโต๊ะใหม่")
                 st.caption("เมื่อเพิ่มแล้ว ระบบจะสร้าง QR-Code และลิงก์สั่งอาหารของโต๊ะนั้นให้ทันที")
                 next_t_num = (max(existing_nums) + 1) if existing_nums else 1
                 new_t_num = st.number_input("หมายเลขโต๊ะที่จะเพิ่ม:", min_value=1, max_value=999, value=next_t_num, step=1, key="add_t_num_input")
                 new_t_name = st.text_input("ชื่อเรียกโต๊ะ:", value=f"โต๊ะที่ {new_t_num}", key="add_t_name_input")
                 
-                if st.button("➕ ยืนยันเพิ่มโต๊ะและสร้าง QR-Code", key="btn_add_new_table", type="primary", use_container_width=True):
+                if st.button(" ยืนยันเพิ่มโต๊ะและสร้าง QR-Code", key="btn_add_new_table", type="primary", use_container_width=True):
                     if new_t_num in existing_nums:
                         st.error(f"หมายเลขโต๊ะ {new_t_num} มีอยู่ในระบบแล้วค่ะ")
                     else:
                         c_tb.execute("INSERT INTO tables (table_number, name) VALUES (?, ?)", (new_t_num, new_t_name))
                         conn_tb.commit()
-                        st.success(f"เพิ่ม '{new_t_name}' สำเร็จ พร้อมเปิดใช้งาน QR-Code เรียบร้อยแล้วค่ะ! 🎉")
+                        st.success(f"เพิ่ม '{new_t_name}' สำเร็จ พร้อมเปิดใช้งาน QR-Code เรียบร้อยแล้วค่ะ! ")
                         st.rerun()
 
         with t_c2:
             with st.container(border=True):
-                st.markdown("#### 🗑️ ลบโต๊ะอาหาร")
+                st.markdown("####  ลบโต๊ะอาหาร")
                 st.caption("ลบโต๊ะที่ไม่ใช้งานออกจากระบบ")
                 if existing_nums:
                     table_options = [f"โต๊ะที่ {r[0]} ({r[1]})" for r in table_statuses]
                     table_to_del_str = st.selectbox("เลือกโต๊ะที่ต้องการลบ:", table_options, key="select_del_t")
                     del_t_num = int(table_to_del_str.split(" ")[1])
                     
-                    if st.button(f"🗑️ ยืนยันลบโต๊ะที่ {del_t_num}", key="btn_del_table", use_container_width=True):
+                    if st.button(f" ยืนยันลบโต๊ะที่ {del_t_num}", key="btn_del_table", use_container_width=True):
                         c_tb.execute("DELETE FROM tables WHERE table_number = ?", (del_t_num,))
                         conn_tb.commit()
                         st.warning(f"ลบโต๊ะที่ {del_t_num} ออกจากระบบเรียบร้อยแล้ว")
@@ -1816,10 +1816,10 @@ if is_admin_mode:
         st.write("---")
 
         # ส่วนที่ 2: รายการโต๊ะอาหาร & QR-Code สั่งอาหาร & เคลียร์สถานะโต๊ะ
-        st.markdown("### 📱 2. รายการโต๊ะอาหาร & QR-Code สั่งอาหาร & ล้างสถานะโต๊ะ")
+        st.markdown("###  2. รายการโต๊ะอาหาร & QR-Code สั่งอาหาร & ล้างสถานะโต๊ะ")
         
         if not table_statuses:
-            st.info("ℹ️ **ขณะนี้ยังไม่มีโต๊ะอาหารในร้าน** (ค่าเริ่มต้น 0 โต๊ะ)\n\n👉 สามารถเพิ่มโต๊ะใหม่ได้ที่แบบฟอร์ม **'➕ เพิ่มโต๊ะใหม่'** ด้านบนค่ะ เมื่อเพิ่มแล้ว QR-Code สำหรับติดโต๊ะและระบบสั่งอาหารจะแสดงที่นี่ทันที ✨")
+            st.info("ℹ **ขณะนี้ยังไม่มีโต๊ะอาหารในร้าน** (ค่าเริ่มต้น 0 โต๊ะ)\n\n สามารถเพิ่มโต๊ะใหม่ได้ที่แบบฟอร์ม **' เพิ่มโต๊ะใหม่'** ด้านบนค่ะ เมื่อเพิ่มแล้ว QR-Code สำหรับติดโต๊ะและระบบสั่งอาหารจะแสดงที่นี่ทันที ")
         else:
             total_tbls = len(table_statuses)
             busy_tbls = sum(1 for r in table_statuses if (r[2] > 0 or r[3] > 0))
@@ -1827,21 +1827,21 @@ if is_admin_mode:
             
             # สรุปภาพรวมของโต๊ะ
             col_m1, col_m2, col_m3 = st.columns(3)
-            col_m1.metric("🪑 โต๊ะอาหารทั้งหมด", f"{total_tbls} โต๊ะ")
-            col_m2.metric("🟢 โต๊ะว่างพร้อมรับลูกค้า", f"{free_tbls} โต๊ะ")
-            col_m3.metric("🟠 มีลูกค้า / รอเคลียร์", f"{busy_tbls} โต๊ะ")
+            col_m1.metric(" โต๊ะอาหารทั้งหมด", f"{total_tbls} โต๊ะ")
+            col_m2.metric(" โต๊ะว่างพร้อมรับลูกค้า", f"{free_tbls} โต๊ะ")
+            col_m3.metric(" มีลูกค้า / รอเคลียร์", f"{busy_tbls} โต๊ะ")
 
             # ปุ่มล้างทุกโต๊ะที่เช็คบิลแล้วพร้อมกัน
             total_paid_orders = sum(r[3] for r in table_statuses)
             if total_paid_orders > 0:
-                if st.button("🧹 ล้างสถานะทุกโต๊ะที่เช็คบิลแล้วพร้อมกันทั้งหมด", type="primary", use_container_width=True):
+                if st.button(" ล้างสถานะทุกโต๊ะที่เช็คบิลแล้วพร้อมกันทั้งหมด", type="primary", use_container_width=True):
                     c_tb.execute("UPDATE orders SET status = 'archived' WHERE status = 'paid'")
                     conn_tb.commit()
-                    st.toast("ล้างสถานะทุกโต๊ะที่เช็คบิลแล้วเรียบร้อย!", icon="✨")
+                    st.toast("ล้างสถานะทุกโต๊ะที่เช็คบิลแล้วเรียบร้อย!", icon="")
                     st.rerun()
                 st.write("")
 
-            st.caption("💡 แนะนำ: พิมพ์หรือเปิดภาพ **QR-Code** ด้านล่างนี้ไปติดไว้ที่โต๊ะอาหาร ลูกค้าสแกนเพื่อเปิดเมนูสั่งอาหารได้ทันที")
+            st.caption(" แนะนำ: พิมพ์หรือเปิดภาพ **QR-Code** ด้านล่างนี้ไปติดไว้ที่โต๊ะอาหาร ลูกค้าสแกนเพื่อเปิดเมนูสั่งอาหารได้ทันที")
             
             clr_cols = st.columns(3)
             for idx, (t_no, t_name, act_cnt, paid_cnt) in enumerate(table_statuses):
@@ -1850,20 +1850,20 @@ if is_admin_mode:
                         # หัวการ์ดโต๊ะและสถานะแบบสีสันสดใส มีมิติ
                         if act_cnt > 0:
                             hdr_gradient = "linear-gradient(135deg, #f97316 0%, #ea580c 100%)"
-                            badge_html = "<span style='background: #fef3c7; color: #9a3412; padding: 2px 8px; border-radius: 999px; font-size: 0.75rem; font-weight: 700;'>🔥 มีออเดอร์ค้าง</span>"
+                            badge_html = "<span style='background: #fef3c7; color: #9a3412; padding: 2px 8px; border-radius: 999px; font-size: 0.75rem; font-weight: 700;'> มีออเดอร์ค้าง</span>"
                             stat_text = f"<span style='color: #ea580c; font-weight: 700;'>มีออเดอร์ค้าง {act_cnt} บิล (กำลังทำ/รอเสิร์ฟ)</span>"
                         elif paid_cnt > 0:
                             hdr_gradient = "linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)"
-                            badge_html = "<span style='background: #dbeafe; color: #1e40af; padding: 2px 8px; border-radius: 999px; font-size: 0.75rem; font-weight: 700;'>💳 เช็คบิลแล้ว</span>"
+                            badge_html = "<span style='background: #dbeafe; color: #1e40af; padding: 2px 8px; border-radius: 999px; font-size: 0.75rem; font-weight: 700;'> เช็คบิลแล้ว</span>"
                             stat_text = f"<span style='color: #2563eb; font-weight: 700;'>เช็คบิลแล้ว {paid_cnt} บิล (รอเคลียร์โต๊ะ)</span>"
                         else:
                             hdr_gradient = "linear-gradient(135deg, #10b981 0%, #059669 100%)"
-                            badge_html = "<span style='background: #d1fae5; color: #065f46; padding: 2px 8px; border-radius: 999px; font-size: 0.75rem; font-weight: 700;'>✨ โต๊ะว่าง</span>"
+                            badge_html = "<span style='background: #d1fae5; color: #065f46; padding: 2px 8px; border-radius: 999px; font-size: 0.75rem; font-weight: 700;'> โต๊ะว่าง</span>"
                             stat_text = "<span style='color: #059669; font-weight: 700;'>โต๊ะว่าง (พร้อมรับลูกค้า)</span>"
 
                         st.markdown(f"""
                         <div style="background: {hdr_gradient}; padding: 8px 12px; border-radius: 10px; margin-bottom: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.12); display: flex; justify-content: space-between; align-items: center;">
-                            <span style="color: #ffffff; font-weight: 800; font-size: 1.15rem;">🪑 {t_name}</span>
+                            <span style="color: #ffffff; font-weight: 800; font-size: 1.15rem;"> {t_name}</span>
                             {badge_html}
                         </div>
                         <div style="font-size: 0.9rem; margin-bottom: 8px;">สถานะ: {stat_text}</div>
@@ -1880,21 +1880,21 @@ if is_admin_mode:
                         st.markdown(f"""
                         <div style="text-align: center; margin-bottom: 8px;">
                             <a href="{cust_table_url}" target="_blank" style="display: inline-block; background: #fff7ed; color: #ea580c; border: 1.5px solid #fdba74; padding: 4px 12px; border-radius: 6px; font-weight: 600; text-decoration: none; font-size: 0.85rem;">
-                                🔗 เปิดหน้าสั่งอาหารโต๊ะนี้ (ทดสอบ)
+                                 เปิดหน้าสั่งอาหารโต๊ะนี้ (ทดสอบ)
                             </a>
                         </div>
                         """, unsafe_allow_html=True)
                         
                         # ปุ่มล้างสถานะโต๊ะเพื่อรับลูกค้าใหม่
                         btn_type = "primary" if (paid_cnt > 0 or act_cnt > 0) else "secondary"
-                        if st.button(f"🧹 ล้างสถานะโต๊ะ {t_no} (รับลูกค้าใหม่)", key=f"btn_clr_tbl_{t_no}", use_container_width=True, type=btn_type):
+                        if st.button(f" ล้างสถานะโต๊ะ {t_no} (รับลูกค้าใหม่)", key=f"btn_clr_tbl_{t_no}", use_container_width=True, type=btn_type):
                             c_tb.execute("UPDATE orders SET status = 'archived' WHERE table_id = ?", (t_no,))
                             conn_tb.commit()
-                            st.toast(f"ล้างสถานะ '{t_name}' เรียบร้อยแล้ว โต๊ะพร้อมรับลูกค้าใหม่!", icon="✨")
+                            st.toast(f"ล้างสถานะ '{t_name}' เรียบร้อยแล้ว โต๊ะพร้อมรับลูกค้าใหม่!", icon="")
                             st.rerun()
 
                         # ปุ่มลบโต๊ะ
-                        with st.popover(f"🗑️ ลบ {t_name}"):
+                        with st.popover(f" ลบ {t_name}"):
                             st.markdown(f"ยืนยันการลบ **{t_name}** ออกจากระบบ?")
                             if st.button(f"ยืนยันลบโต๊ะ {t_no}", key=f"btn_pop_del_{t_no}", type="primary", use_container_width=True):
                                 c_tb.execute("DELETE FROM tables WHERE table_number = ?", (t_no,))
@@ -1905,17 +1905,17 @@ if is_admin_mode:
         conn_tb.close()
 
     # --------------------------------------------------------------------------
-    # แท็บที่ 2: 🍳 จอครัว & เคาน์เตอร์คิดเงิน (Kitchen POS Dashboard)
+    # แท็บที่ 2:  จอครัว & เคาน์เตอร์คิดเงิน (Kitchen POS Dashboard)
     # --------------------------------------------------------------------------
     with tab_pos:
         # เรียกใช้ฟังก์ชัน fragment ที่รีเฟรชออเดอร์อัตโนมัติทุก 3 วินาที
         render_pos_dashboard()
 
     # --------------------------------------------------------------------------
-    # แท็บที่ 3: 🏆 อันดับเมนูขายดี (Best Selling Menus Dashboard)
+    # แท็บที่ 3:  อันดับเมนูขายดี (Best Selling Menus Dashboard)
     # --------------------------------------------------------------------------
     with tab_rep:
-        st.subheader("🏆 อันดับเมนูขายดี (Best Selling Menus)")
+        st.subheader(" อันดับเมนูขายดี (Best Selling Menus)")
         st.caption("จัดอันดับเมนูยอดนิยมของฟ้าใสตำนัว ตามจำนวนจานและยอดขายรวม")
         
         conn_bs = sqlite3.connect(DB_NAME)
@@ -1925,9 +1925,9 @@ if is_admin_mode:
         # ตัวกรองช่วงเวลาและการเรียงลำดับ
         c_f1, c_f2 = st.columns([1.5, 2])
         with c_f1:
-            filter_period = st.pills("📅 ช่วงเวลา:", ["ทั้งหมด", "วันนี้"], default="ทั้งหมด", key="pills_period_filter")
+            filter_period = st.pills(" ช่วงเวลา:", ["ทั้งหมด", "วันนี้"], default="ทั้งหมด", key="pills_period_filter")
         with c_f2:
-            sort_by = st.pills("📊 จัดอันดับตาม:", ["จำนวนจานที่ขายได้ (จาน)", "ยอดขายรวม (บาท)"], default="จำนวนจานที่ขายได้ (จาน)", key="pills_sort_filter")
+            sort_by = st.pills(" จัดอันดับตาม:", ["จำนวนจานที่ขายได้ (จาน)", "ยอดขายรวม (บาท)"], default="จำนวนจานที่ขายได้ (จาน)", key="pills_sort_filter")
 
         thai_today_str = get_thai_now().strftime('%Y-%m-%d')
         date_sql = f"AND DATE(o.created_at) = '{thai_today_str}'" if filter_period == "วันนี้" else ""
@@ -1959,16 +1959,16 @@ if is_admin_mode:
             
             # สถิติภาพรวมด้านบน
             m1, m2, m3 = st.columns(3)
-            m1.metric("🍲 จำนวนอาหารที่ขายได้รวม", f"{total_sold_all:,} จาน")
-            m2.metric("💰 ยอดขายรวม", f"฿{int(total_revenue_all):,}")
-            m3.metric("👑 เมนูขายดีอันดับ 1", f"{top_seller[0]}", f"{top_seller[4]} จาน (฿{int(top_seller[5]):,})")
+            m1.metric(" จำนวนอาหารที่ขายได้รวม", f"{total_sold_all:,} จาน")
+            m2.metric(" ยอดขายรวม", f"฿{int(total_revenue_all):,}")
+            m3.metric(" เมนูขายดีอันดับ 1", f"{top_seller[0]}", f"{top_seller[4]} จาน (฿{int(top_seller[5]):,})")
             
             st.write("---")
             
             # 3 อันดับแรก (Podium Top 3)
-            st.markdown("### 🥇🥈🥉 3 อันดับเมนูยอดนิยมสูงสุด")
+            st.markdown("###  3 อันดับเมนูยอดนิยมสูงสุด")
             podium_cols = st.columns(min(3, len(best_sellers)))
-            medals = ["🥇 อันดับ 1 (แชมป์)", "🥈 อันดับ 2", "🥉 อันดับ 3"]
+            medals = [" อันดับ 1 (แชมป์)", " อันดับ 2", " อันดับ 3"]
             badge_bg = ["#fef3c7", "#f1f5f9", "#ffedd5"]
             badge_border = ["#f59e0b", "#94a3b8", "#f97316"]
             
@@ -1981,13 +1981,13 @@ if is_admin_mode:
                             st.image(p_img, use_container_width=True)
                         st.markdown(f"**{p_name}**")
                         st.caption(f"หมวดหมู่: {p_cat}")
-                        st.markdown(f"🔥 ขายได้: <span style='color: #ea580c; font-size: 1.25rem; font-weight: bold;'>{p_qty} จาน</span>", unsafe_allow_html=True)
-                        st.markdown(f"💵 รวมเงิน: **฿{int(p_sales):,}**")
+                        st.markdown(f" ขายได้: <span style='color: #ea580c; font-size: 1.25rem; font-weight: bold;'>{p_qty} จาน</span>", unsafe_allow_html=True)
+                        st.markdown(f" รวมเงิน: **฿{int(p_sales):,}**")
 
             st.write("---")
             
             # ตารางจัดอันดับทั้งหมด
-            st.markdown("### 📋 ตารางจัดอันดับเมนูขายดีทั้งหมด")
+            st.markdown("###  ตารางจัดอันดับเมนูขายดีทั้งหมด")
             max_qty = best_sellers[0][4] if best_sellers and best_sellers[0][4] > 0 else 1
             
             for rank, (iname, icat, iimg, iprice, iqty, isales) in enumerate(best_sellers, 1):
@@ -1995,11 +1995,11 @@ if is_admin_mode:
                     rc1, rc2, rc3, rc4 = st.columns([0.8, 1.2, 3, 2])
                     with rc1:
                         if rank == 1:
-                            r_badge = "🥇 #1"
+                            r_badge = " #1"
                         elif rank == 2:
-                            r_badge = "🥈 #2"
+                            r_badge = " #2"
                         elif rank == 3:
-                            r_badge = "🥉 #3"
+                            r_badge = " #3"
                         else:
                             r_badge = f"#{rank}"
                         st.markdown(f"<div style='font-size: 1.3rem; font-weight: 800; line-height: 60px; text-align: center; color: #ea580c;'>{r_badge}</div>", unsafe_allow_html=True)
@@ -2007,7 +2007,7 @@ if is_admin_mode:
                         if iimg and (iimg.startswith("http") or os.path.exists(iimg)):
                             st.image(iimg, use_container_width=True)
                         else:
-                            st.markdown("<div style='font-size: 2.2rem; text-align: center; line-height: 60px;'>🍲</div>", unsafe_allow_html=True)
+                            st.markdown("<div style='font-size: 2.2rem; text-align: center; line-height: 60px;'></div>", unsafe_allow_html=True)
                     with rc3:
                         st.markdown(f"**{iname}**")
                         st.caption(f"หมวด: {icat} • ราคา ฿{int(iprice)}/จาน")
@@ -2018,7 +2018,7 @@ if is_admin_mode:
 
             # สรุปยอดขายแยกตามหมวดหมู่อาหาร
             st.write("---")
-            st.markdown("### 📊 สรุปยอดขายแยกตามหมวดหมู่อาหาร")
+            st.markdown("###  สรุปยอดขายแยกตามหมวดหมู่อาหาร")
             c_bs.execute(f'''
                 SELECT 
                     COALESCE(mi.category, 'ทั่วไป') as category,
@@ -2038,22 +2038,22 @@ if is_admin_mode:
                     with cat_cols[c_idx % len(cat_cols)]:
                         with st.container(border=True):
                             st.markdown(f"**{cname}**")
-                            st.markdown(f"🔥 ขายได้: **{cqty} จาน**")
+                            st.markdown(f" ขายได้: **{cqty} จาน**")
                             st.caption(f"ยอดรวม: ฿{int(csales):,}")
         conn_bs.close()
 
     # --------------------------------------------------------------------------
-    # แท็บที่ 4: 👥 ประวัติลูกค้า (Customer History & Loyalty Members)
+    # แท็บที่ 4:  ประวัติลูกค้า (Customer History & Loyalty Members)
     # --------------------------------------------------------------------------
     with tab_mem:
-        st.subheader("👥 ประวัติลูกค้า & ระบบสมาชิกสะสมแต้ม")
+        st.subheader(" ประวัติลูกค้า & ระบบสมาชิกสะสมแต้ม")
         st.caption("ดูข้อมูลสมาชิก จัดการคะแนนสะสม เรียงลำดับจากคะแนนมากไปน้อย และสมัครสมาชิกใหม่หน้าร้าน")
         
         conn_mem = sqlite3.connect(DB_NAME)
         c_mem = conn_mem.cursor()
 
         # ฟอร์มสมัครสมาชิกลูกค้าใหม่ (ที่เคาน์เตอร์)
-        with st.expander("➕ สมัครสมาชิกลูกค้าใหม่ (ที่เคาน์เตอร์)", expanded=False):
+        with st.expander(" สมัครสมาชิกลูกค้าใหม่ (ที่เคาน์เตอร์)", expanded=False):
             st.markdown("##### กรอกข้อมูลสมาชิกลูกค้า")
             st.caption("ข้อมูลที่ใช้: ชื่อ, นามสกุล และหมายเลขโทรศัพท์")
             mf_c1, mf_c2, mf_c3 = st.columns(3)
@@ -2064,7 +2064,7 @@ if is_admin_mode:
             with mf_c3:
                 adm_phone = st.text_input("หมายเลขโทรศัพท์:", key="adm_reg_phone", placeholder="เช่น 0937734851")
                 
-            if st.button("➕ บันทึกข้อมูลสมาชิก", key="btn_adm_save_member", type="primary", use_container_width=True):
+            if st.button(" บันทึกข้อมูลสมาชิก", key="btn_adm_save_member", type="primary", use_container_width=True):
                 cl_adm_ph = adm_phone.strip().replace("-", "").replace(" ", "")
                 if not adm_fname.strip() or not adm_lname.strip() or not cl_adm_ph:
                     st.error("กรุณากรอกข้อมูล ชื่อ นามสกุล และหมายเลขโทรศัพท์ให้ครบถ้วนค่ะ")
@@ -2079,13 +2079,13 @@ if is_admin_mode:
                             (adm_fname.strip(), adm_lname.strip(), cl_adm_ph, reg_now)
                         )
                         conn_mem.commit()
-                        st.success(f"บันทึกสมาชิก 'คุณ {adm_fname} {adm_lname}' เรียบร้อยแล้วค่ะ! 🎉")
+                        st.success(f"บันทึกสมาชิก 'คุณ {adm_fname} {adm_lname}' เรียบร้อยแล้วค่ะ! ")
                         st.rerun()
 
         st.write("---")
 
         # ช่องค้นหาลูกค้า
-        search_kw = st.text_input("🔍 ค้นหาลูกค้า (ชื่อ, นามสกุล หรือ เบอร์โทรศัพท์):", placeholder="พิมพ์คำค้นหา...", key="mem_search_input")
+        search_kw = st.text_input(" ค้นหาลูกค้า (ชื่อ, นามสกุล หรือ เบอร์โทรศัพท์):", placeholder="พิมพ์คำค้นหา...", key="mem_search_input")
         kw_pattern = f"%{search_kw.strip()}%"
 
         # ดึงรายชื่อลูกค้า เรียงตามคะแนนสะสมจากมากไปน้อย (ORDER BY points DESC)
@@ -2112,28 +2112,28 @@ if is_admin_mode:
         tot_m_cnt, tot_pts_sum = c_mem.fetchone()
 
         sm1, sm2, sm3 = st.columns(3)
-        sm1.metric("👥 สมาชิกทั้งหมด", f"{tot_m_cnt} คน")
-        sm2.metric("⭐ คะแนนสะสมรวมทั้งระบบ", f"{tot_pts_sum:,} แต้ม")
+        sm1.metric(" สมาชิกทั้งหมด", f"{tot_m_cnt} คน")
+        sm2.metric(" คะแนนสะสมรวมทั้งระบบ", f"{tot_pts_sum:,} แต้ม")
         top_member_txt = f"{members_list[0][1]} {members_list[0][2]} ({members_list[0][4]} แต้ม)" if members_list else "-"
-        sm3.metric("🥇 แชมป์แต้มสูงสุด", top_member_txt)
+        sm3.metric(" แชมป์แต้มสูงสุด", top_member_txt)
 
-        st.markdown(f"### 📋 รายชื่อสมาชิกลูกค้า (เรียงตามคะแนนสะสมมากที่สุด)")
+        st.markdown(f"###  รายชื่อสมาชิกลูกค้า (เรียงตามคะแนนสะสมมากที่สุด)")
         st.caption("กฎคะแนน: ทุก ๆ 100 บาท (ยอดสุทธิ) ได้รับ 1 คะแนน | 10 คะแนน แลกส่วนลด 25 บาท")
 
         if not members_list:
             if search_kw:
                 st.warning(f"ไม่พบข้อมูลสมาชิกที่ตรงกับคำค้นหา '{search_kw}'")
             else:
-                st.info("ขณะนี้ยังไม่มีข้อมูลสมาชิกลูกค้าในระบบ สามารถกด **'➕ สมัครสมาชิกลูกค้าใหม่'** ด้านบนได้เลยค่ะ")
+                st.info("ขณะนี้ยังไม่มีข้อมูลสมาชิกลูกค้าในระบบ สามารถกด **' สมัครสมาชิกลูกค้าใหม่'** ด้านบนได้เลยค่ะ")
         else:
             for idx, (mid, fname, lname, phone, pts, reg_date, order_cnt, spent) in enumerate(members_list, 1):
                 # ตราอันดับคะแนน
                 if idx == 1:
-                    badge = "🥇 อันดับ 1"
+                    badge = " อันดับ 1"
                 elif idx == 2:
-                    badge = "🥈 อันดับ 2"
+                    badge = " อันดับ 2"
                 elif idx == 3:
-                    badge = "🥉 อันดับ 3"
+                    badge = " อันดับ 3"
                 else:
                     badge = f"#{idx}"
 
@@ -2143,22 +2143,22 @@ if is_admin_mode:
                         st.markdown(f"<div style='font-size: 1.15rem; font-weight: 700; color: #ea580c; text-align: center; line-height: 40px;'>{badge}</div>", unsafe_allow_html=True)
                     with mc2:
                         st.markdown(f"**คุณ{fname} {lname}**")
-                        st.caption(f"📞 เบอร์โทร: **{phone}** • สมัครเมื่อ: {reg_date[:10] if reg_date else '-'}")
+                        st.caption(f" เบอร์โทร: **{phone}** • สมัครเมื่อ: {reg_date[:10] if reg_date else '-'}")
                     with mc3:
-                        st.markdown(f"⭐ คะแนนสะสม: <span style='font-size: 1.25rem; font-weight: 800; color: #ea580c;'>{pts:,}</span> แต้ม", unsafe_allow_html=True)
+                        st.markdown(f" คะแนนสะสม: <span style='font-size: 1.25rem; font-weight: 800; color: #ea580c;'>{pts:,}</span> แต้ม", unsafe_allow_html=True)
                         discount_avail = (pts // 10) * 25
                         st.caption(f"แลกส่วนลดได้สูงสุด: **฿{discount_avail:,}**")
                     with mc4:
-                        st.markdown(f"🍽️ มาทาน: **{order_cnt} ครั้ง**")
+                        st.markdown(f" มาทาน: **{order_cnt} ครั้ง**")
                         st.caption(f"ยอดซื้อสะสม: **฿{int(spent):,}**")
 
         conn_mem.close()
 
     # --------------------------------------------------------------------------
-    # แท็บที่ 5: 🍲 จัดการเมนูอาหาร (เพิ่ม / ลบ / ค้นหารายการอาหาร)
+    # แท็บที่ 5:  จัดการเมนูอาหาร (เพิ่ม / ลบ / ค้นหารายการอาหาร)
     # --------------------------------------------------------------------------
     with tab_menu:
-        st.subheader("🍲 จัดการรายการอาหาร (เพิ่ม / ลบ / ค้นหา)")
+        st.subheader(" จัดการรายการอาหาร (เพิ่ม / ลบ / ค้นหา)")
         st.caption("ระบบจัดการเมนูของร้าน เพิ่มเมนูใหม่ กำหนดราคาขาย ต้นทุน รูปภาพ คำอธิบาย และลบเมนูที่ไม่จำหน่ายแล้ว")
 
         conn_mng = sqlite3.connect(DB_NAME)
@@ -2190,18 +2190,18 @@ if is_admin_mode:
         # =========================================================
         # 1. ฟอร์มเพิ่มเมนูอาหารใหม่
         # =========================================================
-        with st.expander("➕ เพิ่มรายการอาหารใหม่", expanded=True):
-            st.markdown("#### 📝 กรอกข้อมูลเมนูใหม่")
+        with st.expander(" เพิ่มรายการอาหารใหม่", expanded=True):
+            st.markdown("####  กรอกข้อมูลเมนูใหม่")
             with st.form("form_add_new_menu", clear_on_submit=True):
                 col_n1, col_n2 = st.columns([1.5, 1])
                 with col_n1:
                     new_name = st.text_input("ชื่อเมนูอาหาร *", placeholder="เช่น ตำถาดทะเลเดือด, กุ้งแช่น้ำปลา", key="in_new_menu_name")
                     
-                    cat_select_list = all_cat_options + ["➕ เพิ่มหมวดหมู่ใหม่..."]
+                    cat_select_list = all_cat_options + [" เพิ่มหมวดหมู่ใหม่..."]
                     sel_cat_choice = st.selectbox("หมวดหมู่อาหาร *", cat_select_list, index=0, key="in_new_menu_cat_sel")
                     
                     custom_cat_val = ""
-                    if sel_cat_choice == "➕ เพิ่มหมวดหมู่ใหม่...":
+                    if sel_cat_choice == " เพิ่มหมวดหมู่ใหม่...":
                         custom_cat_val = st.text_input("ระบุชื่อหมวดหมู่ใหม่:", placeholder="เช่น เมนูแนะนำพิเศษ, อาหารทานเล่น", key="in_new_custom_cat")
                 
                 with col_n2:
@@ -2223,10 +2223,10 @@ if is_admin_mode:
                     key="in_new_menu_desc"
                 )
 
-                btn_add_menu = st.form_submit_button("💾 บันทึกและเพิ่มรายการอาหาร", type="primary", use_container_width=True)
+                btn_add_menu = st.form_submit_button(" บันทึกและเพิ่มรายการอาหาร", type="primary", use_container_width=True)
                 if btn_add_menu:
                     final_name = new_name.strip()
-                    final_cat = custom_cat_val.strip() if sel_cat_choice == "➕ เพิ่มหมวดหมู่ใหม่..." else sel_cat_choice
+                    final_cat = custom_cat_val.strip() if sel_cat_choice == " เพิ่มหมวดหมู่ใหม่..." else sel_cat_choice
                     final_img = new_img.strip()
                     final_desc = new_desc.strip()
 
@@ -2238,7 +2238,7 @@ if is_admin_mode:
                         c_mng.execute("SELECT id FROM menu_items WHERE name = ?", (final_name,))
                         exist_m = c_mng.fetchone()
                         if exist_m:
-                            st.error(f"❌ มีเมนูชื่อ '{final_name}' อยู่ในระบบแล้ว กรุณาใช้ชื่ออื่นค่ะ")
+                            st.error(f" มีเมนูชื่อ '{final_name}' อยู่ในระบบแล้ว กรุณาใช้ชื่ออื่นค่ะ")
                         else:
                             try:
                                 c_mng.execute(
@@ -2246,7 +2246,7 @@ if is_admin_mode:
                                     (final_name, final_cat, new_price, new_cost, final_img, final_desc)
                                 )
                                 conn_mng.commit()
-                                st.success(f"🎉 เพิ่มเมนู **'{final_name}'** (หมวด: {final_cat}, ราคา: ฿{new_price:,.2f}) สำเร็จเรียบร้อยแล้วค่ะ!")
+                                st.success(f" เพิ่มเมนู **'{final_name}'** (หมวด: {final_cat}, ราคา: ฿{new_price:,.2f}) สำเร็จเรียบร้อยแล้วค่ะ!")
                                 st.rerun()
                             except Exception as err:
                                 st.error(f"เกิดข้อผิดพลาดในการบันทึก: {err}")
@@ -2256,13 +2256,13 @@ if is_admin_mode:
         # =========================================================
         # 2. รายการเมนูอาหารทั้งหมด & ค้นหา & ลบเมนู
         # =========================================================
-        st.markdown("### 📋 รายการอาหารทั้งหมดในระบบ & จัดการลบ")
+        st.markdown("###  รายการอาหารทั้งหมดในระบบ & จัดการลบ")
         
         f_c1, f_c2 = st.columns([2, 1.5])
         with f_c1:
-            search_menu_kw = st.text_input("🔍 ค้นหาตามชื่อเมนู หรือคำอธิบาย:", placeholder="พิมพ์ชื่อเมนูเพื่อค้นหา...", key="in_search_menu_kw").strip()
+            search_menu_kw = st.text_input(" ค้นหาตามชื่อเมนู หรือคำอธิบาย:", placeholder="พิมพ์ชื่อเมนูเพื่อค้นหา...", key="in_search_menu_kw").strip()
         with f_c2:
-            filter_cat_choice = st.selectbox("📂 กรองตามหมวดหมู่:", ["ทั้งหมด"] + all_cat_options, key="sel_filter_cat_choice")
+            filter_cat_choice = st.selectbox(" กรองตามหมวดหมู่:", ["ทั้งหมด"] + all_cat_options, key="sel_filter_cat_choice")
 
         query_sql = "SELECT id, name, category, price, cost, image, description FROM menu_items WHERE 1=1"
         query_params = []
@@ -2285,12 +2285,12 @@ if is_admin_mode:
         avg_c = avg_c or 0
 
         m_stat1, m_stat2, m_stat3, m_stat4 = st.columns(4)
-        m_stat1.metric("🍲 รายการทั้งหมด", f"{tot_cnt} เมนู")
-        m_stat2.metric("🎯 ตรงตามตัวกรอง", f"{len(found_menus)} เมนู")
-        m_stat3.metric("🏷️ ราคาเฉลี่ย", f"฿{avg_p:,.1f}")
-        m_stat4.metric("📦 ต้นทุนเฉลี่ย", f"฿{avg_c:,.1f}")
+        m_stat1.metric(" รายการทั้งหมด", f"{tot_cnt} เมนู")
+        m_stat2.metric(" ตรงตามตัวกรอง", f"{len(found_menus)} เมนู")
+        m_stat3.metric(" ราคาเฉลี่ย", f"฿{avg_p:,.1f}")
+        m_stat4.metric(" ต้นทุนเฉลี่ย", f"฿{avg_c:,.1f}")
 
-        st.caption(f"แสดงผล {len(found_menus)} รายการ (กดที่ปุ่ม '🗑️ ลบ' เพื่อลบเมนูที่ไม่ต้องการ)")
+        st.caption(f"แสดงผล {len(found_menus)} รายการ (กดที่ปุ่ม ' ลบ' เพื่อลบเมนูที่ไม่ต้องการ)")
 
         if not found_menus:
             st.warning("ไม่พบรายการอาหารที่ตรงกับเงื่อนไขการค้นหา")
@@ -2303,14 +2303,14 @@ if is_admin_mode:
                         if m_img and (m_img.startswith("http") or os.path.exists(m_img)):
                             st.image(m_img, use_container_width=True)
                         else:
-                            st.markdown("<div style='font-size: 2.2rem; text-align: center; line-height: 65px; background: #fff7ed; border-radius: 8px;'>🍲</div>", unsafe_allow_html=True)
+                            st.markdown("<div style='font-size: 2.2rem; text-align: center; line-height: 65px; background: #fff7ed; border-radius: 8px;'></div>", unsafe_allow_html=True)
                     
                     with row_info:
                         st.markdown(f"**{m_name}** <span style='font-size: 0.8rem; background: #fef3c7; color: #92400e; padding: 2px 8px; border-radius: 999px; margin-left: 6px; font-weight: 600;'>{m_cat}</span>", unsafe_allow_html=True)
                         if m_desc:
                             st.caption(m_desc)
                         if m_img:
-                            st.caption(f"🖼️ `{m_img}`")
+                            st.caption(f" `{m_img}`")
                     
                     with row_price:
                         st.markdown(f"ราคา: <b style='color: #ea580c; font-size: 1.1rem;'>฿{m_price:,.2f}</b>", unsafe_allow_html=True)
@@ -2318,10 +2318,10 @@ if is_admin_mode:
                         st.caption(f"ต้นทุน: ฿{m_cost or 0:,.2f} (กำไร: ฿{p_margin:,.2f})")
                     
                     with row_action:
-                        with st.popover("🗑️ ลบ", use_container_width=True):
-                            st.markdown(f"⚠️ **ยืนยันลบเมนู?**")
+                        with st.popover(" ลบ", use_container_width=True):
+                            st.markdown(f" **ยืนยันลบเมนู?**")
                             st.caption(f"ต้องการลบ **'{m_name}'** ออกจากระบบหรือไม่?")
-                            if st.button("🔥 ยืนยันลบ", key=f"btn_del_menu_{item_id}", type="primary", use_container_width=True):
+                            if st.button(" ยืนยันลบ", key=f"btn_del_menu_{item_id}", type="primary", use_container_width=True):
                                 try:
                                     conn_del = sqlite3.connect(DB_NAME)
                                     c_del = conn_del.cursor()
@@ -2339,7 +2339,7 @@ if is_admin_mode:
     render_app_footer()
 
 # ==============================================================================
-# 🟢 ฝั่งลูกค้าสั่งอาหารที่โต๊ะ (Customer Menu & Ordering View)
+#  ฝั่งลูกค้าสั่งอาหารที่โต๊ะ (Customer Menu & Ordering View)
 # ==============================================================================
 # ทำงานเมื่อลูกค้าสแกน QR Code เข้ามา เช่น https://domain/?table=1
 # หน้าที่หลัก:
@@ -2368,7 +2368,7 @@ else:
                  alt="โลโก้ฟ้าใสตำนัว" />
         </div>'''
     else:
-        logo_html = '<div style="text-align: center; font-size: 55px; margin-bottom: 4px;">🌶️</div>'
+        logo_html = '<div style="text-align: center; font-size: 55px; margin-bottom: 4px;"></div>'
 
     # กรณีทางร้านยังไม่ได้เปิดโต๊ะใดๆ (0 โต๊ะเริ่มต้น)
     if not valid_tables:
@@ -2378,17 +2378,17 @@ else:
             ฟ้าใสตำนัว
         </h1>
         <p style="text-align: center; color: #78716c; font-size: 0.95rem; margin: 0 0 10px 0;">
-            ส้มตำ ยำ ลาบ ย่าง แซ่บนัว สดใหม่ทุกครก 🌶️
+            ส้มตำ ยำ ลาบ ย่าง แซ่บนัว สดใหม่ทุกครก 
         </p>
         '''
         st.markdown(header_html, unsafe_allow_html=True)
         st.write("---")
-        st.warning("⚠️ ขณะนี้ทางร้านยังไม่ได้เปิดโต๊ะอาหารในระบบ")
-        st.info("กรุณาติดต่อพนักงานที่เคาน์เตอร์ หรือเปิดโต๊ะในระบบหลังร้านก่อนนะคะ 🌶️")
+        st.warning(" ขณะนี้ทางร้านยังไม่ได้เปิดโต๊ะอาหารในระบบ")
+        st.info("กรุณาติดต่อพนักงานที่เคาน์เตอร์ หรือเปิดโต๊ะในระบบหลังร้านก่อนนะคะ ")
         
         col_adm1, col_adm2, col_adm3 = st.columns([1, 2, 1])
         with col_adm2:
-            if st.button("⚙️ ไปที่ระบบจัดการหลังร้าน (Admin)", type="primary", use_container_width=True):
+            if st.button(" ไปที่ระบบจัดการหลังร้าน (Admin)", type="primary", use_container_width=True):
                 st.query_params["mode"] = "admin"
                 st.rerun()
             st.markdown("<div style='text-align: center; margin-top: 8px;'><a href='/?mode=admin' target='_top' style='color: #ea580c; text-decoration: underline; font-weight: bold; font-size: 14px;'>หรือคลิกที่นี่หากปุ่มไม่ตอบสนอง</a></div>", unsafe_allow_html=True)
@@ -2411,7 +2411,7 @@ else:
     current_table_name = table_names_map.get(current_table_num, f"โต๊ะที่ {current_table_num}")
 
     # ==========================================================================
-    # 👤 ข้อมูลสมาชิกที่เข้าสู่ระบบอยู่ (เก็บใน Session State แยกตามโต๊ะ)
+    #  ข้อมูลสมาชิกที่เข้าสู่ระบบอยู่ (เก็บใน Session State แยกตามโต๊ะ)
     # ==========================================================================
     mem_tbl_key = f"member_phone_table_{current_table_num}"
     mem_obj_key = f"member_obj_{current_table_num}"
@@ -2431,7 +2431,7 @@ else:
             st.session_state[mem_obj_key] = None
 
     # ==========================================================================
-    # 🛒 ฟังก์ชันจัดการตะกร้าสินค้า (Cart Callbacks)
+    #  ฟังก์ชันจัดการตะกร้าสินค้า (Cart Callbacks)
     # ==========================================================================
     # เก็บข้อมูลใน st.session_state.cart เพื่อไม่ให้หายเวลากดเพิ่ม/ลดรายการ
     # โครงสร้าง: { 'ชื่ออาหาร': {'price': ราคา, 'qty': จำนวน, 'note': โน้ตพิเศษ} }
@@ -2516,28 +2516,28 @@ else:
     notif_count = len(notif_orders)
 
     # ==========================================================================
-    # 🛒 เนื้อหาภายในตะกร้าอาหาร (แสดงเมื่อกดไอคอนตะกร้าที่แถบด้านบน)
+    #  เนื้อหาภายในตะกร้าอาหาร (แสดงเมื่อกดไอคอนตะกร้าที่แถบด้านบน)
     # ==========================================================================
     def render_cart_body():
-        st.markdown(f"### 🛒 ตะกร้าอาหาร ({current_table_name})")
+        st.markdown(f"###  ตะกร้าอาหาร ({current_table_name})")
         if total_cart_qty == 0:
-            st.info("ยังไม่มีอาหารในตะกร้า เลือกเมนูด้านล่างแล้วกด ➕ เพิ่ม ได้เลยค่ะ 🌶️")
+            st.info("ยังไม่มีอาหารในตะกร้า เลือกเมนูด้านล่างแล้วกด  เพิ่ม ได้เลยค่ะ ")
             return
         for item_name, data in list(st.session_state.cart.items()):
             subtotal = data['price'] * data['qty']
             with st.container():
                 st.markdown(f"**{item_name}** • <span style='color: #ea580c; font-weight: 600;'>฿{int(data['price'])} / จาน</span>", unsafe_allow_html=True)
 
-                # แถวปุ่มปรับจำนวน: ➖ | ตัวเลขจำนวน | ➕ | 🗑️ ลบ
+                # แถวปุ่มปรับจำนวน:  | ตัวเลขจำนวน |  |  ลบ
                 c_minus, c_num, c_plus, c_del = st.columns([1, 1.2, 1, 1.2])
                 with c_minus:
-                    st.button("➖", key=f"cart_dec_{item_name}", on_click=dec_from_cart_item, args=(item_name,), use_container_width=True)
+                    st.button("", key=f"cart_dec_{item_name}", on_click=dec_from_cart_item, args=(item_name,), use_container_width=True)
                 with c_num:
                     st.markdown(f"<div style='text-align: center; font-size: 1.25rem; font-weight: 700; line-height: 42px; background: #fff7ed; border-radius: 6px; border: 1.5px solid #fdba74; color: #c2410c;'>{data['qty']}</div>", unsafe_allow_html=True)
                 with c_plus:
-                    st.button("➕", key=f"cart_inc_{item_name}", on_click=add_to_cart_item, args=(item_name, data['price']), use_container_width=True)
+                    st.button("", key=f"cart_inc_{item_name}", on_click=add_to_cart_item, args=(item_name, data['price']), use_container_width=True)
                 with c_del:
-                    st.button("🗑️ ลบ", key=f"cart_rem_{item_name}", on_click=del_from_cart_item, args=(item_name,), use_container_width=True)
+                    st.button(" ลบ", key=f"cart_rem_{item_name}", on_click=del_from_cart_item, args=(item_name,), use_container_width=True)
 
                 st.caption(f"รวมย่อย: ฿{int(subtotal):,}")
                 note = st.text_input("โน้ตพิเศษ (เช่น เผ็ดน้อย/ไม่ใส่ชูรส):", value=data['note'], key=f"cart_note_{item_name}", placeholder="ระบุความต้องการ...")
@@ -2558,7 +2558,7 @@ else:
             max_sets = min(max_sets_by_pts, max_sets_by_bill)
 
             if max_sets >= 1:
-                st.markdown("##### 🎁 ใช้คะแนนสะสมแลกส่วนลด")
+                st.markdown("#####  ใช้คะแนนสะสมแลกส่วนลด")
                 st.caption(f"แต้มสะสมที่คุณมี: **{m_pts:,}** คะแนน (แลกได้ชุดละ 10 คะแนน = 25 บาท)")
                 redeem_options = [s * 10 for s in range(max_sets + 1)]
                 sel_pts_to_use = st.selectbox(
@@ -2570,9 +2570,9 @@ else:
                 points_used_val = sel_pts_to_use
                 discount_val = (sel_pts_to_use // 10) * 25
             elif m_pts > 0:
-                st.caption(f"⭐ คุณมีคะแนนสะสม **{m_pts}** คะแนน (สะสมครบ 10 คะแนนเพื่อแลกส่วนลด 25 บาท)")
+                st.caption(f" คุณมีคะแนนสะสม **{m_pts}** คะแนน (สะสมครบ 10 คะแนนเพื่อแลกส่วนลด 25 บาท)")
         else:
-            st.caption("💎 สมัครสมาชิก / เข้าสู่ระบบ ที่แถบด้านบน เพื่อสะสมแต้มและแลกส่วนลดได้ค่ะ")
+            st.caption(" สมัครสมาชิก / เข้าสู่ระบบ ที่แถบด้านบน เพื่อสะสมแต้มและแลกส่วนลดได้ค่ะ")
 
         net_cart_sum = max(0, total_cart_sum - discount_val)
         points_to_earn = int(net_cart_sum // 100)
@@ -2584,9 +2584,9 @@ else:
         st.markdown(f"#### ยอดชำระสุทธิ: <span style='color: #ea580c;'>฿{int(net_cart_sum):,}</span>", unsafe_allow_html=True)
 
         if current_member:
-            st.caption(f"✨ เมื่อชำระบิลนี้ คุณจะได้รับแต้มสะสมเพิ่ม: **+{points_to_earn}** คะแนน (ทุก 100 บาท = 1 คะแนน)")
+            st.caption(f" เมื่อชำระบิลนี้ คุณจะได้รับแต้มสะสมเพิ่ม: **+{points_to_earn}** คะแนน (ทุก 100 บาท = 1 คะแนน)")
 
-        if st.button("🚀 ยืนยันส่งออเดอร์เข้าครัว", type="primary", use_container_width=True):
+        if st.button(" ยืนยันส่งออเดอร์เข้าครัว", type="primary", use_container_width=True):
             order_time_th = get_thai_now().strftime('%Y-%m-%d %H:%M:%S')
             m_phone_to_save = current_member['phone'] if current_member else None
             c.execute("""
@@ -2599,14 +2599,14 @@ else:
             c.execute("UPDATE tables SET status = 'busy' WHERE table_number = ?", (current_table_num,))
             conn.commit()
             st.session_state.cart = {}
-            st.toast(f"🎉 ส่งออเดอร์ #{new_order_id} เข้าครัวเรียบร้อยแล้วค่ะ!", icon="✅")
+            st.toast(f" ส่งออเดอร์ #{new_order_id} เข้าครัวเรียบร้อยแล้วค่ะ!", icon="")
             st.rerun()
 
     # ==========================================================================
-    # 🔔 เนื้อหาภายในปุ่มแจ้งเตือน (สถานะอาหารของโต๊ะนี้ แสดงแบบละเอียดและเรียลไทม์)
+    #  เนื้อหาภายในปุ่มแจ้งเตือน (สถานะอาหารของโต๊ะนี้ แสดงแบบละเอียดและเรียลไทม์)
     # ==========================================================================
     def render_notif_body():
-        st.markdown(f"### 🔔 ติดตามสถานะอาหาร ({current_table_name})")
+        st.markdown(f"###  ติดตามสถานะอาหาร ({current_table_name})")
         conn_trk = sqlite3.connect(DB_NAME)
         c_trk = conn_trk.cursor()
         c_trk.execute("""
@@ -2618,16 +2618,16 @@ else:
         cur_orders = c_trk.fetchall()
 
         if not cur_orders:
-            st.info("ยังไม่มีรายการอาหารที่สั่งในขณะนี้ค่ะ สามารถเลือกเมนูแล้วสั่งเข้าครัวได้เลยนะคะ 🌶️")
+            st.info("ยังไม่มีรายการอาหารที่สั่งในขณะนี้ค่ะ สามารถเลือกเมนูแล้วสั่งเข้าครัวได้เลยนะคะ ")
             conn_trk.close()
             return
 
         st_map = {
-            'pending': ('⏳ รอร้านรับออเดอร์', 'orange', 0.25, 'กำลังส่งออเดอร์เข้าจอครัว...'),
-            'accepted': ('🍳 ครัวกำลังปรุงอาหาร', 'blue', 0.50, 'แม่ครัวกำลังตั้งกระทะ ปรุงสดใหม่ค่ะ'),
-            'cooked': ('🍲 ปรุงเสร็จ กำลังทยอยเสิร์ฟ', 'purple', 0.75, 'อาหารปรุงเสร็จแล้ว พนักงานกำลังยกไปเสิร์ฟค่ะ'),
-            'served': ('🍽️ เสิร์ฟถึงโต๊ะครบแล้ว', 'green', 1.0, 'เสิร์ฟครบทุกเมนูแล้ว ทานให้อร่อยแซ่บนัวนะคะ!'),
-            'paid': ('✅ เช็คบิลเรียบร้อยแล้ว', 'gray', 1.0, 'ขอบคุณที่มาอุดหนุนฟ้าใสตำนัวนะคะ 🙏')
+            'pending': (' รอร้านรับออเดอร์', 'orange', 0.25, 'กำลังส่งออเดอร์เข้าจอครัว...'),
+            'accepted': (' ครัวกำลังปรุงอาหาร', 'blue', 0.50, 'แม่ครัวกำลังตั้งกระทะ ปรุงสดใหม่ค่ะ'),
+            'cooked': (' ปรุงเสร็จ กำลังทยอยเสิร์ฟ', 'purple', 0.75, 'อาหารปรุงเสร็จแล้ว พนักงานกำลังยกไปเสิร์ฟค่ะ'),
+            'served': (' เสิร์ฟถึงโต๊ะครบแล้ว', 'green', 1.0, 'เสิร์ฟครบทุกเมนูแล้ว ทานให้อร่อยแซ่บนัวนะคะ!'),
+            'paid': (' เช็คบิลเรียบร้อยแล้ว', 'gray', 1.0, 'ขอบคุณที่มาอุดหนุนฟ้าใสตำนัวนะคะ ')
         }
 
         for oid, status, total, otime in cur_orders:
@@ -2645,7 +2645,7 @@ else:
                 label, color, _, desc_status = st_map['served']
             elif served_it > 0:
                 prog_val = 0.5 + 0.4 * (served_it / total_it)
-                label, color, _, desc_status = (f'🍲 กำลังทยอยเสิร์ฟ ({served_it}/{total_it})', 'purple', prog_val, 'พนักงานกำลังยกอาหารมาเสิร์ฟที่โต๊ะค่ะ')
+                label, color, _, desc_status = (f' กำลังทยอยเสิร์ฟ ({served_it}/{total_it})', 'purple', prog_val, 'พนักงานกำลังยกอาหารมาเสิร์ฟที่โต๊ะค่ะ')
             elif status == 'cooked':
                 prog_val = 0.65
                 label, color, _, desc_status = st_map['cooked']
@@ -2660,55 +2660,55 @@ else:
                 c_oh1, c_oh2 = st.columns([2.5, 1])
                 with c_oh1:
                     st.markdown(f"**ออเดอร์ #{oid}** — <span style='font-size: 0.95rem; font-weight: bold;'>:{color}[{label}]</span>", unsafe_allow_html=True)
-                    st.caption(f"⚡ {desc_status} • สั่งเมื่อ {otime}")
+                    st.caption(f" {desc_status} • สั่งเมื่อ {otime}")
                 with c_oh2:
                     st.markdown(f"<div style='text-align: right; font-weight: bold; font-size: 1.05rem; color: #ea580c;'>฿{int(total):,}</div>", unsafe_allow_html=True)
                 
                 st.progress(prog_val)
                 
-                with st.expander("🔍 ดูรายการอาหาร & สถานะแต่ละจาน", expanded=(status != 'paid')):
+                with st.expander(" ดูรายการอาหาร & สถานะแต่ละจาน", expanded=(status != 'paid')):
                     for iname, iqty, inote, ist in order_items_trk:
                         note_text = f" *(โน้ต: {inote})*" if inote else ""
                         if ist == 'served':
-                            st_badge = ":green[**[✅ เสิร์ฟแล้ว]**]"
+                            st_badge = ":green[**[ เสิร์ฟแล้ว]**]"
                         elif ist == 'cooked':
-                            st_badge = ":purple[**[🍳 ปรุงเสร็จแล้ว]**]"
+                            st_badge = ":purple[**[ ปรุงเสร็จแล้ว]**]"
                         else:
-                            st_badge = ":orange[**[⏳ กำลังปรุง]**]"
+                            st_badge = ":orange[**[ กำลังปรุง]**]"
                         st.markdown(f"• **{iname}** x{iqty}{note_text} — {st_badge}")
                 
                 if status != 'paid':
-                    with st.expander("📲 สแกน QR ชำระเงิน (PromptPay / ธนาคาร)", expanded=(status == 'served')):
+                    with st.expander(" สแกน QR ชำระเงิน (PromptPay / ธนาคาร)", expanded=(status == 'served')):
                         p_img = "static/payment.jpg" if os.path.exists("static/payment.jpg") else "static/img/payment.jpg"
                         if os.path.exists(p_img):
                             st.image(p_img, caption=f"สแกนชำระเงินยอด ฿{int(total):,} (บิล #{oid})", width=200)
-                            st.caption("💡 เมื่อสแกนชำระเงินเรียบร้อยแล้ว แจ้งพนักงานเพื่อเช็คบิลได้เลยนะคะ 🙏")
+                            st.caption(" เมื่อสแกนชำระเงินเรียบร้อยแล้ว แจ้งพนักงานเพื่อเช็คบิลได้เลยนะคะ ")
         conn_trk.close()
 
     # ==========================================================================
-    # 👤 เนื้อหาภายในปุ่มสมัครสมาชิก / เข้าสู่ระบบ
+    #  เนื้อหาภายในปุ่มสมัครสมาชิก / เข้าสู่ระบบ
     # ==========================================================================
     def render_member_body():
         if current_member:
-            st.markdown(f"### 👤 คุณ{current_member['first_name']} {current_member['last_name']}")
-            st.markdown(f"📱 เบอร์โทร: **{current_member['phone']}**")
-            st.markdown(f"⭐ คะแนนสะสม: <span style='color: #ea580c; font-weight: 800; font-size: 1.2rem;'>{current_member['points']:,}</span> คะแนน", unsafe_allow_html=True)
+            st.markdown(f"###  คุณ{current_member['first_name']} {current_member['last_name']}")
+            st.markdown(f" เบอร์โทร: **{current_member['phone']}**")
+            st.markdown(f" คะแนนสะสม: <span style='color: #ea580c; font-weight: 800; font-size: 1.2rem;'>{current_member['points']:,}</span> คะแนน", unsafe_allow_html=True)
             if current_member['points'] >= 10:
-                st.caption(f"🎁 ใช้คะแนนแลกส่วนลดได้สูงสุด ฿{(current_member['points'] // 10) * 25:,} (เลือกใช้ได้ในตะกร้าอาหาร)")
+                st.caption(f" ใช้คะแนนแลกส่วนลดได้สูงสุด ฿{(current_member['points'] // 10) * 25:,} (เลือกใช้ได้ในตะกร้าอาหาร)")
             else:
-                st.caption(f"💡 สะสมเพิ่มอีก {10 - current_member['points']} คะแนน เพื่อแลกส่วนลด 25 บาท")
-            if st.button("🚪 ออกจากระบบสมาชิก", key=f"btn_mem_logout_{current_table_num}", use_container_width=True):
+                st.caption(f" สะสมเพิ่มอีก {10 - current_member['points']} คะแนน เพื่อแลกส่วนลด 25 บาท")
+            if st.button(" ออกจากระบบสมาชิก", key=f"btn_mem_logout_{current_table_num}", use_container_width=True):
                 st.session_state[mem_obj_key] = None
                 st.session_state[mem_tbl_key] = ""
                 st.rerun()
             return
 
         st.caption("สะสมแต้มทุก 100 บาท = 1 คะแนน • แลก 10 คะแนน = ส่วนลด 25 บาท")
-        tab_login, tab_reg = st.tabs(["🔑 เข้าสู่ระบบ", "📝 สมัครสมาชิก"])
+        tab_login, tab_reg = st.tabs([" เข้าสู่ระบบ", " สมัครสมาชิก"])
         with tab_login:
             with st.form(f"form_mem_login_{current_table_num}"):
                 lg_phone = st.text_input("หมายเลขโทรศัพท์:", placeholder="เช่น 0812345678")
-                if st.form_submit_button("🔑 เข้าสู่ระบบ", type="primary", use_container_width=True):
+                if st.form_submit_button(" เข้าสู่ระบบ", type="primary", use_container_width=True):
                     lg_clean = lg_phone.strip().replace("-", "").replace(" ", "")
                     conn_lg = sqlite3.connect(DB_NAME)
                     c_lg = conn_lg.cursor()
@@ -2722,14 +2722,14 @@ else:
                     else:
                         st.session_state[mem_obj_key] = {'id': lg_row[0], 'first_name': lg_row[1], 'last_name': lg_row[2], 'phone': lg_row[3], 'points': lg_row[4]}
                         st.session_state[mem_tbl_key] = lg_clean
-                        st.toast(f"ยินดีต้อนรับคุณ{lg_row[1]} ค่ะ! ⭐ {lg_row[4]:,} คะแนน", icon="👤")
+                        st.toast(f"ยินดีต้อนรับคุณ{lg_row[1]} ค่ะ!  {lg_row[4]:,} คะแนน", icon="")
                         st.rerun()
         with tab_reg:
             with st.form(f"form_mem_reg_{current_table_num}"):
                 rg_fname = st.text_input("ชื่อ:", placeholder="ระบุชื่อจริง")
                 rg_lname = st.text_input("นามสกุล:", placeholder="ระบุนามสกุล")
                 rg_phone = st.text_input("หมายเลขโทรศัพท์:", placeholder="เช่น 0812345678")
-                if st.form_submit_button("✨ ยืนยันสมัครสมาชิก", type="primary", use_container_width=True):
+                if st.form_submit_button(" ยืนยันสมัครสมาชิก", type="primary", use_container_width=True):
                     rg_clean = rg_phone.strip().replace("-", "").replace(" ", "")
                     if not rg_fname.strip() or not rg_lname.strip() or not rg_clean:
                         st.error("กรุณากรอกชื่อ นามสกุล และหมายเลขโทรศัพท์ให้ครบถ้วนค่ะ")
@@ -2753,16 +2753,16 @@ else:
                             conn_rg.close()
                             st.session_state[mem_obj_key] = {'id': new_mid, 'first_name': rg_fname.strip(), 'last_name': rg_lname.strip(), 'phone': rg_clean, 'points': 0}
                             st.session_state[mem_tbl_key] = rg_clean
-                            st.toast(f"🎉 สมัครสมาชิกสำเร็จ! ยินดีต้อนรับคุณ{rg_fname.strip()} ค่ะ", icon="✨")
+                            st.toast(f" สมัครสมาชิกสำเร็จ! ยินดีต้อนรับคุณ{rg_fname.strip()} ค่ะ", icon="")
                             st.rerun()
 
     # ==========================================================================
-    # 🧭 แถบเมนูด้านบนของหน้าโต๊ะลูกค้า (Header Bar สไตล์ร้านค้าออนไลน์)
+    #  แถบเมนูด้านบนของหน้าโต๊ะลูกค้า (Header Bar สไตล์ร้านค้าออนไลน์)
     # ==========================================================================
-    # แถวบน : ติดตามเราบน Facebook / Instagram / LINE | 🔔 แจ้งเตือน | 👤 สมัครสมาชิก / เข้าสู่ระบบ
-    # แถวกลาง: โลโก้ร้าน | ช่องค้นหาเมนูอาหาร | 🛒 ตะกร้า (มีตัวเลขจำนวนจานเล็กๆ)
+    # แถวบน : ติดตามเราบน Facebook / Instagram / LINE |  แจ้งเตือน |  สมัครสมาชิก / เข้าสู่ระบบ
+    # แถวกลาง: โลโก้ร้าน | ช่องค้นหาเมนูอาหาร |  ตะกร้า (มีตัวเลขจำนวนจานเล็กๆ)
     # แถวล่าง: วัน เดือน ปี (พ.ศ.) | ชื่อโต๊ะ | ปุ่มเปลี่ยนโต๊ะ
-    # 👉 แก้ไขลิงก์โซเชียลของร้านได้ที่ตัวแปร SOCIAL_LINKS ด้านล่างนี้
+    #  แก้ไขลิงก์โซเชียลของร้านได้ที่ตัวแปร SOCIAL_LINKS ด้านล่างนี้
     SOCIAL_LINKS = {
         "facebook": "https://www.facebook.com/",
         "instagram": "https://www.instagram.com/",
@@ -2854,7 +2854,7 @@ else:
     if logo_b64:
         hdr_logo_img = f'<img src="data:image/png;base64,{logo_b64}" alt="โลโก้ฟ้าใสตำนัว" />'
     else:
-        hdr_logo_img = '<span style="font-size: 40px;">🌶️</span>'
+        hdr_logo_img = '<span style="font-size: 40px;"></span>'
 
     with st.container(key="cust_header"):
         # ---------- แถวบน: โซเชียล | แจ้งเตือน | สมัครสมาชิก / เข้าสู่ระบบ ----------
@@ -2870,15 +2870,15 @@ else:
             """, unsafe_allow_html=True)
         with r1_notif:
             with st.container(key="notif_wrap"):
-                with st.popover("🔔 แจ้งเตือน", use_container_width=True):
+                with st.popover(" แจ้งเตือน", use_container_width=True):
                     render_notif_body()
                 if notif_count > 0:
                     st.markdown(f'<span class="hdr-badge">{notif_count if notif_count < 10 else "9+"}</span>', unsafe_allow_html=True)
         with r1_member:
             if current_member:
-                member_label = f"👤 คุณ{current_member['first_name']} ⭐{current_member['points']:,}"
+                member_label = f" คุณ{current_member['first_name']} {current_member['points']:,}"
             else:
-                member_label = "👤 สมัครสมาชิก / เข้าสู่ระบบ"
+                member_label = " สมัครสมาชิก / เข้าสู่ระบบ"
             with st.popover(member_label, use_container_width=True):
                 render_member_body()
 
@@ -2897,13 +2897,13 @@ else:
         with r2_search:
             search_kw = st.text_input(
                 "ค้นหาเมนูอาหาร",
-                placeholder="🔍 ค้นหาเมนู เช่น ตำปู, ลาบหมู, คอหมูย่าง",
+                placeholder=" ค้นหาเมนู เช่น ตำปู, ลาบหมู, คอหมูย่าง",
                 key="cust_search_kw",
                 label_visibility="collapsed"
             ).strip()
         with r2_cart:
             with st.container(key="cart_wrap"):
-                with st.popover("🛒", use_container_width=True):
+                with st.popover("", use_container_width=True):
                     render_cart_body()
                 if total_cart_qty > 0:
                     st.markdown(f'<span class="hdr-badge">{total_cart_qty if total_cart_qty < 100 else "99+"}</span>', unsafe_allow_html=True)
@@ -2911,37 +2911,37 @@ else:
         # ---------- แถวล่าง: วัน เดือน ปี | ชื่อโต๊ะ | เปลี่ยนโต๊ะ ----------
         r3_date, r3_table, r3_switch = st.columns([3, 1.3, 1.5])
         with r3_date:
-            st.markdown(f'<div class="hdr-date">📅 {thai_date_str}</div>', unsafe_allow_html=True)
+            st.markdown(f'<div class="hdr-date"> {thai_date_str}</div>', unsafe_allow_html=True)
         with r3_table:
-            st.markdown(f'<div style="text-align: right;"><span class="hdr-table">🪑 {current_table_name}</span></div>', unsafe_allow_html=True)
+            st.markdown(f'<div style="text-align: right;"><span class="hdr-table"> {current_table_name}</span></div>', unsafe_allow_html=True)
         with r3_switch:
             # ปุ่มสลับ / เปลี่ยนโต๊ะอาหาร (สำหรับกรณีทดสอบโต๊ะอื่นๆ หรือลูกค้าเดินเข้าร้านเลือกโต๊ะเอง)
-            with st.popover("🔄 เปลี่ยนโต๊ะ", use_container_width=True):
-                st.markdown("##### 🪑 เลือกโต๊ะอาหารที่ท่านนั่ง")
+            with st.popover(" เปลี่ยนโต๊ะ", use_container_width=True):
+                st.markdown("#####  เลือกโต๊ะอาหารที่ท่านนั่ง")
                 st.caption("สามารถเลือกหมายเลขโต๊ะเพื่อสั่งอาหารของโต๊ะนั้นๆ ได้เลยค่ะ")
                 table_select_options = [f"โต๊ะที่ {num} ({table_names_map.get(num, f'โต๊ะที่ {num}')})" for num in valid_tables]
                 curr_idx = valid_tables.index(current_table_num) if current_table_num in valid_tables else 0
                 sel_new_t = st.selectbox("เลือกโต๊ะ:", table_select_options, index=curr_idx, key="sb_switch_table")
-                if st.button("✨ ยืนยันเปลี่ยนโต๊ะ", type="primary", use_container_width=True, key="btn_confirm_switch_t"):
+                if st.button(" ยืนยันเปลี่ยนโต๊ะ", type="primary", use_container_width=True, key="btn_confirm_switch_t"):
                     chosen_num = int(sel_new_t.split(" ")[1])
                     st.query_params["table"] = chosen_num
                     st.rerun()
 
     # ==========================================================================
-    # 🍽️ เลือกหมวดหมู่อาหาร / ผลการค้นหา
+    #  เลือกหมวดหมู่อาหาร / ผลการค้นหา
     # ==========================================================================
-    st.markdown("<p style='text-align: center; font-weight: 600; color: #44403c; margin-bottom: 4px; font-size: 1.05rem;'>🍽️ เลือกหมวดหมู่อาหาร</p>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; font-weight: 600; color: #44403c; margin-bottom: 4px; font-size: 1.05rem;'> เลือกหมวดหมู่อาหาร</p>", unsafe_allow_html=True)
     default_cat = categories[0] if categories else "ทั้งหมด"
     sel_cat = st.pills("เลือกหมวดหมู่อาหาร:", categories + ["ทั้งหมด"], default=default_cat, key="pills_cat_sel", label_visibility="collapsed")
     if not sel_cat:
         sel_cat = default_cat
 
-    # แสดงรายการเมนูอาหาร แถวการ์ดแนวนอน (กดได้ทุกรายการ พร้อม Stepper ➖/➕ บนการ์ดโดยตรง)
+    # แสดงรายการเมนูอาหาร แถวการ์ดแนวนอน (กดได้ทุกรายการ พร้อม Stepper / บนการ์ดโดยตรง)
     # หากลูกค้าพิมพ์คำค้นหา จะค้นจากทุกหมวดหมู่ (ทั้งชื่อเมนูและคำอธิบาย)
     if search_kw:
         kw_low = search_kw.lower()
         filtered_menus = [m for m in all_menus if kw_low in (m[1] or "").lower() or kw_low in (m[5] or "").lower()]
-        st.markdown(f"<div style='color: #57534e; margin-bottom: 8px;'>🔍 ผลการค้นหา <b>\"{search_kw}\"</b> พบ <b style='color: #ea580c;'>{len(filtered_menus)}</b> รายการ (ค้นหาจากทุกหมวดหมู่)</div>", unsafe_allow_html=True)
+        st.markdown(f"<div style='color: #57534e; margin-bottom: 8px;'> ผลการค้นหา <b>\"{search_kw}\"</b> พบ <b style='color: #ea580c;'>{len(filtered_menus)}</b> รายการ (ค้นหาจากทุกหมวดหมู่)</div>", unsafe_allow_html=True)
         if not filtered_menus:
             st.warning("ไม่พบเมนูที่ค้นหา ลองพิมพ์คำอื่น หรือเลือกจากหมวดหมู่ด้านบนค่ะ")
     else:
@@ -2957,7 +2957,7 @@ else:
                 if img and (img.startswith("http") or os.path.exists(img)):
                     st.image(img, width=112)
                 else:
-                    st.markdown("<div class='no-img-box'>🍲</div>", unsafe_allow_html=True)
+                    st.markdown("<div class='no-img-box'></div>", unsafe_allow_html=True)
                 
                 # ชื่ออาหาร & หมวดหมู่
                 st.markdown(f"<div style='font-size: 0.92rem; font-weight: 700; color: #1c1917; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px;' title='{name}'>{name}</div>", unsafe_allow_html=True)
@@ -2968,15 +2968,15 @@ else:
                 # ปุ่ม เพิ่ม / ปรับจำนวน (Stepper)
                 cur_qty = st.session_state.cart.get(name, {}).get('qty', 0)
                 if cur_qty == 0:
-                    st.button("➕ เพิ่ม", key=f"btn_add_menu_{m_id}", on_click=add_to_cart_item, args=(name, price), width=112, type="primary")
+                    st.button(" เพิ่ม", key=f"btn_add_menu_{m_id}", on_click=add_to_cart_item, args=(name, price), width=112, type="primary")
                 else:
                     c_m, c_q, c_p = st.columns([1, 1.2, 1], gap="small")
                     with c_m:
-                        st.button("➖", key=f"btn_dec_card_{m_id}", on_click=dec_from_cart_item, args=(name,), use_container_width=True)
+                        st.button("", key=f"btn_dec_card_{m_id}", on_click=dec_from_cart_item, args=(name,), use_container_width=True)
                     with c_q:
                         st.markdown(f"<div style='text-align: center; font-weight: 800; line-height: 34px; color: #ffffff; font-size: 0.95rem; background: linear-gradient(135deg, #ea580c, #dc2626); border-radius: 8px; box-shadow: 0 2px 6px rgba(234, 88, 12, 0.30);'>{cur_qty}</div>", unsafe_allow_html=True)
                     with c_p:
-                        st.button("➕", key=f"btn_inc_card_{m_id}", on_click=add_to_cart_item, args=(name, price), use_container_width=True, type="primary")
+                        st.button("", key=f"btn_inc_card_{m_id}", on_click=add_to_cart_item, args=(name, price), use_container_width=True, type="primary")
 
     conn.close()
 

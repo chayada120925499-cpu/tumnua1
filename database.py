@@ -1,5 +1,5 @@
 # ==============================================================================
-# 🗄️ การจัดการฐานข้อมูล SQLite (Database Setup & Migrations)
+# การจัดการฐานข้อมูล SQLite (Database Setup & Migrations)
 # ==============================================================================
 import sqlite3
 import hashlib
@@ -272,7 +272,7 @@ def init_db():
         c.execute('DELETE FROM menu_items')
         c.executemany('INSERT OR REPLACE INTO menu_items (name, category, price, cost, image, description) VALUES (?, ?, ?, ?, ?, ?)', fahsai_menu)
 
-    # 👥 ข้อมูลสมาชิกจำลองเริ่มต้น 10 คน (ถ้ายังไม่มีสมาชิกในระบบ)
+    # ข้อมูลสมาชิกจำลองเริ่มต้น 10 คน (ถ้ายังไม่มีสมาชิกในระบบ)
     c.execute("SELECT COUNT(*) FROM members")
     if c.fetchone()[0] == 0:
         sample_members = [
@@ -346,7 +346,7 @@ def init_db():
             """, (def_hash, def_salt, existing_admin[0]))
         c.execute("UPDATE admin_users SET email = 'owner@fahsaitumnua.com' WHERE email IS NULL OR email = ''")
 
-    # 🪑 สร้างโต๊ะอาหารเริ่มต้น 10 โต๊ะ (หากยังไม่มีโต๊ะในระบบ)
+    # สร้างโต๊ะอาหารเริ่มต้น 10 โต๊ะ (หากยังไม่มีโต๊ะในระบบ)
     c.execute("SELECT COUNT(*) FROM tables")
     if c.fetchone()[0] == 0:
         default_tables = [(i, f"โต๊ะที่ {i}", "available") for i in range(1, 11)]

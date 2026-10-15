@@ -1,5 +1,5 @@
 # ==============================================================================
-# ⚙️ ค่าคงที่และการตั้งค่าระบบ (Configuration & Theme)
+# ค่าคงที่และการตั้งค่าระบบ (Configuration & Theme)
 # ==============================================================================
 import os
 import base64
@@ -176,8 +176,8 @@ div[data-testid="stVerticalBlockBorderWrapper"]:hover {
     box-shadow: 0 6px 20px rgba(234, 88, 12, 0.12) !important;
 }
 
-/* 📱 สไตล์การ์ดอาหาร: Responsive Grid ทุกแถวและทุกคอลัมน์ขนาดเท่ากันเป๊ะ (แถวสุดท้ายไม่ขยายเกินแถวด้านบน) */
-/* 📱 สไตล์การ์ดอาหาร: Responsive Flexbox Grid ทุกแถวและทุกคอลัมน์ขนาดเท่ากันเป๊ะ แถวสุดท้ายไม่ขยายเกินแถวด้านบน */
+/* สไตล์การ์ดอาหาร: Responsive Grid ทุกแถวและทุกคอลัมน์ขนาดเท่ากันเป๊ะ (แถวสุดท้ายไม่ขยายเกินแถวด้านบน) */
+/* สไตล์การ์ดอาหาร: Responsive Flexbox Grid ทุกแถวและทุกคอลัมน์ขนาดเท่ากันเป๊ะ แถวสุดท้ายไม่ขยายเกินแถวด้านบน */
 div[data-testid="stLayoutWrapper"]:has(.st-key-menu_grid_flex),
 div.st-key-menu_grid_flex,
 [data-testid="stHorizontalBlock"].st-key-menu_grid_flex,
@@ -205,7 +205,7 @@ div.st-key-menu_grid_flex[data-testid="stHorizontalBlock"] > div {
     min-width: 0 !important;
 }
 
-/* 🖥️ หน้าจอใหญ่ Desktop (> 1024px): 6 คอลัมน์ (5 gaps * 12px = 60px) */
+/* หน้าจอใหญ่ Desktop (> 1024px): 6 คอลัมน์ (5 gaps * 12px = 60px) */
 @media (min-width: 1025px) {
     [data-testid="stHorizontalBlock"].st-key-menu_grid_flex,
     div.st-key-menu_grid_flex[data-testid="stHorizontalBlock"] {
@@ -222,7 +222,7 @@ div.st-key-menu_grid_flex[data-testid="stHorizontalBlock"] > div {
     }
 }
 
-/* 💻 หน้าจอ Tablet แนวนอน / โน้ตบุ๊กเล็ก (769px - 1024px): 4 คอลัมน์ (3 gaps * 12px = 36px) */
+/* หน้าจอ Tablet แนวนอน / โน้ตบุ๊กเล็ก (769px - 1024px): 4 คอลัมน์ (3 gaps * 12px = 36px) */
 @media (min-width: 769px) and (max-width: 1024px) {
     [data-testid="stHorizontalBlock"].st-key-menu_grid_flex,
     div.st-key-menu_grid_flex[data-testid="stHorizontalBlock"] {
@@ -239,7 +239,7 @@ div.st-key-menu_grid_flex[data-testid="stHorizontalBlock"] > div {
     }
 }
 
-/* 📱 หน้าจอ Tablet แนวตั้ง / มือถือจอใหญ่ (481px - 768px): 3 คอลัมน์ (2 gaps * 10px = 20px) */
+/* หน้าจอ Tablet แนวตั้ง / มือถือจอใหญ่ (481px - 768px): 3 คอลัมน์ (2 gaps * 10px = 20px) */
 @media (min-width: 481px) and (max-width: 768px) {
     [data-testid="stHorizontalBlock"].st-key-menu_grid_flex,
     div.st-key-menu_grid_flex[data-testid="stHorizontalBlock"] {
@@ -256,7 +256,7 @@ div.st-key-menu_grid_flex[data-testid="stHorizontalBlock"] > div {
     }
 }
 
-/* 📱 หน้าจอมือถือทั่วไป (<= 480px): 2 คอลัมน์ (1 gap * 8px = 8px) */
+/* หน้าจอมือถือทั่วไป (<= 480px): 2 คอลัมน์ (1 gap * 8px = 8px) */
 @media (max-width: 480px) {
     [data-testid="stHorizontalBlock"].st-key-menu_grid_flex,
     div.st-key-menu_grid_flex[data-testid="stHorizontalBlock"] {
@@ -324,7 +324,7 @@ div[class*="st-key-fcard_"] [data-testid="stElementContainer"],
     text-align: center !important;
 }
 
-/* 🖼️ บังคับ wrapper ทุกระดับชั้นของรูปภาพ (stFullScreenFrame, div ชั้นใน, stImage, stImageContainer) จัดวางกึ่งกลาง */
+/* บังคับ wrapper ทุกระดับชั้นของรูปภาพ (stFullScreenFrame, div ชั้นใน, stImage, stImageContainer) จัดวางกึ่งกลาง */
 div[class*="st-key-fcard_"] [data-testid="stFullScreenFrame"],
 .st-key-menu_grid_flex div[data-testid="stVerticalBlock"]:has(.fcard-marker) [data-testid="stFullScreenFrame"],
 div[class*="st-key-fcard_"] [data-testid="stFullScreenFrame"] > div,
@@ -346,7 +346,7 @@ div[class*="st-key-fcard_"] [data-testid="stImageContainer"],
     text-align: center !important;
 }
 
-/* 🖼️ บังคับรูปภาพ <img> ขยายเต็มและจัดกึ่งกลาง พร้อมครอบภาพ (object-fit: cover) */
+/* บังคับรูปภาพ <img> ขยายเต็มและจัดกึ่งกลาง พร้อมครอบภาพ (object-fit: cover) */
 div[class*="st-key-fcard_"] img,
 .st-key-menu_grid_flex img {
     width: 100% !important;
@@ -500,7 +500,7 @@ img {
     object-fit: cover !important;
 }
 
-/* 🔶 ปุ่มเลือกหมวดหมู่อาหาร ให้เป็นปุ่มทรงเหลี่ยมชัดเจน สีสันสดใส */
+/* ปุ่มเลือกหมวดหมู่อาหาร ให้เป็นปุ่มทรงเหลี่ยมชัดเจน สีสันสดใส */
 div[data-testid="stPills"], div[data-testid="stRadio"] {
     display: flex !important;
     justify-content: center !important;
@@ -586,7 +586,7 @@ div[data-testid="stRadio"] label[data-baseweb="radio"][aria-checked="true"] span
     font-weight: 700 !important;
 }
 
-/* 🔖 แถบเมนูแท็บสไตล์ที่คั่นหนังสือ (Bookmark Tabs) ขอบบนมน 2 มุม */
+/* แถบเมนูแท็บสไตล์ที่คั่นหนังสือ (Bookmark Tabs) ขอบบนมน 2 มุม */
 .stTabs [data-baseweb="tab-list"],
 div[data-testid="stTabs"] [data-baseweb="tab-list"],
 div[data-baseweb="tab-list"],
@@ -610,7 +610,7 @@ div[data-testid="stTabs"] hr {
     border: none !important;
 }
 
-/* 🔖 สไตล์ของแท็บทั้งหมด (Unselected) - สี่เหลี่ยมมุมบนมน 2 มุม */
+/* สไตล์ของแท็บทั้งหมด (Unselected) - สี่เหลี่ยมมุมบนมน 2 มุม */
 .stTabs [data-baseweb="tab"],
 .stTabs button[role="tab"],
 div[data-testid="stTabs"] button[role="tab"],
@@ -659,7 +659,7 @@ div[data-testid="stTabs"] button[role="tab"]:hover p {
     color: #ea580c !important;
 }
 
-/* 🌟 สไตล์แท็บที่ถูกเลือก/คลิกใช้งาน (Active / Selected Tab) - แถบสีพื้นหลังเด่นชัด ทรงมุมบนมน 2 มุม */
+/* สไตล์แท็บที่ถูกเลือก/คลิกใช้งาน (Active / Selected Tab) - แถบสีพื้นหลังเด่นชัด ทรงมุมบนมน 2 มุม */
 .stTabs [data-baseweb="tab"][aria-selected="true"],
 .stTabs button[role="tab"][aria-selected="true"],
 .stTabs [aria-selected="true"],
@@ -691,7 +691,7 @@ div[data-testid="stTabs"] button[role="tab"][aria-selected="true"] p {
     font-weight: 700 !important;
 }
 
-/* 🚫 ซ่อน Header, Toolbar, Fork icon, GitHub, Share, MainMenu และ Watermark ทั้งหมดของ Streamlit Cloud */
+/* ซ่อน Header, Toolbar, Fork icon, GitHub, Share, MainMenu และ Watermark ทั้งหมดของ Streamlit Cloud */
 header,
 header[data-testid="stHeader"],
 [data-testid="stHeader"],
