@@ -265,6 +265,81 @@ def render_customer_view():
             st.rerun()
 
     # ==========================================================================
+    # ฟังก์ชันแสดงขั้นตอนการชำระเงินและแนบสลิปแบบเรียบง่าย ไม่ซับซ้อน (2 ขั้นตอนสั้นๆ)
+    # ==========================================================================
+    def render_slip_payment_block(oid, total, slip_img, slip_time, is_main_card=False):
+        p_img = "static/payment.jpg" if os.path.exists("static/payment.jpg") else "static/img/payment.jpg"
+        
+        c_qr, c_slip = st.columns([1.1, 1.4], gap="medium")
+        with c_qr:
+            st.markdown("<div style='background: #fff7ed; border: 1.5px solid #fdba74; border-radius: 8px; padding: 6px; text-align: center;'>", unsafe_allow_html=True)
+            if os.path.exists(p_img):
+                st.image(p_img, use_container_width=True)
+            st.markdown(f"<div style='font-weight: 800; color: #c2410c; font-size: 1.15rem; margin-top: 4px;'>ยอดโอน: ฿{int(total):,}</div>", unsafe_allow_html=True)
+            st.caption(f"บิล #{oid} • พร้อมเพย์ / สแกนผ่านแอปธนาคาร")
+            st.markdown("</div>", unsafe_allow_html=True)
+            
+        with c_slip:
+            is_re_upload = st.session_state.get(f"change_slip_{oid}", False)
+            if slip_img and os.path.exists(slip_img) and not is_re_upload:
+                st.markdown(f"""
+                <div style="background: #f0fdf4; border: 1.5px solid #86efac; border-radius: 8px; padding: 10px; text-align: center; margin-bottom: 8px;">
+                    <div style="color: #15803d; font-weight: bold; font-size: 0.95rem;">แนบสลิปเรียบร้อยแล้ว</div>
+                    <div style="color: #64748b; font-size: 0.8rem; margin-top: 2px;">เวลา: {slip_time or '-'}</div>
+                    <div style="color: #475569; font-size: 0.82rem; margin-top: 4px;">พนักงานกำลังตรวจสอบยอดเงินและเช็คบิลให้ค่ะ</div>
+                </div>
+                """, unsafe_allow_html=True)
+                st.image(slip_img, caption="สลิปที่แนบไว้", width=160)
+                if st.button("เปลี่ยนรูปสลิปใหม่", key=f"btn_re_slip_{oid}_{is_main_card}", use_container_width=True):
+                    st.session_state[f"change_slip_{oid}"] = True
+                    st.rerun()
+            else:
+                st.markdown("**แนบสลิปโอนเงิน (ทำได้ง่ายใน 2 ขั้นตอน):**")
+                st.caption("1. สแกน QR โอนเงินตามยอดด้านซ้าย\n2. แตะเลือกรูปสลิปแล้วกดส่งได้ทันทีค่ะ")
+                upl_slip = st.file_uploader(
+                    "เลือกรูปภาพสลิป",
+                    type=["jpg", "jpeg", "png", "webp"],
+                    key=f"upl_slip_inp_{oid}_{is_main_card}",
+                    label_visibility="collapsed"
+                )
+                if upl_slip is not None:
+                    st.image(upl_slip, caption="ตัวอย่างสลิปที่เลือก", width=140)
+                    if st.button("ยืนยันส่งสลิป", key=f"btn_sub_slip_{oid}_{is_main_card}", type="primary", use_container_width=True):
+                        os.makedirs("static/uploads/slips", exist_ok=True)
+                        ts_int = int(datetime.now().timestamp())
+                        save_p = f"static/uploads/slips/slip_order_{oid}_{ts_int}.jpg"
+                        try:
+                            from PIL import Image
+                            pil_img = Image.open(upl_slip)
+                            if pil_img.mode in ("RGBA", "P"):
+                                pil_img = pil_img.convert("RGB")
+                            max_w = 800
+                            if pil_img.width > max_w:
+                                w_ratio = max_w / float(pil_img.width)
+                                h_size = int(float(pil_img.height) * float(w_ratio))
+                                pil_img = pil_img.resize((max_w, h_size), Image.Resampling.LANCZOS)
+                            pil_img.save(save_p, "JPEG", optimize=True, quality=80)
+                        except Exception:
+                            with open(save_p, "wb") as f_out:
+                                f_out.write(upl_slip.getbuffer())
+                        
+                        time_now_str = get_thai_now().strftime('%Y-%m-%d %H:%M:%S')
+                        conn_up = sqlite3.connect(DB_NAME)
+                        c_up = conn_up.cursor()
+                        c_up.execute("UPDATE orders SET slip_image = ?, slip_uploaded_at = ? WHERE id = ?", (save_p, time_now_str, oid))
+                        conn_up.commit()
+                        conn_up.close()
+                        
+                        if f"change_slip_{oid}" in st.session_state:
+                            del st.session_state[f"change_slip_{oid}"]
+                        st.toast("แนบสลิปโอนเงินเรียบร้อยแล้วค่ะ!")
+                        st.rerun()
+                if is_re_upload:
+                    if st.button("ยกเลิกการเปลี่ยนสลิป", key=f"btn_cancel_re_slip_{oid}_{is_main_card}", use_container_width=True):
+                        del st.session_state[f"change_slip_{oid}"]
+                        st.rerun()
+
+    # ==========================================================================
     # เนื้อหาภายในปุ่มแจ้งเตือน (สถานะอาหารของโต๊ะนี้ แสดงแบบละเอียดและเรียลไทม์)
     # ==========================================================================
     def render_notif_body():
@@ -272,7 +347,7 @@ def render_customer_view():
         conn_trk = sqlite3.connect(DB_NAME)
         c_trk = conn_trk.cursor()
         c_trk.execute("""
-            SELECT id, status, total_price, created_at 
+            SELECT id, status, total_price, created_at, slip_image, slip_uploaded_at 
             FROM orders 
             WHERE table_id = ? AND status != 'archived'
             ORDER BY id DESC LIMIT 5
@@ -292,7 +367,7 @@ def render_customer_view():
             'paid': ('เช็คบิลเรียบร้อยแล้ว', 'gray', 1.0, 'ขอบคุณที่มาอุดหนุนฟ้าใสตำนัวนะคะ')
         }
 
-        for oid, status, total, otime in cur_orders:
+        for oid, status, total, otime, slip_img, slip_time in cur_orders:
             c_trk.execute("SELECT item_name, quantity, note, COALESCE(status, 'pending') FROM order_items WHERE order_id = ?", (oid,))
             order_items_trk = c_trk.fetchall()
             
@@ -340,11 +415,8 @@ def render_customer_view():
                         st.markdown(f"• **{iname}** x{iqty}{note_text} — {st_badge}")
                 
                 if status != 'paid':
-                    with st.expander("สแกน QR ชำระเงิน (PromptPay / ธนาคาร)", expanded=(status == 'served')):
-                        p_img = "static/payment.jpg" if os.path.exists("static/payment.jpg") else "static/img/payment.jpg"
-                        if os.path.exists(p_img):
-                            st.image(p_img, caption=f"สแกนชำระเงินยอด ฿{int(total):,} (บิล #{oid})", width=200)
-                            st.caption("เมื่อสแกนชำระเงินเรียบร้อยแล้ว แจ้งพนักงานเพื่อเช็คบิลได้เลยนะคะ")
+                    with st.expander("สแกน QR ชำระเงิน & แนบสลิป", expanded=(status == 'served' or bool(slip_img))):
+                        render_slip_payment_block(oid, total, slip_img, slip_time, is_main_card=False)
         conn_trk.close()
 
     # ==========================================================================
@@ -600,6 +672,34 @@ def render_customer_view():
                     chosen_num = int(sel_new_t.split(" ")[1])
                     st.query_params["table"] = chosen_num
                     st.rerun()
+
+    # ==========================================================================
+    # แถบแจ้งเตือนชำระเงินด่วน (แสดงเมื่ออาหารเสิร์ฟครบแล้ว หรือลูกค้าเคยแนบสลิปไว้)
+    # ==========================================================================
+    c.execute("""
+        SELECT id, status, total_price, slip_image, slip_uploaded_at 
+        FROM orders 
+        WHERE table_id = ? AND status != 'paid' AND status != 'archived'
+        ORDER BY id DESC LIMIT 1
+    """, (current_table_num,))
+    cur_active_pay = c.fetchone()
+    
+    if cur_active_pay:
+        cap_id, cap_st, cap_tot, cap_slip, cap_slip_t = cur_active_pay
+        if cap_st == 'served' or cap_slip:
+            with st.container(border=True):
+                p_c1, p_c2 = st.columns([2.5, 1.3], gap="small")
+                with p_c1:
+                    if cap_slip:
+                        st.markdown(f"**บิล #{cap_id}** — <span style='color: #15803d; font-weight: bold;'>แนบสลิปเรียบร้อยแล้ว กำลังรอร้านตรวจยอด</span> (฿{int(cap_tot):,})", unsafe_allow_html=True)
+                        st.caption("พนักงานแคชเชียร์กำลังตรวจยอดเงินและเตรียมเช็คบิลให้ค่ะ")
+                    else:
+                        st.markdown(f"**อาหารเสิร์ฟครบแล้ว (บิล #{cap_id})** — ยอดชำระสุทธิ: <span style='color: #ea580c; font-weight: bold; font-size: 1.15rem;'>฿{int(cap_tot):,}</span>", unsafe_allow_html=True)
+                        st.caption("สามารถสแกน QR โอนเงินและแนบสลิปได้ทันทีค่ะ")
+                with p_c2:
+                    btn_pay_label = "ดูสลิปที่แนบ" if cap_slip else "สแกนจ่าย / แนบสลิป"
+                    with st.popover(btn_pay_label, use_container_width=True):
+                        render_slip_payment_block(cap_id, cap_tot, cap_slip, cap_slip_t, is_main_card=True)
 
     # ==========================================================================
     # เลือกหมวดหมู่อาหาร / ผลการค้นหา
