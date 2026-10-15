@@ -105,6 +105,10 @@ def init_db():
         c.execute("ALTER TABLE orders ADD COLUMN points_earned INTEGER DEFAULT 0")
     if 'member_phone' not in order_cols:
         c.execute("ALTER TABLE orders ADD COLUMN member_phone TEXT DEFAULT NULL")
+    if 'slip_image' not in order_cols:
+        c.execute("ALTER TABLE orders ADD COLUMN slip_image TEXT DEFAULT NULL")
+    if 'slip_uploaded_at' not in order_cols:
+        c.execute("ALTER TABLE orders ADD COLUMN slip_uploaded_at TEXT DEFAULT NULL")
 
     # บันทึกชุดเมนูอาหารทั้งหมดของร้าน "ฟ้าใสตำนัว" (10 หมวดหมู่ 131 เมนูแซ่บ)
     fahsai_menu = [
