@@ -16,28 +16,29 @@ def render_admin_view():
     check_admin_auth()
 
     # 2. เมนูแท็บ 5 ส่วนหลัก
-    tab_tbl, tab_pos, tab_rep, tab_mem, tab_menu = st.tabs([
-        "จัดการโต๊ะอาหาร & เคลียร์โต๊ะ", 
-        "จอครัว & เคาน์เตอร์คิดเงิน", 
-        "รายงานยอดขาย",
-        "ประวัติลูกค้า",
-        "จัดการเมนูอาหาร"
-    ])
+    with st.container(key="admin_main_tabs"):
+        tab_tbl, tab_pos, tab_rep, tab_mem, tab_menu = st.tabs([
+            "จัดการโต๊ะอาหาร & เคลียร์โต๊ะ", 
+            "จอครัว & เคาน์เตอร์คิดเงิน", 
+            "รายงานยอดขาย",
+            "ประวัติลูกค้า",
+            "จัดการเมนูอาหาร"
+        ])
 
-    with tab_tbl:
-        render_table_tab()
+        with tab_tbl:
+            render_table_tab()
 
-    with tab_pos:
-        render_pos_dashboard()
+        with tab_pos:
+            render_pos_dashboard()
 
-    with tab_rep:
-        render_report_tab()
+        with tab_rep:
+            render_report_tab()
 
-    with tab_mem:
-        render_member_tab()
+        with tab_mem:
+            render_member_tab()
 
-    with tab_menu:
-        render_menu_tab()
+        with tab_menu:
+            render_menu_tab()
 
     # Footer ล่างสุด
     render_app_footer()
