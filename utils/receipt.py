@@ -1,5 +1,5 @@
 # ==============================================================================
-# 🧾 ระบบพิมพ์และสร้างใบเสร็จรับเงิน (Receipt & Billing System)
+# ระบบพิมพ์และสร้างใบเสร็จรับเงิน (Receipt & Billing System)
 # ==============================================================================
 import os
 import base64
@@ -41,7 +41,7 @@ def generate_receipt_html(order_id, table_id, items, total_price, order_time, su
         <div class="dashed"></div>
         <div class="text-center" style="margin: 8px 0;">
             <div style="font-size: 13px; font-weight: bold; color: #1e3a8a; margin-bottom: 2px;">
-                📲 สแกน QR เพื่อชำระเงิน
+                สแกน QR เพื่อชำระเงิน
             </div>
             <div style="font-size: 11px; color: #64748b; margin-bottom: 6px;">
                 (PromptPay / สแกนผ่านแอปธนาคาร)
@@ -82,7 +82,7 @@ def generate_receipt_html(order_id, table_id, items, total_price, order_time, su
         member_info_html = f"""
         <div class="dashed"></div>
         <div style="font-size: 11.5px; background: #fff7ed; padding: 6px 8px; border-radius: 5px; border: 1px dashed #fdba74; margin-top: 4px;">
-            <div style="font-weight: bold; color: #c2410c;">💎 ข้อมูลสมาชิกสะสมแต้ม</div>
+            <div style="font-weight: bold; color: #c2410c;">ข้อมูลสมาชิกสะสมแต้ม</div>
             <div>ลูกค้า: <strong>{member_name or 'สมาชิก'}</strong> ({member_phone})</div>
             {pts_used_txt}
             <div>• ได้รับคะแนนบิลนี้: <strong style="color: #16a34a;">+{points_earned}</strong> แต้ม (ทุก 100บ. = 1 แต้ม)</div>
@@ -179,11 +179,11 @@ def generate_receipt_html(order_id, table_id, items, total_price, order_time, su
     </head>
     <body>
         <div class="no-print" style="margin-bottom: 12px;">
-            <button class="btn-print" onclick="window.print()">🖨️ สั่งพิมพ์ใบเสร็จ / บันทึกเป็น PDF</button>
+            <button class="btn-print" onclick="window.print()">สั่งพิมพ์ใบเสร็จ / บันทึกเป็น PDF</button>
         </div>
         
         <div class="text-center">
-            <div style="font-size: 18px; font-weight: bold; color: #c2410c;">🌶️ ฟ้าใสตำนัว</div>
+            <div style="font-size: 18px; font-weight: bold; color: #c2410c;">ฟ้าใสตำนัว</div>
             <div style="font-size: 11px; color: #444;">(FAHSAI TUM NUA)</div>
             <div style="font-size: 12px; margin-top: 3px; font-weight: bold;">ใบเสร็จรับเงิน / ใบกำกับภาษีอย่างย่อ</div>
             <div style="font-size: 11px; color: #666;">โทร. 093-773-4851 • ยินดีให้บริการ</div>
@@ -249,7 +249,7 @@ def generate_receipt_html(order_id, table_id, items, total_price, order_time, su
         
         <div class="text-center" style="font-size: 11px; color: #444;">
             <div>ชำระโดย: เงินสด / โอนเงินผ่าน QR ธนาคาร</div>
-            <div style="margin-top: 4px; font-weight: bold; color: #111;">ขอบพระคุณที่มาอุดหนุนค่ะ 🙏</div>
+            <div style="margin-top: 4px; font-weight: bold; color: #111;">ขอบพระคุณที่มาอุดหนุนค่ะ</div>
             <div>โอกาสหน้าเชิญใหม่นะคะ แซ่บนัวทุกจาน!</div>
         </div>
     </body>
@@ -292,23 +292,23 @@ def render_receipt_box(oid, conn):
     )
     
     with st.container(border=True):
-        st.markdown(f"### 🧾 ใบเสร็จรับเงินอย่างย่อ — โต๊ะที่ {t_id} (บิล #{oid})")
-        st.caption("สามารถกดปุ่ม **🖨️ สั่งพิมพ์ใบเสร็จ / บันทึกเป็น PDF** ด้านล่างนี้ หรือดาวน์โหลดไฟล์ได้ทันทีค่ะ")
+        st.markdown(f"### ใบเสร็จรับเงินอย่างย่อ — โต๊ะที่ {t_id} (บิล #{oid})")
+        st.caption("สามารถกดปุ่ม **สั่งพิมพ์ใบเสร็จ / บันทึกเป็น PDF** ด้านล่างนี้ หรือดาวน์โหลดไฟล์ได้ทันทีค่ะ")
         
         components.html(receipt_html, height=750, scrolling=True)
         
         # ส่วนแสดง/ผูกข้อมูลสมาชิกที่เคาน์เตอร์คิดเงิน
         if st_code != 'paid':
             if m_phone:
-                st.info(f"💎 สมาชิก: **{m_name}** ({m_phone}) | ใช้แลกส่วนลด: **{pts_used}** แต้ม (-฿{int(discount):,}) | ได้รับแต้มบิลนี้: **+{pts_earned}** แต้ม")
+                st.info(f"สมาชิก: **{m_name}** ({m_phone}) | ใช้แลกส่วนลด: **{pts_used}** แต้ม (-฿{int(discount):,}) | ได้รับแต้มบิลนี้: **+{pts_earned}** แต้ม")
             else:
-                with st.expander("💎 เพิ่มสมาชิกสะสมแต้มสำหรับบิลนี้ (ที่เคาน์เตอร์)", expanded=False):
+                with st.expander("เพิ่มสมาชิกสะสมแต้มสำหรับบิลนี้ (ที่เคาน์เตอร์)", expanded=False):
                     c_ph_in, c_ph_btn = st.columns([3, 1.2])
                     with c_ph_in:
                         attach_phone = st.text_input("เบอร์โทรศัพท์ลูกค้า:", key=f"attach_ph_input_{oid}", placeholder="เช่น 0937734851")
                     with c_ph_btn:
                         st.write("")
-                        attach_btn = st.button("🔗 บันทึกเบอร์", key=f"btn_attach_ph_{oid}", use_container_width=True)
+                        attach_btn = st.button("บันทึกเบอร์", key=f"btn_attach_ph_{oid}", use_container_width=True)
                     if attach_btn and attach_phone.strip():
                         cl_ph = attach_phone.strip().replace("-", "").replace(" ", "")
                         c.execute("SELECT id, first_name, last_name, points FROM members WHERE phone = ?", (cl_ph,))
@@ -320,12 +320,12 @@ def render_receipt_box(oid, conn):
                             st.success(f"ผูกสมาชิก คุณ {m_f[1]} {m_f[2]} (แต้มปัจจุบัน: {m_f[3]}) สำเร็จ!")
                             st.rerun()
                         else:
-                            st.warning("ไม่พบเบอร์นี้ในระบบสมาชิกค่ะ สามารถสมัครสมาชิกใหม่ได้ที่แท็บ '👥 ประวัติลูกค้า' นะคะ")
+                            st.warning("ไม่พบเบอร์นี้ในระบบสมาชิกค่ะ สามารถสมัครสมาชิกใหม่ได้ที่แท็บ 'ประวัติลูกค้า' นะคะ")
 
         rc1, rc2, rc3 = st.columns([1.5, 1.5, 1])
         with rc1:
             st.download_button(
-                label="💾 ดาวน์โหลดไฟล์ใบเสร็จ (.html)",
+                label="ดาวน์โหลดไฟล์ใบเสร็จ (.html)",
                 data=receipt_html,
                 file_name=f"receipt_table{t_id}_order{oid}.html",
                 mime="text/html",
@@ -334,7 +334,7 @@ def render_receipt_box(oid, conn):
             )
         with rc2:
             if st_code != 'paid':
-                if st.button("💵 ยืนยันรับเงิน (ปิดบิล)", key=f"pay_confirm_btn_{oid}", type="primary", use_container_width=True):
+                if st.button("ยืนยันรับเงิน (ปิดบิล)", key=f"pay_confirm_btn_{oid}", type="primary", use_container_width=True):
                     c.execute("UPDATE orders SET status = 'paid' WHERE id = ?", (oid,))
                     # อัปเดตคะแนนสะสมของสมาชิก
                     if m_phone:
@@ -342,12 +342,12 @@ def render_receipt_box(oid, conn):
                         c.execute("UPDATE members SET points = MAX(0, points + ?) WHERE phone = ?", (net_pts_change, m_phone))
                     conn.commit()
                     st.session_state['active_receipt_oid'] = None
-                    st.toast(f"ปิดบิลโต๊ะ {t_id} เรียบร้อยแล้วค่ะ!", icon="✅")
+                    st.toast(f"ปิดบิลโต๊ะ {t_id} เรียบร้อยแล้วค่ะ!")
                     st.rerun()
             else:
-                st.info("✅ บิลนี้ชำระเงินเรียบร้อยแล้ว")
+                st.info("บิลนี้ชำระเงินเรียบร้อยแล้ว")
         with rc3:
-            if st.button("❌ ปิดหน้าต่างใบเสร็จ", key=f"close_receipt_btn_{oid}", use_container_width=True):
+            if st.button("ปิดหน้าต่างใบเสร็จ", key=f"close_receipt_btn_{oid}", use_container_width=True):
                 st.session_state['active_receipt_oid'] = None
                 st.rerun()
 

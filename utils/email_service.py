@@ -1,5 +1,5 @@
 # ==============================================================================
-# 📧 บริการส่งอีเมลและรหัส OTP กู้คืนรหัสผ่าน (Email Service via SMTP)
+# บริการส่งอีเมลและรหัส OTP กู้คืนรหัสผ่าน (Email Service via SMTP)
 # ==============================================================================
 import smtplib
 from email.mime.text import MIMEText
@@ -49,7 +49,7 @@ def send_otp_email(to_email: str, otp_code: str, user_name: str = "ผู้ด�
         <body>
             <div class="email-card">
                 <div class="header">
-                    <div style="font-size: 40px;">🌶️</div>
+                    <div style="font-size: 22px; font-weight: bold; color: #ea580c;">ฟ้าใสตำนัว</div>
                     <div class="title">ฟ้าใสตำนัว (Fahsai Tumnua)</div>
                     <div class="subtitle">ระบบจัดการร้านอาหาร • รหัสยืนยันกู้คืนรหัสผ่าน</div>
                 </div>
@@ -62,11 +62,11 @@ def send_otp_email(to_email: str, otp_code: str, user_name: str = "ผู้ด�
                 <div class="otp-box">
                     <div style="font-size: 13px; color: #9a3412; font-weight: 600; margin-bottom: 6px;">รหัสยืนยัน OTP ของคุณ</div>
                     <div class="otp-code">{otp_code}</div>
-                    <div style="font-size: 12px; color: #78716c; margin-top: 6px;">⏱️ รหัสมีอายุการใช้งาน 10 นาที</div>
+                    <div style="font-size: 12px; color: #78716c; margin-top: 6px;">รหัสมีอายุการใช้งาน 10 นาที</div>
                 </div>
                 
                 <div class="warning">
-                    ⚠️ <b>คำเตือนด้านความปลอดภัย:</b> หากท่านไม่ได้เป็นผู้ส่งคำขอนี้ โปรดเพิกเฉยต่ออีเมลฉบับนี้ และห้ามเปิดเผยรหัส OTP นี้แก่ผู้อื่นเด็ดขาด
+                    <b>คำเตือนด้านความปลอดภัย:</b> หากท่านไม่ได้เป็นผู้ส่งคำขอนี้ โปรดเพิกเฉยต่ออีเมลฉบับนี้ และห้ามเปิดเผยรหัส OTP นี้แก่ผู้อื่นเด็ดขาด
                 </div>
                 
                 <div class="footer">
