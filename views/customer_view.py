@@ -53,7 +53,7 @@ def render_customer_view():
             if st.button("⚙️ ไปที่ระบบจัดการหลังร้าน (Admin)", type="primary", use_container_width=True):
                 st.query_params["mode"] = "admin"
                 st.rerun()
-            st.markdown("<div style='text-align: center; margin-top: 8px;'><a href='/?mode=admin' target='_top' style='color: #ea580c; text-decoration: underline; font-weight: bold; font-size: 14px;'>หรือคลิกที่นี่หากปุ่มไม่ตอบสนอง</a></div>", unsafe_allow_html=True)
+            st.markdown("<div style='text-align: center; margin-top: 8px;'><a href='/?embed=true&mode=admin' target='_top' style='color: #ea580c; text-decoration: underline; font-weight: bold; font-size: 14px;'>หรือคลิกที่นี่หากปุ่มไม่ตอบสนอง</a></div>", unsafe_allow_html=True)
         st.stop()
         valid_tables = [1]
 
@@ -480,35 +480,47 @@ def render_customer_view():
         border: 2px solid #ffffff !important;
         border-radius: 4px !important;
     }
-    .hdr-social { color: #ffffff; font-size: 14px; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
-    .hdr-social a { display: inline-flex; align-items: center; }
-    .hdr-social img { width: 18px !important; height: 18px !important; border-radius: 0 !important; }
-    .hdr-logo { display: flex; align-items: center; gap: 10px; white-space: nowrap; }
-    .hdr-logo img { width: 54px !important; height: 54px !important; border-radius: 50% !important; border: 2px solid #ffffff; background: #ffffff; }
-    .hdr-logo .hdr-name { color: #ffffff; font-size: 1.45rem; font-weight: 800; line-height: 1.1; }
-    .hdr-logo .hdr-tag { color: #ffedd5; font-size: 0.78rem; }
-    .hdr-date { color: #ffffff; font-size: 0.9rem; white-space: nowrap; }
-    .hdr-table { display: inline-block; background: #ffffff; color: #c2410c; font-weight: 800; padding: 3px 14px; border-radius: 999px; font-size: 0.95rem; white-space: nowrap; }
-    .hdr-badge {
-        display: inline-block; background: #ffffff; color: #ea580c;
-        border: 1.5px solid #ea580c; border-radius: 999px;
-        font-size: 11px; font-weight: 800; line-height: 1; padding: 2px 6px;
+    .hdr-social { color: #ffffff !important; font-size: 14px !important; display: flex !important; flex-direction: row !important; align-items: center !important; gap: 8px !important; white-space: nowrap !important; margin: 0 !important; }
+    .hdr-social a { display: inline-flex !important; align-items: center !important; margin: 0 !important; padding: 0 !important; width: auto !important; height: auto !important; }
+    .hdr-social img, .st-key-cust_header .hdr-social img {
+        width: 18px !important; min-width: 18px !important; max-width: 18px !important;
+        height: 18px !important; min-height: 18px !important; max-height: 18px !important;
+        border-radius: 0 !important; margin: 0 !important; display: inline-block !important; object-fit: contain !important;
     }
-    .st-key-cart_wrap, .st-key-notif_wrap { position: relative; }
+    .hdr-logo { display: flex !important; flex-direction: row !important; align-items: center !important; gap: 10px !important; white-space: nowrap !important; margin: 0 !important; text-align: left !important; }
+    .hdr-logo img, .st-key-cust_header .hdr-logo img {
+        width: 54px !important; min-width: 54px !important; max-width: 54px !important;
+        height: 54px !important; min-height: 54px !important; max-height: 54px !important;
+        border-radius: 50% !important; border: 2px solid #ffffff !important; background: #ffffff !important;
+        margin: 0 !important; display: inline-block !important; object-fit: cover !important;
+    }
+    .hdr-logo .hdr-name { color: #ffffff !important; font-size: 1.45rem !important; font-weight: 800 !important; line-height: 1.1 !important; text-align: left !important; }
+    .hdr-logo .hdr-tag { color: #ffedd5 !important; font-size: 0.78rem !important; text-align: left !important; }
+    .hdr-date { color: #ffffff !important; font-size: 0.9rem !important; white-space: nowrap !important; text-align: left !important; }
+    .hdr-table { display: inline-block !important; background: #ffffff !important; color: #c2410c !important; font-weight: 800 !important; padding: 3px 14px !important; border-radius: 999px !important; font-size: 0.95rem !important; white-space: nowrap !important; }
+    .hdr-badge {
+        display: inline-block !important; background: #ffffff !important; color: #ea580c !important;
+        border: 1.5px solid #ea580c !important; border-radius: 999px !important;
+        font-size: 11px !important; font-weight: 800 !important; line-height: 1 !important; padding: 2px 6px !important;
+    }
+    .st-key-cart_wrap, .st-key-notif_wrap { position: relative !important; }
     .st-key-cart_wrap [data-testid="stElementContainer"]:has(.hdr-badge) {
         position: absolute !important; top: -4px; right: 18%; width: auto !important; z-index: 10; pointer-events: none;
     }
     .st-key-notif_wrap [data-testid="stElementContainer"]:has(.hdr-badge) {
         position: absolute !important; top: -6px; left: 14px; width: auto !important; z-index: 10; pointer-events: none;
     }
+    .st-key-cust_header [data-testid="stElementContainer"] {
+        display: block !important; width: auto !important; margin: 0 !important; text-align: left !important;
+    }
     @media (max-width: 640px) {
         .st-key-cust_header { padding: 8px 10px 10px 10px; }
-        .hdr-social .hdr-follow, .hdr-logo .hdr-tag { display: none; }
-        .hdr-logo img { width: 40px !important; height: 40px !important; }
-        .hdr-logo .hdr-name { font-size: 1.05rem; }
+        .hdr-social .hdr-follow, .hdr-logo .hdr-tag { display: none !important; }
+        .hdr-logo img, .st-key-cust_header .hdr-logo img { width: 40px !important; height: 40px !important; min-width: 40px !important; min-height: 40px !important; }
+        .hdr-logo .hdr-name { font-size: 1.05rem !important; }
         .st-key-cust_header [data-testid="stPopover"] button p { font-size: 12px !important; }
         .st-key-cart_wrap [data-testid="stPopover"] button p { font-size: 24px !important; }
-        .hdr-date { font-size: 0.75rem; white-space: normal; }
+        .hdr-date { font-size: 0.75rem !important; white-space: normal !important; }
     }
     </style>
     """, unsafe_allow_html=True)
@@ -609,23 +621,331 @@ def render_customer_view():
     else:
         filtered_menus = all_menus if sel_cat == "ทั้งหมด" else [m for m in all_menus if m[2] == sel_cat]
 
+    # สไตล์ CSS บังคับขนาดการ์ดอาหารทุกแถวและทุกคอลัมน์ให้เท่ากันเป๊ะ แถวสุดท้ายไม่ขยายเกินแถวด้านบน
+    st.markdown("""
+    <style>
+    /* Container แนวนอนหลักและ Wrapper ต้องกว้างเต็ม 100% เสมอ */
+    div[data-testid="stLayoutWrapper"]:has(.st-key-menu_grid_flex),
+    div.st-key-menu_grid_flex,
+    [data-testid="stHorizontalBlock"].st-key-menu_grid_flex,
+    div.st-key-menu_grid_flex[data-testid="stHorizontalBlock"] {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: wrap !important;
+        justify-content: flex-start !important;
+        align-items: stretch !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* เฉพาะตัวการ์ดแต่ละใบเท่านั้นที่ล็อคความกว้าง ไม่ให้ขยายเกินแถวด้านบน */
+    [data-testid="stHorizontalBlock"].st-key-menu_grid_flex > div:has(.fcard-marker),
+    [data-testid="stHorizontalBlock"].st-key-menu_grid_flex > div:has(div[class*="st-key-fcard_"]),
+    [data-testid="stHorizontalBlock"].st-key-menu_grid_flex > div[class*="st-key-fcard_"],
+    div.st-key-menu_grid_flex[data-testid="stHorizontalBlock"] > div {
+        flex-grow: 0 !important;
+        flex-shrink: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
+        min-width: 0 !important;
+    }
+
+    /* 🖥️ หน้าจอใหญ่ Desktop (> 1024px): 6 คอลัมน์ (5 gaps * 12px = 60px) */
+    @media (min-width: 1025px) {
+        [data-testid="stHorizontalBlock"].st-key-menu_grid_flex,
+        div.st-key-menu_grid_flex[data-testid="stHorizontalBlock"] {
+            gap: 12px !important;
+            row-gap: 16px !important;
+        }
+        [data-testid="stHorizontalBlock"].st-key-menu_grid_flex > div:has(.fcard-marker),
+        [data-testid="stHorizontalBlock"].st-key-menu_grid_flex > div:has(div[class*="st-key-fcard_"]),
+        [data-testid="stHorizontalBlock"].st-key-menu_grid_flex > div[class*="st-key-fcard_"],
+        div.st-key-menu_grid_flex[data-testid="stHorizontalBlock"] > div {
+            flex: 0 0 calc((100% - 60px) / 6) !important;
+            width: calc((100% - 60px) / 6) !important;
+            max-width: calc((100% - 60px) / 6) !important;
+        }
+    }
+
+    /* 💻 หน้าจอ Tablet แนวนอน / โน้ตบุ๊กเล็ก (769px - 1024px): 4 คอลัมน์ (3 gaps * 12px = 36px) */
+    @media (min-width: 769px) and (max-width: 1024px) {
+        [data-testid="stHorizontalBlock"].st-key-menu_grid_flex,
+        div.st-key-menu_grid_flex[data-testid="stHorizontalBlock"] {
+            gap: 12px !important;
+            row-gap: 14px !important;
+        }
+        [data-testid="stHorizontalBlock"].st-key-menu_grid_flex > div:has(.fcard-marker),
+        [data-testid="stHorizontalBlock"].st-key-menu_grid_flex > div:has(div[class*="st-key-fcard_"]),
+        [data-testid="stHorizontalBlock"].st-key-menu_grid_flex > div[class*="st-key-fcard_"],
+        div.st-key-menu_grid_flex[data-testid="stHorizontalBlock"] > div {
+            flex: 0 0 calc((100% - 36px) / 4) !important;
+            width: calc((100% - 36px) / 4) !important;
+            max-width: calc((100% - 36px) / 4) !important;
+        }
+    }
+
+    /* 📱 หน้าจอ Tablet แนวตั้ง / มือถือจอใหญ่ (481px - 768px): 3 คอลัมน์ (2 gaps * 10px = 20px) */
+    @media (min-width: 481px) and (max-width: 768px) {
+        [data-testid="stHorizontalBlock"].st-key-menu_grid_flex,
+        div.st-key-menu_grid_flex[data-testid="stHorizontalBlock"] {
+            gap: 10px !important;
+            row-gap: 12px !important;
+        }
+        [data-testid="stHorizontalBlock"].st-key-menu_grid_flex > div:has(.fcard-marker),
+        [data-testid="stHorizontalBlock"].st-key-menu_grid_flex > div:has(div[class*="st-key-fcard_"]),
+        [data-testid="stHorizontalBlock"].st-key-menu_grid_flex > div[class*="st-key-fcard_"],
+        div.st-key-menu_grid_flex[data-testid="stHorizontalBlock"] > div {
+            flex: 0 0 calc((100% - 20px) / 3) !important;
+            width: calc((100% - 20px) / 3) !important;
+            max-width: calc((100% - 20px) / 3) !important;
+        }
+    }
+
+    /* 📱 หน้าจอมือถือทั่วไป (<= 480px): 2 คอลัมน์ (1 gap * 8px = 8px) */
+    @media (max-width: 480px) {
+        [data-testid="stHorizontalBlock"].st-key-menu_grid_flex,
+        div.st-key-menu_grid_flex[data-testid="stHorizontalBlock"] {
+            gap: 8px !important;
+            row-gap: 10px !important;
+        }
+        [data-testid="stHorizontalBlock"].st-key-menu_grid_flex > div:has(.fcard-marker),
+        [data-testid="stHorizontalBlock"].st-key-menu_grid_flex > div:has(div[class*="st-key-fcard_"]),
+        [data-testid="stHorizontalBlock"].st-key-menu_grid_flex > div[class*="st-key-fcard_"],
+        div.st-key-menu_grid_flex[data-testid="stHorizontalBlock"] > div {
+            flex: 0 0 calc((100% - 8px) / 2) !important;
+            width: calc((100% - 8px) / 2) !important;
+            max-width: calc((100% - 8px) / 2) !important;
+        }
+    }
+
+    /* กรอบการ์ดอาหาร: จำกัดขอบเขตเฉพาะใน .st-key-menu_grid_flex หรือ st-key-fcard_ เท่านั้น ไม่ให้กระทบ Header หรือส่วนอื่นของเว็บ */
+    .st-key-menu_grid_flex div[data-testid="stVerticalBlock"]:has(.fcard-marker),
+    .st-key-menu_grid_flex div[data-testid="stVerticalBlockBorderWrapper"]:has(.fcard-marker),
+    div[class*="st-key-fcard_"] div[data-testid="stVerticalBlock"],
+    div[class*="st-key-fcard_"] [data-testid="stVerticalBlockBorderWrapper"],
+    div[class*="st-key-fcard_"][data-testid="stVerticalBlock"] {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        height: 100% !important;
+        padding: 8px !important;
+        border-radius: 12px !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+        background: #ffffff !important;
+        border: 1.5px solid #ffedd5 !important;
+        box-shadow: 0 4px 14px rgba(234, 88, 12, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        text-align: center !important;
+    }
+
+    /* ซ่อน marker ที่ใช้ระบุตัวการ์ด */
+    .fcard-marker,
+    div:has(> .fcard-marker) {
+        display: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        height: 0 !important;
+    }
+
+    /* เนื้อหาทุกชิ้นภายในการ์ดอาหาร ต้องขยายเต็ม 100% ของตัวการ์ด และจัดกึ่งกลาง */
+    div[class*="st-key-fcard_"] [data-testid="stElementContainer"],
+    .st-key-menu_grid_flex div[data-testid="stVerticalBlock"]:has(.fcard-marker) [data-testid="stElementContainer"],
+    .st-key-menu_grid_flex div[data-testid="stVerticalBlockBorderWrapper"]:has(.fcard-marker) [data-testid="stElementContainer"] {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        text-align: center !important;
+    }
+
+    /* 🖼️ บังคับ wrapper ทุกระดับชั้นของรูปภาพ (stFullScreenFrame, div ชั้นใน, stImage, stImageContainer) จัดวางกึ่งกลาง */
+    div[class*="st-key-fcard_"] [data-testid="stFullScreenFrame"],
+    .st-key-menu_grid_flex div[data-testid="stVerticalBlock"]:has(.fcard-marker) [data-testid="stFullScreenFrame"],
+    div[class*="st-key-fcard_"] [data-testid="stFullScreenFrame"] > div,
+    .st-key-menu_grid_flex div[data-testid="stVerticalBlock"]:has(.fcard-marker) [data-testid="stFullScreenFrame"] > div,
+    div[class*="st-key-fcard_"] [data-testid="stImage"],
+    div[class*="st-key-fcard_"] [data-testid="stImageContainer"],
+    .st-key-menu_grid_flex [data-testid="stImage"],
+    .st-key-menu_grid_flex [data-testid="stImageContainer"] {
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
+        text-align: center !important;
+    }
+
+    /* 🖼️ บังคับรูปภาพ <img> ขยายเต็มและจัดกึ่งกลาง พร้อมครอบภาพ (object-fit: cover) */
+    div[class*="st-key-fcard_"] img,
+    .st-key-menu_grid_flex img {
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        height: 130px !important;
+        max-height: 130px !important;
+        min-height: 130px !important;
+        object-fit: cover !important;
+        object-position: center !important;
+        border-radius: 8px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        margin-top: 0 !important;
+        margin-bottom: 6px !important;
+        display: block !important;
+        box-sizing: border-box !important;
+    }
+
+    /* กล่องข้อความกรณีไม่มีรูปภาพ จัดกึ่งกลาง */
+    div[class*="st-key-fcard_"] .no-img-box,
+    .st-key-menu_grid_flex .no-img-box {
+        width: 100% !important;
+        min-width: 100% !important;
+        max-width: 100% !important;
+        height: 130px !important;
+        max-height: 130px !important;
+        min-height: 130px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        font-size: 2.2rem !important;
+        background: linear-gradient(135deg, #fff7ed, #ffedd5) !important;
+        border: 1px solid #fed7aa !important;
+        border-radius: 8px !important;
+        margin: 0 auto 6px auto !important;
+        box-sizing: border-box !important;
+        text-align: center !important;
+    }
+
+    /* จัดข้อความชื่ออาหารและราคาให้อยู่กึ่งกลางการ์ด */
+    div[class*="st-key-fcard_"] .stMarkdown,
+    div[class*="st-key-fcard_"] .stMarkdown p,
+    div[class*="st-key-fcard_"] .stMarkdown div,
+    .st-key-menu_grid_flex div[data-testid="stVerticalBlock"]:has(.fcard-marker) .stMarkdown {
+        text-align: center !important;
+        justify-content: center !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        width: 100% !important;
+    }
+
+    /* บังคับปุ่มสั่งอาหารเต็มความกว้าง 100% และจัดวางกึ่งกลาง */
+    div[class*="st-key-fcard_"] div[data-testid="stButton"],
+    div[class*="st-key-fcard_"] .stButton,
+    .st-key-menu_grid_flex div[data-testid="stVerticalBlock"]:has(.fcard-marker) .stButton {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        margin: 0 auto !important;
+        display: flex !important;
+        justify-content: center !important;
+        box-sizing: border-box !important;
+    }
+
+    div[class*="st-key-fcard_"] .stButton > button,
+    .st-key-menu_grid_flex div[data-testid="stVerticalBlock"]:has(.fcard-marker) .stButton > button {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        min-height: 36px !important;
+        height: 36px !important;
+        font-size: 13px !important;
+        font-weight: 700 !important;
+        padding: 2px 4px !important;
+        border-radius: 8px !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        text-align: center !important;
+        box-sizing: border-box !important;
+        margin: 0 auto !important;
+    }
+
+    /* Stepper แถบปรับจำนวน เต็มความกว้างการ์ด */
+    div[class*="st-key-fcard_"] [data-testid="stHorizontalBlock"],
+    .st-key-menu_grid_flex div[data-testid="stVerticalBlock"]:has(.fcard-marker) [data-testid="stHorizontalBlock"] {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        gap: 3px !important;
+        align-items: center !important;
+        margin: 0 auto !important;
+    }
+    div[class*="st-key-fcard_"] [data-testid="stHorizontalBlock"] > div[data-testid="stColumn"] {
+        min-width: 0 !important;
+        flex: 1 1 0px !important;
+    }
+    div[class*="st-key-fcard_"] [data-testid="stHorizontalBlock"] .stButton,
+    div[class*="st-key-fcard_"] [data-testid="stHorizontalBlock"] .stButton > button {
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        min-height: 32px !important;
+        height: 32px !important;
+        padding: 0px !important;
+    }
+
+    @media (max-width: 480px) {
+        div[class*="st-key-fcard_"] div[data-testid="stVerticalBlock"],
+        .st-key-menu_grid_flex div[data-testid="stVerticalBlock"]:has(.fcard-marker) {
+            padding: 6px !important;
+        }
+        div[class*="st-key-fcard_"] img,
+        .st-key-menu_grid_flex img,
+        div[class*="st-key-fcard_"] .no-img-box,
+        .st-key-menu_grid_flex .no-img-box {
+            height: 110px !important;
+            max-height: 110px !important;
+            min-height: 110px !important;
+            border-radius: 6px !important;
+        }
+        div[class*="st-key-fcard_"] .stButton > button,
+        .st-key-menu_grid_flex div[data-testid="stVerticalBlock"]:has(.fcard-marker) .stButton > button {
+            min-height: 32px !important;
+            height: 32px !important;
+            font-size: 12px !important;
+        }
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
     # แสดงรายการเมนูอาหารแบบ Responsive Grid ขยายเต็มความกว้างหน้าจอของแต่ละอุปกรณ์
     grid_container = st.container(horizontal=True, wrap=True, gap=10, key="menu_grid_flex")
     with grid_container:
         for m_id, name, cat, price, img, desc in filtered_menus:
             with st.container(border=True, key=f"fcard_{m_id}"):
                 st.markdown("<div class='fcard-marker' style='display:none;'></div>", unsafe_allow_html=True)
-                # รูปภาพอาหารขนาดกะทัดรัด (ขยายความกว้างเต็มการ์ด)
+                # รูปภาพอาหารขนาดกะทัดรัด (จัดวางกึ่งกลาง ขยายความกว้างเต็มการ์ด)
                 if img and (img.startswith("http") or os.path.exists(img)):
-                    st.image(img, use_container_width=True)
+                    try:
+                        st.image(img, width="stretch")
+                    except TypeError:
+                        st.image(img, use_container_width=True)
                 else:
                     st.markdown("<div class='no-img-box'>🍲</div>", unsafe_allow_html=True)
                 
-                # ชื่ออาหาร & หมวดหมู่
-                st.markdown(f"<div style='font-size: 0.92rem; font-weight: 700; color: #1c1917; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px;' title='{name}'>{name}</div>", unsafe_allow_html=True)
+                # ชื่ออาหาร & หมวดหมู่ (จัดวางกึ่งกลาง)
+                st.markdown(f"<div style='font-size: 0.95rem; font-weight: 700; color: #1c1917; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 4px; text-align: center;' title='{name}'>{name}</div>", unsafe_allow_html=True)
                 
-                # ราคาอาหารแบบ Pill สดใส
-                st.markdown(f"<div style='margin: 2px 0 6px 0; width: 100%;'><span style='color: #ea580c; font-weight: 800; font-size: 1.05rem;'>฿{int(price)}</span> <span style='font-size: 0.72rem; color: #78716c;'>/จาน</span></div>", unsafe_allow_html=True)
+                # ราคาอาหารแบบ Pill สดใส (จัดวางกึ่งกลาง)
+                st.markdown(f"<div style='margin: 2px 0 6px 0; width: 100%; text-align: center;'><span style='color: #ea580c; font-weight: 800; font-size: 1.08rem;'>฿{int(price)}</span> <span style='font-size: 0.72rem; color: #78716c;'>/จาน</span></div>", unsafe_allow_html=True)
                 
                 # ปุ่ม เพิ่ม / ปรับจำนวน (Stepper) เต็มความกว้างการ์ด
                 cur_qty = st.session_state.cart.get(name, {}).get('qty', 0)
