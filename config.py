@@ -177,32 +177,110 @@ div[data-testid="stVerticalBlockBorderWrapper"]:hover {
 }
 
 /* 📱 สไตล์การ์ดอาหาร: Responsive Grid ทุกแถวและทุกคอลัมน์ขนาดเท่ากันเป๊ะ (แถวสุดท้ายไม่ขยายเกินแถวด้านบน) */
-.st-key-menu_grid_flex [data-testid="stHorizontalBlock"],
-div[class*="st-key-menu_grid_flex"] [data-testid="stHorizontalBlock"],
-div[class*="st-key-menu_grid_flex"] > div {
-    display: grid !important;
-    grid-template-columns: repeat(auto-fill, minmax(115px, 1fr)) !important;
-    gap: 10px !important;
-    row-gap: 14px !important;
-    justify-content: start !important;
+/* 📱 สไตล์การ์ดอาหาร: Responsive Flexbox Grid ทุกแถวและทุกคอลัมน์ขนาดเท่ากันเป๊ะ แถวสุดท้ายไม่ขยายเกินแถวด้านบน */
+div.st-key-menu_grid_flex,
+[data-testid="stHorizontalBlock"].st-key-menu_grid_flex,
+div[class*="st-key-menu_grid_flex"] {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    justify-content: flex-start !important;
     align-items: stretch !important;
     width: 100% !important;
     box-sizing: border-box !important;
 }
 
-/* ลบล้าง flex-grow ของ Streamlit เพื่อป้องกันการ์ดแถวสุดท้ายขยายใหญ่เกินแถวด้านบน */
-.st-key-menu_grid_flex [data-testid="stHorizontalBlock"] > div,
-.st-key-menu_grid_flex [data-testid="stElementContainer"],
-div[class*="st-key-menu_grid_flex"] [data-testid="stHorizontalBlock"] > div {
-    flex: none !important;
+/* บังคับให้ไอเทมภายใต้ container ไม่ขยาย (flex-grow: 0) เพื่อไม่ให้แถวสุดท้ายยืด */
+div.st-key-menu_grid_flex > div,
+[data-testid="stHorizontalBlock"].st-key-menu_grid_flex > div,
+div[class*="st-key-menu_grid_flex"] > div,
+div.st-key-menu_grid_flex [data-testid="stElementContainer"],
+div[class*="st-key-menu_grid_flex"] [data-testid="stElementContainer"] {
     flex-grow: 0 !important;
     flex-shrink: 0 !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
     box-sizing: border-box !important;
+    min-width: 0 !important;
 }
 
+/* 🖥️ หน้าจอใหญ่ Desktop (> 1024px): 6 คอลัมน์ (5 gaps * 12px = 60px) */
+@media (min-width: 1025px) {
+    div.st-key-menu_grid_flex,
+    [data-testid="stHorizontalBlock"].st-key-menu_grid_flex,
+    div[class*="st-key-menu_grid_flex"] {
+        gap: 12px !important;
+        row-gap: 16px !important;
+    }
+    div.st-key-menu_grid_flex > div,
+    [data-testid="stHorizontalBlock"].st-key-menu_grid_flex > div,
+    div[class*="st-key-menu_grid_flex"] > div,
+    div.st-key-menu_grid_flex [data-testid="stElementContainer"],
+    div[class*="st-key-menu_grid_flex"] [data-testid="stElementContainer"] {
+        flex: 0 0 calc((100% - 60px) / 6) !important;
+        width: calc((100% - 60px) / 6) !important;
+        max-width: calc((100% - 60px) / 6) !important;
+    }
+}
+
+/* 💻 หน้าจอ Tablet แนวนอน / โน้ตบุ๊กเล็ก (769px - 1024px): 4 คอลัมน์ (3 gaps * 12px = 36px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+    div.st-key-menu_grid_flex,
+    [data-testid="stHorizontalBlock"].st-key-menu_grid_flex,
+    div[class*="st-key-menu_grid_flex"] {
+        gap: 12px !important;
+        row-gap: 14px !important;
+    }
+    div.st-key-menu_grid_flex > div,
+    [data-testid="stHorizontalBlock"].st-key-menu_grid_flex > div,
+    div[class*="st-key-menu_grid_flex"] > div,
+    div.st-key-menu_grid_flex [data-testid="stElementContainer"],
+    div[class*="st-key-menu_grid_flex"] [data-testid="stElementContainer"] {
+        flex: 0 0 calc((100% - 36px) / 4) !important;
+        width: calc((100% - 36px) / 4) !important;
+        max-width: calc((100% - 36px) / 4) !important;
+    }
+}
+
+/* 📱 หน้าจอ Tablet แนวตั้ง / มือถือจอใหญ่ (481px - 768px): 3 คอลัมน์ (2 gaps * 10px = 20px) */
+@media (min-width: 481px) and (max-width: 768px) {
+    div.st-key-menu_grid_flex,
+    [data-testid="stHorizontalBlock"].st-key-menu_grid_flex,
+    div[class*="st-key-menu_grid_flex"] {
+        gap: 10px !important;
+        row-gap: 12px !important;
+    }
+    div.st-key-menu_grid_flex > div,
+    [data-testid="stHorizontalBlock"].st-key-menu_grid_flex > div,
+    div[class*="st-key-menu_grid_flex"] > div,
+    div.st-key-menu_grid_flex [data-testid="stElementContainer"],
+    div[class*="st-key-menu_grid_flex"] [data-testid="stElementContainer"] {
+        flex: 0 0 calc((100% - 20px) / 3) !important;
+        width: calc((100% - 20px) / 3) !important;
+        max-width: calc((100% - 20px) / 3) !important;
+    }
+}
+
+/* 📱 หน้าจอมือถือทั่วไป (<= 480px): 2 คอลัมน์ (1 gap * 8px = 8px) */
+@media (max-width: 480px) {
+    div.st-key-menu_grid_flex,
+    [data-testid="stHorizontalBlock"].st-key-menu_grid_flex,
+    div[class*="st-key-menu_grid_flex"] {
+        gap: 8px !important;
+        row-gap: 10px !important;
+    }
+    div.st-key-menu_grid_flex > div,
+    [data-testid="stHorizontalBlock"].st-key-menu_grid_flex > div,
+    div[class*="st-key-menu_grid_flex"] > div,
+    div.st-key-menu_grid_flex [data-testid="stElementContainer"],
+    div[class*="st-key-menu_grid_flex"] [data-testid="stElementContainer"] {
+        flex: 0 0 calc((100% - 8px) / 2) !important;
+        width: calc((100% - 8px) / 2) !important;
+        max-width: calc((100% - 8px) / 2) !important;
+    }
+}
+
+/* กล่องการ์ดอาหาร */
 div[data-testid="stVerticalBlockBorderWrapper"]:has(.fcard-marker),
 div[data-testid="stVerticalBlockBorderWrapper"]:has(div[class*="st-key-fcard_"]),
 div[class*="st-key-fcard_"] {
@@ -210,7 +288,7 @@ div[class*="st-key-fcard_"] {
     max-width: 100% !important;
     min-width: 0 !important;
     height: 100% !important;
-    padding: 7px !important;
+    padding: 8px !important;
     border-radius: 12px !important;
     margin: 0 !important;
     box-sizing: border-box !important;
@@ -240,12 +318,14 @@ div[class*="st-key-fcard_"] div[data-testid="stImage"] {
 }
 
 div[data-testid="stVerticalBlockBorderWrapper"]:has(.fcard-marker) img,
-div[class*="st-key-fcard_"] img {
+div[class*="st-key-fcard_"] img,
+.st-key-menu_grid_flex img {
     width: 100% !important;
     max-width: 100% !important;
     min-width: 0 !important;
-    height: 104px !important;
-    max-height: 104px !important;
+    height: 110px !important;
+    max-height: 110px !important;
+    min-height: 110px !important;
     object-fit: cover !important;
     border-radius: 8px !important;
     margin-bottom: 4px !important;
@@ -253,11 +333,14 @@ div[class*="st-key-fcard_"] img {
 }
 
 div[data-testid="stVerticalBlockBorderWrapper"]:has(.fcard-marker) .no-img-box,
-div[class*="st-key-fcard_"] .no-img-box {
+div[class*="st-key-fcard_"] .no-img-box,
+.st-key-menu_grid_flex .no-img-box {
     width: 100% !important;
     max-width: 100% !important;
     min-width: 0 !important;
-    height: 104px !important;
+    height: 110px !important;
+    max-height: 110px !important;
+    min-height: 110px !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -268,7 +351,7 @@ div[class*="st-key-fcard_"] .no-img-box {
     margin: 0 auto 4px auto !important;
 }
 
-/* บังคับปุ่มเพิ่มให้กว้างเท่ากับความกว้างของภาพและการ์ด 100% เต็มพอดีเป๊ะ */
+/* บังคับปุ่มเพิ่มให้กว้างเท่ากับการ์ด 100% พอดีเป๊ะ */
 div[data-testid="stVerticalBlockBorderWrapper"]:has(.fcard-marker) div[data-testid="stButton"],
 div[data-testid="stVerticalBlockBorderWrapper"]:has(.fcard-marker) .stButton,
 div[class*="st-key-fcard_"] div[data-testid="stButton"],
@@ -324,24 +407,20 @@ div[class*="st-key-fcard_"] [data-testid="stHorizontalBlock"] .stButton > button
 }
 
 @media (max-width: 480px) {
-    .st-key-menu_grid_flex [data-testid="stHorizontalBlock"],
-    div[class*="st-key-menu_grid_flex"] [data-testid="stHorizontalBlock"],
-    div[class*="st-key-menu_grid_flex"] > div {
-        grid-template-columns: repeat(auto-fill, minmax(95px, 1fr)) !important;
-        gap: 6px !important;
-        row-gap: 10px !important;
-    }
     div[data-testid="stVerticalBlockBorderWrapper"]:has(.fcard-marker),
     div[data-testid="stVerticalBlockBorderWrapper"]:has(div[class*="st-key-fcard_"]),
     div[class*="st-key-fcard_"] {
-        padding: 5px !important;
+        padding: 6px !important;
     }
     div[data-testid="stVerticalBlockBorderWrapper"]:has(.fcard-marker) img,
     div[class*="st-key-fcard_"] img,
+    .st-key-menu_grid_flex img,
     div[data-testid="stVerticalBlockBorderWrapper"]:has(.fcard-marker) .no-img-box,
-    div[class*="st-key-fcard_"] .no-img-box {
-        height: 96px !important;
-        max-height: 96px !important;
+    div[class*="st-key-fcard_"] .no-img-box,
+    .st-key-menu_grid_flex .no-img-box {
+        height: 100px !important;
+        max-height: 100px !important;
+        min-height: 100px !important;
     }
     div[data-testid="stVerticalBlockBorderWrapper"]:has(.fcard-marker) .stButton > button,
     div[class*="st-key-fcard_"] .stButton > button {
