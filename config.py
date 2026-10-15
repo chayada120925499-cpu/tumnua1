@@ -176,16 +176,30 @@ div[data-testid="stVerticalBlockBorderWrapper"]:hover {
     box-shadow: 0 6px 20px rgba(234, 88, 12, 0.12) !important;
 }
 
-/* 📱 สไตล์การ์ดอาหาร: Responsive Grid ขยายเท่าความกว้างหน้าจอของแต่ละอุปกรณ์ */
-div[class*="st-key-menu_grid_flex"] > div[data-testid="stHorizontalBlock"],
+/* 📱 สไตล์การ์ดอาหาร: Responsive Grid ทุกแถวและทุกคอลัมน์ขนาดเท่ากันเป๊ะ (แถวสุดท้ายไม่ขยายเกินแถวด้านบน) */
+.st-key-menu_grid_flex [data-testid="stHorizontalBlock"],
+div[class*="st-key-menu_grid_flex"] [data-testid="stHorizontalBlock"],
 div[class*="st-key-menu_grid_flex"] > div {
     display: grid !important;
-    grid-template-columns: repeat(auto-fill, minmax(105px, 1fr)) !important;
-    gap: 8px !important;
-    row-gap: 12px !important;
-    justify-content: stretch !important;
+    grid-template-columns: repeat(auto-fill, minmax(115px, 1fr)) !important;
+    gap: 10px !important;
+    row-gap: 14px !important;
+    justify-content: start !important;
     align-items: stretch !important;
     width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* ลบล้าง flex-grow ของ Streamlit เพื่อป้องกันการ์ดแถวสุดท้ายขยายใหญ่เกินแถวด้านบน */
+.st-key-menu_grid_flex [data-testid="stHorizontalBlock"] > div,
+.st-key-menu_grid_flex [data-testid="stElementContainer"],
+div[class*="st-key-menu_grid_flex"] [data-testid="stHorizontalBlock"] > div {
+    flex: none !important;
+    flex-grow: 0 !important;
+    flex-shrink: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
     box-sizing: border-box !important;
 }
 
@@ -195,7 +209,8 @@ div[class*="st-key-fcard_"] {
     width: 100% !important;
     max-width: 100% !important;
     min-width: 0 !important;
-    padding: 6px !important;
+    height: 100% !important;
+    padding: 7px !important;
     border-radius: 12px !important;
     margin: 0 !important;
     box-sizing: border-box !important;
@@ -309,7 +324,8 @@ div[class*="st-key-fcard_"] [data-testid="stHorizontalBlock"] .stButton > button
 }
 
 @media (max-width: 480px) {
-    div[class*="st-key-menu_grid_flex"] > div[data-testid="stHorizontalBlock"],
+    .st-key-menu_grid_flex [data-testid="stHorizontalBlock"],
+    div[class*="st-key-menu_grid_flex"] [data-testid="stHorizontalBlock"],
     div[class*="st-key-menu_grid_flex"] > div {
         grid-template-columns: repeat(auto-fill, minmax(95px, 1fr)) !important;
         gap: 6px !important;
