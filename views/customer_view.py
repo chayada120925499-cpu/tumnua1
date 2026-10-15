@@ -514,17 +514,20 @@ def render_customer_view():
     .st-key-cust_header {
         background: linear-gradient(180deg, #f97316 0%, #ea580c 100%);
         border-radius: 14px;
-        padding: 10px 18px 12px 18px;
+        padding: 10px 16px 12px 16px;
         box-shadow: 0 4px 14px rgba(234, 88, 12, 0.30);
         margin-bottom: 12px;
+        display: flex !important;
+        flex-direction: column !important;
         gap: 6px !important;
     }
     .st-key-cust_header [data-testid="stHorizontalBlock"] {
-        flex-wrap: nowrap !important;
         align-items: center !important;
-        gap: 10px !important;
+        gap: 8px !important;
     }
-    .st-key-cust_header [data-testid="stColumn"] { min-width: 0 !important; }
+    .st-key-cust_header [data-testid="stColumn"] {
+        min-width: 0 !important;
+    }
     .st-key-cust_header [data-testid="stPopover"] button {
         background: transparent !important;
         border: none !important;
@@ -532,6 +535,7 @@ def render_customer_view():
         color: #ffffff !important;
         min-height: 36px !important;
         padding: 4px 8px !important;
+        white-space: nowrap !important;
     }
     .st-key-cust_header [data-testid="stPopover"] button:hover {
         background: rgba(255, 255, 255, 0.18) !important;
@@ -540,59 +544,228 @@ def render_customer_view():
         color: #ffffff !important;
         font-weight: 600 !important;
         font-size: 14px !important;
+        white-space: nowrap !important;
     }
-    .st-key-cart_wrap [data-testid="stPopover"] button p { font-size: 15px !important; font-weight: 700 !important; }
+    .st-key-cart_wrap [data-testid="stPopover"] button {
+        background: rgba(255, 255, 255, 0.16) !important;
+        border: 1px solid rgba(255, 255, 255, 0.4) !important;
+        border-radius: 8px !important;
+        padding: 4px 10px !important;
+    }
+    .st-key-cart_wrap [data-testid="stPopover"] button p {
+        font-size: 14px !important;
+        font-weight: 700 !important;
+        white-space: nowrap !important;
+    }
     .st-key-cust_header [data-testid="stTextInput"] input {
         background: #ffffff !important;
         color: #1c1917 !important;
-        height: 44px !important;
-        font-size: 15px !important;
+        height: 42px !important;
+        font-size: 14px !important;
+        border-radius: 6px !important;
     }
     .st-key-cust_header [data-testid="stTextInput"] > div > div {
         border: 2px solid #ffffff !important;
-        border-radius: 4px !important;
+        border-radius: 6px !important;
     }
-    .hdr-social { color: #ffffff !important; font-size: 14px !important; display: flex !important; flex-direction: row !important; align-items: center !important; gap: 8px !important; white-space: nowrap !important; margin: 0 !important; }
-    .hdr-social a { display: inline-flex !important; align-items: center !important; margin: 0 !important; padding: 0 !important; width: auto !important; height: auto !important; }
+    .hdr-social {
+        color: #ffffff !important;
+        font-size: 14px !important;
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 8px !important;
+        white-space: nowrap !important;
+        margin: 0 !important;
+    }
+    .hdr-social a {
+        display: inline-flex !important;
+        align-items: center !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
     .hdr-social img, .st-key-cust_header .hdr-social img {
         width: 18px !important; min-width: 18px !important; max-width: 18px !important;
         height: 18px !important; min-height: 18px !important; max-height: 18px !important;
         border-radius: 0 !important; margin: 0 !important; display: inline-block !important; object-fit: contain !important;
     }
-    .hdr-logo { display: flex !important; flex-direction: row !important; align-items: center !important; gap: 10px !important; white-space: nowrap !important; margin: 0 !important; text-align: left !important; }
+    .hdr-logo {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 10px !important;
+        white-space: nowrap !important;
+        margin: 0 !important;
+        text-align: left !important;
+    }
     .hdr-logo img, .st-key-cust_header .hdr-logo img {
-        width: 54px !important; min-width: 54px !important; max-width: 54px !important;
-        height: 54px !important; min-height: 54px !important; max-height: 54px !important;
+        width: 50px !important; min-width: 50px !important; max-width: 50px !important;
+        height: 50px !important; min-height: 50px !important; max-height: 50px !important;
         border-radius: 50% !important; border: 2px solid #ffffff !important; background: #ffffff !important;
         margin: 0 !important; display: inline-block !important; object-fit: cover !important;
     }
-    .hdr-logo .hdr-name { color: #ffffff !important; font-size: 1.45rem !important; font-weight: 800 !important; line-height: 1.1 !important; text-align: left !important; }
-    .hdr-logo .hdr-tag { color: #ffedd5 !important; font-size: 0.78rem !important; text-align: left !important; }
-    .hdr-date { color: #ffffff !important; font-size: 0.9rem !important; white-space: nowrap !important; text-align: left !important; }
-    .hdr-table { display: inline-block !important; background: #ffffff !important; color: #c2410c !important; font-weight: 800 !important; padding: 3px 14px !important; border-radius: 999px !important; font-size: 0.95rem !important; white-space: nowrap !important; }
+    .hdr-logo .hdr-name {
+        color: #ffffff !important;
+        font-size: 1.4rem !important;
+        font-weight: 800 !important;
+        line-height: 1.1 !important;
+        text-align: left !important;
+        white-space: nowrap !important;
+    }
+    .hdr-logo .hdr-tag {
+        color: #ffedd5 !important;
+        font-size: 0.78rem !important;
+        text-align: left !important;
+        white-space: nowrap !important;
+    }
+    .hdr-date {
+        color: #ffffff !important;
+        font-size: 0.88rem !important;
+        white-space: nowrap !important;
+        text-align: left !important;
+    }
+    .hdr-date-short { display: none !important; }
+    .hdr-table {
+        display: inline-block !important;
+        background: #ffffff !important;
+        color: #c2410c !important;
+        font-weight: 800 !important;
+        padding: 3px 12px !important;
+        border-radius: 999px !important;
+        font-size: 0.92rem !important;
+        white-space: nowrap !important;
+    }
     .hdr-badge {
-        display: inline-block !important; background: #ffffff !important; color: #ea580c !important;
-        border: 1.5px solid #ea580c !important; border-radius: 999px !important;
-        font-size: 11px !important; font-weight: 800 !important; line-height: 1 !important; padding: 2px 6px !important;
+        display: inline-block !important;
+        background: #ef4444 !important;
+        color: #ffffff !important;
+        border: 1.5px solid #ffffff !important;
+        border-radius: 999px !important;
+        font-size: 11px !important;
+        font-weight: 800 !important;
+        line-height: 1 !important;
+        padding: 2px 6px !important;
     }
     .st-key-cart_wrap, .st-key-notif_wrap { position: relative !important; }
     .st-key-cart_wrap [data-testid="stElementContainer"]:has(.hdr-badge) {
-        position: absolute !important; top: -4px; right: 18%; width: auto !important; z-index: 10; pointer-events: none;
+        position: absolute !important; top: -6px; right: 2px; width: auto !important; z-index: 10; pointer-events: none;
     }
     .st-key-notif_wrap [data-testid="stElementContainer"]:has(.hdr-badge) {
-        position: absolute !important; top: -6px; left: 14px; width: auto !important; z-index: 10; pointer-events: none;
+        position: absolute !important; top: -6px; right: 2px; width: auto !important; z-index: 10; pointer-events: none;
     }
     .st-key-cust_header [data-testid="stElementContainer"] {
         display: block !important; width: auto !important; margin: 0 !important; text-align: left !important;
     }
+
+    /* สไตล์สำหรับหน้าจอเดสก์ท็อปและแท็บเล็ต (กว้างกว่า 640px) */
+    @media (min-width: 641px) {
+        .st-key-cust_header [data-testid="stHorizontalBlock"] {
+            flex-wrap: nowrap !important;
+        }
+    }
+
+    /* สไตล์สำหรับสมาร์ตโฟน (ความกว้างหน้าจอไม่เกิน 640px) */
     @media (max-width: 640px) {
-        .st-key-cust_header { padding: 8px 10px 10px 10px; }
-        .hdr-social .hdr-follow, .hdr-logo .hdr-tag { display: none !important; }
-        .hdr-logo img, .st-key-cust_header .hdr-logo img { width: 40px !important; height: 40px !important; min-width: 40px !important; min-height: 40px !important; }
-        .hdr-logo .hdr-name { font-size: 1.05rem !important; }
-        .st-key-cust_header [data-testid="stPopover"] button p { font-size: 12px !important; }
-        .st-key-cart_wrap [data-testid="stPopover"] button p { font-size: 13px !important; font-weight: 700 !important; }
-        .hdr-date { font-size: 0.75rem !important; white-space: normal !important; }
+        .st-key-cust_header {
+            padding: 8px 10px 10px 10px !important;
+            gap: 4px !important;
+        }
+        .hdr-social .hdr-follow, .hdr-logo .hdr-tag {
+            display: none !important;
+        }
+        .hdr-logo img, .st-key-cust_header .hdr-logo img {
+            width: 38px !important; height: 38px !important; min-width: 38px !important; min-height: 38px !important;
+        }
+        .hdr-logo .hdr-name {
+            font-size: 1.15rem !important;
+        }
+        .st-key-cust_header [data-testid="stPopover"] button {
+            padding: 2px 6px !important;
+        }
+        .st-key-cust_header [data-testid="stPopover"] button p {
+            font-size: 12px !important;
+        }
+        .st-key-cart_wrap [data-testid="stPopover"] button p {
+            font-size: 13px !important;
+            font-weight: 700 !important;
+        }
+        .hdr-date-full {
+            display: none !important;
+        }
+        .hdr-date-short {
+            display: inline-block !important;
+            font-size: 11px !important;
+        }
+        .hdr-table {
+            font-size: 0.82rem !important;
+            padding: 2px 8px !important;
+        }
+
+        /* แถวบน (โซเชียล, แจ้งเตือน, สมาชิก) */
+        .st-key-row_top_header [data-testid="stHorizontalBlock"] {
+            flex-wrap: nowrap !important;
+            justify-content: space-between !important;
+        }
+        .st-key-row_top_header [data-testid="stColumn"]:nth-child(1) {
+            width: auto !important;
+            flex: 0 0 auto !important;
+        }
+        .st-key-row_top_header [data-testid="stColumn"]:nth-child(2),
+        .st-key-row_top_header [data-testid="stColumn"]:nth-child(3) {
+            width: auto !important;
+            flex: 0 0 auto !important;
+        }
+
+        /* แถวกลาง (โลโก้, ช่องค้นหา, ตะกร้า): ป้องกันภาพซ้อนทับกันบนมือถือ */
+        .st-key-row_main_header [data-testid="stHorizontalBlock"] {
+            flex-wrap: wrap !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            gap: 6px 0 !important;
+        }
+        /* โลโก้: อยู่บรรทัดบน ชิดซ้าย ไม่ให้ตัวหนังสือล้น */
+        .st-key-row_main_header [data-testid="stColumn"]:nth-child(1) {
+            order: 1 !important;
+            width: calc(100% - 95px) !important;
+            max-width: calc(100% - 95px) !important;
+            flex: 1 1 auto !important;
+        }
+        /* ตะกร้า: อยู่บรรทัดบน ชิดขวา ไม่ถูกบีบตัวหนังสือแนวตั้ง */
+        .st-key-row_main_header [data-testid="stColumn"]:nth-child(3) {
+            order: 2 !important;
+            width: 85px !important;
+            min-width: 85px !important;
+            max-width: 85px !important;
+            flex: 0 0 85px !important;
+            text-align: right !important;
+        }
+        /* ช่องค้นหา: ตกมาอยู่บรรทัดถัดไป ขยายเต็มความกว้าง 100% ไม่ทับซ้อนกับโลโก้หรือข้อความใดๆ */
+        .st-key-row_main_header [data-testid="stColumn"]:nth-child(2) {
+            order: 3 !important;
+            width: 100% !important;
+            min-width: 100% !important;
+            flex: 1 1 100% !important;
+            margin-top: 4px !important;
+        }
+
+        /* แถวล่าง (วันที่, โต๊ะที่ 1, เปลี่ยนโต๊ะ) */
+        .st-key-row_bottom_header [data-testid="stHorizontalBlock"] {
+            flex-wrap: nowrap !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+        }
+        .st-key-row_bottom_header [data-testid="stColumn"]:nth-child(1) {
+            flex: 1 1 auto !important;
+            min-width: 0 !important;
+        }
+        .st-key-row_bottom_header [data-testid="stColumn"]:nth-child(2) {
+            flex: 0 0 auto !important;
+            min-width: 0 !important;
+        }
+        .st-key-row_bottom_header [data-testid="stColumn"]:nth-child(3) {
+            flex: 0 0 auto !important;
+            min-width: 0 !important;
+        }
     }
     </style>
     """, unsafe_allow_html=True)
@@ -603,75 +776,83 @@ def render_customer_view():
         hdr_logo_img = '<span style="font-size: 18px; font-weight: 800; color: #ffffff;">ฟ้าใส</span>'
 
     with st.container(key="cust_header"):
-        # ---------- แถวบน: โซเชียล | แจ้งเตือน | สมัครสมาชิก / เข้าสู่ระบบ ----------
-        r1_social, r1_notif, r1_member = st.columns([3, 1.3, 2])
-        with r1_social:
-            st.markdown(f"""
-            <div class="hdr-social">
-                <span class="hdr-follow">ติดตามเราบน</span>
-                <a href="{SOCIAL_LINKS['facebook']}" target="_blank" title="Facebook"><img src="https://cdn.simpleicons.org/facebook/ffffff" alt="Facebook" /></a>
-                <a href="{SOCIAL_LINKS['instagram']}" target="_blank" title="Instagram"><img src="https://cdn.simpleicons.org/instagram/ffffff" alt="Instagram" /></a>
-                <a href="{SOCIAL_LINKS['line']}" target="_blank" title="LINE"><img src="https://cdn.simpleicons.org/line/ffffff" alt="LINE" /></a>
-            </div>
-            """, unsafe_allow_html=True)
-        with r1_notif:
-            with st.container(key="notif_wrap"):
-                with st.popover("แจ้งเตือน", use_container_width=True):
-                    render_notif_body()
-                if notif_count > 0:
-                    st.markdown(f'<span class="hdr-badge">{notif_count if notif_count < 10 else "9+"}</span>', unsafe_allow_html=True)
-        with r1_member:
-            if current_member:
-                member_label = f"คุณ{current_member['first_name']} ({current_member['points']:,} แต้ม)"
-            else:
-                member_label = "สมัครสมาชิก / เข้าสู่ระบบ"
-            with st.popover(member_label, use_container_width=True):
-                render_member_body()
+        # ---------- แถวบน: โซเชียล | แจ้งเตือน | สมาชิก ----------
+        with st.container(key="row_top_header"):
+            r1_social, r1_notif, r1_member = st.columns([1.5, 1, 1.2])
+            with r1_social:
+                st.markdown(f"""
+                <div class="hdr-social">
+                    <span class="hdr-follow">ติดตามเราบน</span>
+                    <a href="{SOCIAL_LINKS['facebook']}" target="_blank" title="Facebook"><img src="https://cdn.simpleicons.org/facebook/ffffff" alt="Facebook" /></a>
+                    <a href="{SOCIAL_LINKS['instagram']}" target="_blank" title="Instagram"><img src="https://cdn.simpleicons.org/instagram/ffffff" alt="Instagram" /></a>
+                    <a href="{SOCIAL_LINKS['line']}" target="_blank" title="LINE"><img src="https://cdn.simpleicons.org/line/ffffff" alt="LINE" /></a>
+                </div>
+                """, unsafe_allow_html=True)
+            with r1_notif:
+                with st.container(key="notif_wrap"):
+                    with st.popover("แจ้งเตือน", use_container_width=True):
+                        render_notif_body()
+                    if notif_count > 0:
+                        st.markdown(f'<span class="hdr-badge">{notif_count if notif_count < 10 else "9+"}</span>', unsafe_allow_html=True)
+            with r1_member:
+                if current_member:
+                    member_label = f"คุณ{current_member['first_name']}"
+                else:
+                    member_label = "สมาชิก"
+                with st.popover(member_label, use_container_width=True):
+                    render_member_body()
 
         # ---------- แถวกลาง: โลโก้ | ช่องค้นหา | ตะกร้า ----------
-        r2_logo, r2_search, r2_cart = st.columns([2, 5, 1])
-        with r2_logo:
-            st.markdown(f"""
-            <div class="hdr-logo">
-                {hdr_logo_img}
-                <div>
-                    <div class="hdr-name">ฟ้าใสตำนัว</div>
-                    <div class="hdr-tag">ส้มตำ ยำ ลาบ ย่าง แซ่บนัว</div>
+        with st.container(key="row_main_header"):
+            r2_logo, r2_search, r2_cart = st.columns([2.5, 4.5, 1.3])
+            with r2_logo:
+                st.markdown(f"""
+                <div class="hdr-logo">
+                    {hdr_logo_img}
+                    <div>
+                        <div class="hdr-name">ฟ้าใสตำนัว</div>
+                        <div class="hdr-tag">ส้มตำ ยำ ลาบ ย่าง แซ่บนัว</div>
+                    </div>
                 </div>
-            </div>
-            """, unsafe_allow_html=True)
-        with r2_search:
-            search_kw = st.text_input(
-                "ค้นหาเมนูอาหาร",
-                placeholder="ค้นหาเมนู เช่น ตำปู, ลาบหมู, คอหมูย่าง",
-                key="cust_search_kw",
-                label_visibility="collapsed"
-            ).strip()
-        with r2_cart:
-            with st.container(key="cart_wrap"):
-                with st.popover("ตะกร้า", use_container_width=True):
-                    render_cart_body()
-                if total_cart_qty > 0:
-                    st.markdown(f'<span class="hdr-badge">{total_cart_qty if total_cart_qty < 100 else "99+"}</span>', unsafe_allow_html=True)
+                """, unsafe_allow_html=True)
+            with r2_search:
+                search_kw = st.text_input(
+                    "ค้นหาเมนูอาหาร",
+                    placeholder="ค้นหาเมนู เช่น ตำปู, ลาบหมู, คอหมูย่าง",
+                    key="cust_search_kw",
+                    label_visibility="collapsed"
+                ).strip()
+            with r2_cart:
+                with st.container(key="cart_wrap"):
+                    with st.popover("ตะกร้า", use_container_width=True):
+                        render_cart_body()
+                    if total_cart_qty > 0:
+                        st.markdown(f'<span class="hdr-badge">{total_cart_qty if total_cart_qty < 100 else "99+"}</span>', unsafe_allow_html=True)
 
         # ---------- แถวล่าง: วัน เดือน ปี | ชื่อโต๊ะ | เปลี่ยนโต๊ะ ----------
-        r3_date, r3_table, r3_switch = st.columns([3, 1.3, 1.5])
-        with r3_date:
-            st.markdown(f'<div class="hdr-date">{thai_date_str}</div>', unsafe_allow_html=True)
-        with r3_table:
-            st.markdown(f'<div style="text-align: right;"><span class="hdr-table">{current_table_name}</span></div>', unsafe_allow_html=True)
-        with r3_switch:
-            # ปุ่มสลับ / เปลี่ยนโต๊ะอาหาร (สำหรับกรณีทดสอบโต๊ะอื่นๆ หรือลูกค้าเดินเข้าร้านเลือกโต๊ะเอง)
-            with st.popover("เปลี่ยนโต๊ะ", use_container_width=True):
-                st.markdown("##### เลือกโต๊ะอาหารที่ท่านนั่ง")
-                st.caption("สามารถเลือกหมายเลขโต๊ะเพื่อสั่งอาหารของโต๊ะนั้นๆ ได้เลยค่ะ")
-                table_select_options = [f"โต๊ะที่ {num} ({table_names_map.get(num, f'โต๊ะที่ {num}')})" for num in valid_tables]
-                curr_idx = valid_tables.index(current_table_num) if current_table_num in valid_tables else 0
-                sel_new_t = st.selectbox("เลือกโต๊ะ:", table_select_options, index=curr_idx, key="sb_switch_table")
-                if st.button("ยืนยันเปลี่ยนโต๊ะ", type="primary", use_container_width=True, key="btn_confirm_switch_t"):
-                    chosen_num = int(sel_new_t.split(" ")[1])
-                    st.query_params["table"] = chosen_num
-                    st.rerun()
+        with st.container(key="row_bottom_header"):
+            r3_date, r3_table, r3_switch = st.columns([2, 1, 1.2])
+            with r3_date:
+                st.markdown(f"""
+                <div class="hdr-date">
+                    <span class="hdr-date-full">{thai_date_str}</span>
+                    <span class="hdr-date-short">วัน{thai_days[now_th.weekday()]} {now_th.day}/{now_th.month}/{now_th.year + 543}</span>
+                </div>
+                """, unsafe_allow_html=True)
+            with r3_table:
+                st.markdown(f'<div style="text-align: right;"><span class="hdr-table">{current_table_name}</span></div>', unsafe_allow_html=True)
+            with r3_switch:
+                # ปุ่มสลับ / เปลี่ยนโต๊ะอาหาร (สำหรับกรณีทดสอบโต๊ะอื่นๆ หรือลูกค้าเดินเข้าร้านเลือกโต๊ะเอง)
+                with st.popover("เปลี่ยนโต๊ะ", use_container_width=True):
+                    st.markdown("##### เลือกโต๊ะอาหารที่ท่านนั่ง")
+                    st.caption("สามารถเลือกหมายเลขโต๊ะเพื่อสั่งอาหารของโต๊ะนั้นๆ ได้เลยค่ะ")
+                    table_select_options = [f"โต๊ะที่ {num} ({table_names_map.get(num, f'โต๊ะที่ {num}')})" for num in valid_tables]
+                    curr_idx = valid_tables.index(current_table_num) if current_table_num in valid_tables else 0
+                    sel_new_t = st.selectbox("เลือกโต๊ะ:", table_select_options, index=curr_idx, key="sb_switch_table")
+                    if st.button("ยืนยันเปลี่ยนโต๊ะ", type="primary", use_container_width=True, key="btn_confirm_switch_t"):
+                        chosen_num = int(sel_new_t.split(" ")[1])
+                        st.query_params["table"] = chosen_num
+                        st.rerun()
 
     # ==========================================================================
     # แถบแจ้งเตือนชำระเงินด่วน (แสดงเมื่ออาหารเสิร์ฟครบแล้ว หรือลูกค้าเคยแนบสลิปไว้)
