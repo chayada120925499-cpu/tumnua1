@@ -1,5 +1,5 @@
 # ==============================================================================
-# 📊 รายงานยอดขาย & สถิติผลประกอบการ (Sales Analytics & Reporting View)
+# รายงานยอดขาย & สถิติผลประกอบการ (Sales Analytics & Reporting View)
 # ==============================================================================
 import sqlite3
 import pandas as pd
@@ -9,23 +9,23 @@ from config import DB_NAME, get_thai_now
 
 def render_report_tab():
     """แสดงแท็บรายงานสรุปยอดขายแบบละเอียดและชัดเจน (ไม่เน้นรูปภาพ)"""
-    st.markdown("### 📊 รายงานสรุปยอดขาย (Sales & Revenue Report)")
+    st.markdown("### รายงานสรุปยอดขาย (Sales & Revenue Report)")
     st.caption("สรุปภาพรวมรายได้ ยอดขายแยกตามหมวดหมู่ และอันดับเมนูขายดีของร้านฟ้าใสตำนัว")
 
     conn = sqlite3.connect(DB_NAME)
     c = conn.cursor()
 
     # ==========================================================================
-    # 📅 1. ตัวกรองช่วงเวลา (Date & Period Filters)
+    # 1. ตัวกรองช่วงเวลา (Date & Period Filters)
     # ==========================================================================
     with st.container(border=True):
         f_col1, f_col2 = st.columns([2, 1.5])
         with f_col1:
             period_options = ["ทั้งหมด", "วันนี้", "เมื่อวาน", "7 วันล่าสุด", "เดือนนี้", "กำหนดวันเอง"]
-            sel_period = st.pills("📅 เลือกช่วงเวลา:", period_options, default="ทั้งหมด", key="report_period_pills")
+            sel_period = st.pills("เลือกช่วงเวลา:", period_options, default="ทั้งหมด", key="report_period_pills")
         with f_col2:
             sort_options = ["ยอดขายรวม (บาท)", "จำนวนจานที่ขายได้ (จาน)"]
-            sel_sort = st.pills("📊 จัดอันดับตาม:", sort_options, default="ยอดขายรวม (บาท)", key="report_sort_pills")
+            sel_sort = st.pills("จัดอันดับตาม:", sort_options, default="ยอดขายรวม (บาท)", key="report_sort_pills")
 
         thai_now = get_thai_now()
         today_str = thai_now.strftime('%Y-%m-%d')
@@ -64,7 +64,7 @@ def render_report_tab():
                 period_label = f"วันที่ {single_d.strftime('%d/%m/%Y')}"
 
     # ==========================================================================
-    # 💰 2. ดึงข้อมูลสรุปยอดขายภาพรวม (Executive Summary Metrics)
+    # 2. ดึงข้อมูลสรุปยอดขายภาพรวม (Executive Summary Metrics)
     # ==========================================================================
     c.execute(f'''
         SELECT 
@@ -91,25 +91,25 @@ def render_report_tab():
     total_items_sold = c.fetchone()[0] or 0
 
     if total_bills == 0 and total_items_sold == 0:
-        st.info(f"ℹ️ ยังไม่มีประวัติยอดขายในช่วงเวลา: **{period_label}** ค่ะ ลองเลือกช่วงเวลาอื่นด้านบนนะคะ")
+        st.info(f"ยังไม่มีประวัติยอดขายในช่วงเวลา: **{period_label}** ค่ะ ลองเลือกช่วงเวลาอื่นด้านบนนะคะ")
         conn.close()
         return
 
     # คำนวณค่าเฉลี่ยต่อบิล
     avg_per_bill = (total_revenue / total_bills) if total_bills > 0 else 0.0
 
-    st.markdown(f"#### 📌 สรุปภาพรวมยอดขาย: <span style='color: #ea580c;'>{period_label}</span>", unsafe_allow_html=True)
+    st.markdown(f"#### สรุปภาพรวมยอดขาย: <span style='color: #ea580c;'>{period_label}</span>", unsafe_allow_html=True)
     m1, m2, m3, m4, m5 = st.columns(5)
-    m1.metric("💰 ยอดขายสุทธิรวม", f"฿{int(total_revenue):,}")
-    m2.metric("🧾 จำนวนบิลที่ขายได้", f"{total_bills:,} บิล")
-    m3.metric("🍲 จำนวนอาหารที่ขายได้", f"{total_items_sold:,} จาน")
-    m4.metric("🎯 ยอดขายเฉลี่ยต่อบิล", f"฿{avg_per_bill:,.1f}")
-    m5.metric("🎁 ส่วนลดสมาชิกทั้งหมด", f"฿{int(total_discount):,}")
+    m1.metric("ยอดขายสุทธิรวม", f"฿{int(total_revenue):,}")
+    m2.metric("จำนวนบิลที่ขายได้", f"{total_bills:,} บิล")
+    m3.metric("จำนวนอาหารที่ขายได้", f"{total_items_sold:,} จาน")
+    m4.metric("ยอดขายเฉลี่ยต่อบิล", f"฿{avg_per_bill:,.1f}")
+    m5.metric("ส่วนลดสมาชิกทั้งหมด", f"฿{int(total_discount):,}")
 
     st.write("---")
 
     # ==========================================================================
-    # 🥇 3. สรุป 3 อันดับเมนูขายดีสูงสุด (Top 3 Best Sellers - ไม่มีรูปภาพ ชัดเจน)
+    # 3. สรุป 3 อันดับเมนูขายดีสูงสุด (Top 3 Best Sellers - ไม่มีรูปภาพ ชัดเจน)
     # ==========================================================================
     order_sql = "total_sales DESC, total_qty DESC" if "ยอดขายรวม" in sel_sort else "total_qty DESC, total_sales DESC"
 
@@ -130,12 +130,12 @@ def render_report_tab():
     best_sellers = c.fetchall()
 
     if best_sellers:
-        st.markdown("#### 🏆 3 อันดับเมนูทำเงินสูงสุด (Top 3 Highlights)")
+        st.markdown("#### 3 อันดับเมนูทำเงินสูงสุด (Top 3 Highlights)")
         top_cols = st.columns(min(3, len(best_sellers)))
         badges = [
-            ("🥇 อันดับ 1 (แชมป์ยอดขาย)", "#fffbeb", "#f59e0b", "#b45309"),
-            ("🥈 อันดับ 2", "#f8fafc", "#64748b", "#334155"),
-            ("🥉 อันดับ 3", "#fff7ed", "#ea580c", "#c2410c")
+            ("อันดับ 1 (แชมป์ยอดขาย)", "#fffbeb", "#f59e0b", "#b45309"),
+            ("อันดับ 2", "#f8fafc", "#64748b", "#334155"),
+            ("อันดับ 3", "#fff7ed", "#ea580c", "#c2410c")
         ]
 
         for idx in range(min(3, len(best_sellers))):
@@ -151,15 +151,15 @@ def render_report_tab():
                     )
                     st.markdown(f"<div style='font-size: 1.15rem; font-weight: 800; color: #1c1917; margin-bottom: 2px;'>{t_name}</div>", unsafe_allow_html=True)
                     st.caption(f"หมวดหมู่: {t_cat} • ราคา ฿{int(t_price)}/จาน")
-                    st.markdown(f"🔥 ขายได้: <b style='font-size: 1.15rem; color: #ea580c;'>{t_qty:,} จาน</b>", unsafe_allow_html=True)
-                    st.markdown(f"💵 รวมเงิน: <b style='font-size: 1.15rem; color: #15803d;'>฿{int(t_sales):,}</b> <span style='font-size: 0.82rem; color: #78716c;'>({pct_share:.1f}% ของยอดรวม)</span>", unsafe_allow_html=True)
+                    st.markdown(f"ขายได้: <b style='font-size: 1.15rem; color: #ea580c;'>{t_qty:,} จาน</b>", unsafe_allow_html=True)
+                    st.markdown(f"รวมเงิน: <b style='font-size: 1.15rem; color: #15803d;'>฿{int(t_sales):,}</b> <span style='font-size: 0.82rem; color: #78716c;'>({pct_share:.1f}% ของยอดรวม)</span>", unsafe_allow_html=True)
 
         st.write("---")
 
     # ==========================================================================
-    # 📂 4. สรุปยอดขายแยกตามหมวดหมู่อาหาร (Category Breakdown)
+    # 4. สรุปยอดขายแยกตามหมวดหมู่อาหาร (Category Breakdown)
     # ==========================================================================
-    st.markdown("#### 📂 ยอดขายแยกตามหมวดหมู่อาหาร")
+    st.markdown("#### ยอดขายแยกตามหมวดหมู่อาหาร")
     c.execute(f'''
         SELECT 
             COALESCE(mi.category, 'ทั่วไป') as category,
@@ -193,18 +193,18 @@ def render_report_tab():
     st.write("---")
 
     # ==========================================================================
-    # 📋 5. ตารางรายงานยอดขายรายเมนูแบบละเอียด (Itemized Menu Sales Table)
+    # 5. ตารางรายงานยอดขายรายเมนูแบบละเอียด (Itemized Menu Sales Table)
     # ==========================================================================
-    st.markdown("#### 📋 รายงานยอดขายรายเมนูทั้งหมด (Itemized Report)")
+    st.markdown("#### รายงานยอดขายรายเมนูทั้งหมด (Itemized Report)")
     st.caption("ตารางแสดงรายละเอียดเมนูอาหาร จำนวนจานที่ขายได้ ยอดเงินรวม และสัดส่วนยอดขายอย่างชัดเจน")
 
     # ฟิลเตอร์ค้นหาชื่อเมนู และเลือกหมวดหมู่
     c_s1, c_s2 = st.columns([2, 1.5])
     with c_s1:
-        search_menu = st.text_input("🔍 ค้นหาเมนูอาหาร:", placeholder="พิมพ์ชื่อเมนูเพื่อค้นหา...", key="report_search_input")
+        search_menu = st.text_input("ค้นหาเมนูอาหาร:", placeholder="พิมพ์ชื่อเมนูเพื่อค้นหา...", key="report_search_input")
     with c_s2:
         cat_list = ["ทั้งหมด"] + [row[0] for row in cat_summary]
-        filter_cat = st.selectbox("📂 กรองตามหมวดหมู่:", cat_list, key="report_cat_select")
+        filter_cat = st.selectbox("กรองตามหมวดหมู่:", cat_list, key="report_cat_select")
 
     # คัดกรองข้อมูลเมนู
     display_menus = best_sellers
@@ -225,11 +225,11 @@ def render_report_tab():
             
             # Badge อันดับ
             if rank == 1:
-                rank_str = "🥇 อันดับ 1"
+                rank_str = "อันดับ 1"
             elif rank == 2:
-                rank_str = "🥈 อันดับ 2"
+                rank_str = "อันดับ 2"
             elif rank == 3:
-                rank_str = "🥉 อันดับ 3"
+                rank_str = "อันดับ 3"
             else:
                 rank_str = f"#{rank}"
 
@@ -256,12 +256,12 @@ def render_report_tab():
         df_items = pd.DataFrame(table_rows)
         st.dataframe(df_items, use_container_width=True, hide_index=True)
 
-        # 📥 ปุ่มดาวน์โหลดข้อมูลเป็นไฟล์ CSV (UTF-8-SIG สำหรับเปิดใน Excel ภาษาไทยไม่เพี้ยน)
+        # ปุ่มดาวน์โหลดข้อมูลเป็นไฟล์ CSV (UTF-8-SIG สำหรับเปิดใน Excel ภาษาไทยไม่เพี้ยน)
         df_export = pd.DataFrame(raw_export_rows)
         csv_data = df_export.to_csv(index=False, encoding='utf-8-sig')
         file_timestamp = thai_now.strftime('%Y%m%d_%H%M')
         st.download_button(
-            label="📥 ดาวน์โหลดรายงานยอดขาย (CSV / Excel)",
+            label="ดาวน์โหลดรายงานยอดขาย (CSV / Excel)",
             data=csv_data,
             file_name=f"fahsai_sales_report_{file_timestamp}.csv",
             mime="text/csv",
@@ -271,9 +271,9 @@ def render_report_tab():
     st.write("---")
 
     # ==========================================================================
-    # 🗓️ 6. สรุปยอดขายรายวัน & ประวัติบิลที่ชำระแล้ว (Daily Sales & Bill Log)
+    # 6. สรุปยอดขายรายวัน & ประวัติบิลที่ชำระแล้ว (Daily Sales & Bill Log)
     # ==========================================================================
-    st.markdown("#### 🗓️ สรุปยอดขายรายวัน (Daily Breakdown)")
+    st.markdown("#### สรุปยอดขายรายวัน (Daily Breakdown)")
     c.execute(f'''
         SELECT 
             DATE(o.created_at) as sale_date,
@@ -301,8 +301,8 @@ def render_report_tab():
         df_daily = pd.DataFrame(daily_list)
         st.dataframe(df_daily, use_container_width=True, hide_index=True)
 
-    # 🧾 ประวัติบิลที่ชำระเงินแล้ว (คลี่ดูรายละเอียดบิลได้)
-    with st.expander("🧾 ดูประวัติบิลที่ชำระเงินแล้วทั้งหมด (Recent Paid Orders Log)"):
+    # ประวัติบิลที่ชำระเงินแล้ว (คลี่ดูรายละเอียดบิลได้)
+    with st.expander("ดูประวัติบิลที่ชำระเงินแล้วทั้งหมด (Recent Paid Orders Log)"):
         c.execute(f'''
             SELECT 
                 o.id,
@@ -329,7 +329,7 @@ def render_report_tab():
                 items_in_bill = c.fetchall()
                 items_summary = ", ".join([f"{it[0]} x{it[1]}" for it in items_in_bill])
                 
-                pay_label = "📱 พร้อมเพย์" if "prompt" in (b_pay or "").lower() else "💵 เงินสด"
+                pay_label = "พร้อมเพย์" if "prompt" in (b_pay or "").lower() else "เงินสด"
                 bill_table_data.append({
                     "รหัสบิล": f"#{b_id}",
                     "โต๊ะ": f"โต๊ะ {b_tbl}",

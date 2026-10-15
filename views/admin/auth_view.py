@@ -1,5 +1,5 @@
 # ==============================================================================
-# 🔐 ระบบยืนยันตัวตนผู้ดูแลร้าน & กู้คืนรหัสผ่าน (Admin Auth & Password Recovery)
+# ระบบยืนยันตัวตนผู้ดูแลร้าน & กู้คืนรหัสผ่าน (Admin Auth & Password Recovery)
 # ==============================================================================
 import os
 import secrets
@@ -28,9 +28,9 @@ def check_admin_auth():
     elif os.path.exists(logo_path):
         logo_html = f'<div style="text-align: center; margin-bottom: 8px;"><img src="{logo_path}" style="width: 145px; height: 145px; object-fit: cover; border-radius: 50%; border: 4px solid #ffedd5; box-shadow: 0 6px 20px rgba(234, 88, 12, 0.32); display: inline-block;" alt="โลโก้ฟ้าใสตำนัว" /></div>'
     else:
-        logo_html = '<div style="text-align: center; font-size: 75px; margin-bottom: 4px;">🌶️</div>'
+        logo_html = '<div style="text-align: center; font-size: 28px; font-weight: 800; color: #ea580c; margin-bottom: 4px;">ฟ้าใสตำนัว</div>'
 
-    # 🔒 กรณีที่ยังไม่ได้ลงชื่อเข้าใช้: แสดงฟอร์ม Login และระบบกู้คืนรหัสผ่าน
+    # กรณีที่ยังไม่ได้ลงชื่อเข้าใช้: แสดงฟอร์ม Login และระบบกู้คืนรหัสผ่าน
     if not st.session_state['admin_logged_in']:
         login_header_html = f'''
         {logo_html}
@@ -38,7 +38,7 @@ def check_admin_auth():
             ฟ้าใสตำนัว (ระบบจัดการหลังร้าน)
         </h1>
         <p style="text-align: center; color: #78716c; font-size: 1.05rem; margin: 0 0 16px 0;">
-            🔐 กรุณาลงชื่อเข้าใช้งานเพื่อเข้าถึงระบบจัดการร้าน จอครัว และเคาน์เตอร์คิดเงิน
+            กรุณาลงชื่อเข้าใช้งานเพื่อเข้าถึงระบบจัดการร้าน จอครัว และเคาน์เตอร์คิดเงิน
         </p>
         '''
         st.markdown(login_header_html, unsafe_allow_html=True)
@@ -51,9 +51,9 @@ def check_admin_auth():
                 st.caption("ป้อนชื่อผู้ใช้งานและรหัสผ่านเพื่อยืนยันสิทธิ์")
                 
                 with st.form("admin_login_form"):
-                    input_user = st.text_input("👤 ชื่อผู้ใช้ (Username):", placeholder="เช่น admin", key="inp_admin_user")
-                    input_pass = st.text_input("🔑 รหัสผ่าน (Password):", type="password", placeholder="ป้อนรหัสผ่าน", key="inp_admin_pass")
-                    submit_login = st.form_submit_button("🔓 ลงชื่อเข้าใช้", type="primary", use_container_width=True)
+                    input_user = st.text_input("ชื่อผู้ใช้ (Username):", placeholder="เช่น admin", key="inp_admin_user")
+                    input_pass = st.text_input("รหัสผ่าน (Password):", type="password", placeholder="ป้อนรหัสผ่าน", key="inp_admin_pass")
+                    submit_login = st.form_submit_button("ลงชื่อเข้าใช้", type="primary", use_container_width=True)
 
                     if submit_login:
                         if not input_user.strip() or not input_pass.strip():
@@ -74,24 +74,24 @@ def check_admin_auth():
                                     'role': user_record[5],
                                     'email': user_record[6]
                                 }
-                                st.toast(f"ยินดีต้อนรับ {user_record[4]} เข้าสู่ระบบค่ะ! 🎉", icon="✅")
+                                st.toast(f"ยินดีต้อนรับ {user_record[4]} เข้าสู่ระบบค่ะ!")
                                 st.rerun()
                             else:
-                                st.error("❌ ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง กรุณาลองใหม่อีกครั้งค่ะ")
+                                st.error("ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง กรุณาลองใหม่อีกครั้งค่ะ")
 
                 # ==============================================================
-                # ❓ ส่วนกู้คืนรหัสผ่านผ่านอีเมลของเจ้าของร้าน (Owner Email OTP)
+                # ส่วนกู้คืนรหัสผ่านผ่านอีเมลของเจ้าของร้าน (Owner Email OTP)
                 # ==============================================================
-                with st.expander("❓ ลืมรหัสผ่าน? (กู้คืนบัญชีผู้ดูแลผ่านอีเมล)"):
+                with st.expander("ลืมรหัสผ่าน? (กู้คืนบัญชีผู้ดูแลผ่านอีเมล)"):
                     reset_step = st.session_state.get('reset_step', 'request_otp')
 
                     if reset_step == 'request_otp':
-                        st.markdown("##### 📩 รับรหัส OTP ทางอีเมลของเจ้าของร้าน")
+                        st.markdown("##### รับรหัส OTP ทางอีเมลของเจ้าของร้าน")
                         st.caption("ระบบจะส่งรหัส OTP 6 หลักไปยังอีเมลส่วนตัวที่เจ้าของร้านผูกไว้ เพื่อความปลอดภัยสูงสุด (ไม่มีใครสามารถเข้าถึงได้นอกจากเจ้าของอีเมล)")
 
                         with st.form("form_req_otp"):
-                            inp_id = st.text_input("👤 ชื่อผู้ใช้ หรือ อีเมลของร้าน:", value="admin", key="inp_rec_id")
-                            btn_req_otp = st.form_submit_button("📩 ส่งรหัส OTP ไปยังอีเมล", type="primary", use_container_width=True)
+                            inp_id = st.text_input("ชื่อผู้ใช้ หรือ อีเมลของร้าน:", value="admin", key="inp_rec_id")
+                            btn_req_otp = st.form_submit_button("ส่งรหัส OTP ไปยังอีเมล", type="primary", use_container_width=True)
 
                             if btn_req_otp:
                                 if not inp_id.strip():
@@ -103,7 +103,7 @@ def check_admin_auth():
                                     user_found = c_otp.fetchone()
 
                                     if not user_found:
-                                        st.error("❌ ไม่พบบัญชีผู้ใช้หรืออีเมลนี้ในระบบค่ะ")
+                                        st.error("ไม่พบบัญชีผู้ใช้หรืออีเมลนี้ในระบบค่ะ")
                                         conn_otp.close()
                                     else:
                                         u_id, u_user, u_fname, u_email = user_found
@@ -146,17 +146,17 @@ def check_admin_auth():
 
                     elif reset_step == 'verify_otp':
                         masked_e = st.session_state.get('reset_email_masked', 'อีเมลของท่าน')
-                        st.markdown(f"##### 🔢 กรอกรหัส OTP และตั้งรหัสผ่านใหม่")
+                        st.markdown(f"##### กรอกรหัส OTP และตั้งรหัสผ่านใหม่")
                         st.caption(f"ระบบส่งรหัส OTP ไปที่: **{masked_e}** เรียบร้อยแล้ว (รหัสมีอายุ 10 นาที)")
 
                         if 'dev_otp' in st.session_state:
-                            st.info(f"💡 **[โหมดทดสอบ - ยังไม่ตั้งค่า Gmail ใน config.py]** รหัส OTP สำหรับทดสอบคือ: **`{st.session_state['dev_otp']}`**")
+                            st.info(f"**[โหมดทดสอบ - ยังไม่ตั้งค่า Gmail ใน config.py]** รหัส OTP สำหรับทดสอบคือ: **`{st.session_state['dev_otp']}`**")
 
                         with st.form("form_verify_otp"):
-                            inp_otp = st.text_input("🔢 รหัส OTP 6 หลัก:", max_chars=6, placeholder="ป้อนตัวเลข 6 หลัก", key="inp_otp_code")
-                            inp_new_pw = st.text_input("🔑 รหัสผ่านใหม่ (อย่างน้อย 6 ตัวอักษร):", type="password", key="inp_new_pw_otp")
-                            inp_cfm_pw = st.text_input("🔑 ยืนยันรหัสผ่านใหม่:", type="password", key="inp_cfm_pw_otp")
-                            btn_sub_otp = st.form_submit_button("🔄 ยืนยันและเปลี่ยนรหัสผ่าน", type="primary", use_container_width=True)
+                            inp_otp = st.text_input("รหัส OTP 6 หลัก:", max_chars=6, placeholder="ป้อนตัวเลข 6 หลัก", key="inp_otp_code")
+                            inp_new_pw = st.text_input("รหัสผ่านใหม่ (อย่างน้อย 6 ตัวอักษร):", type="password", key="inp_new_pw_otp")
+                            inp_cfm_pw = st.text_input("ยืนยันรหัสผ่านใหม่:", type="password", key="inp_cfm_pw_otp")
+                            btn_sub_otp = st.form_submit_button("ยืนยันและเปลี่ยนรหัสผ่าน", type="primary", use_container_width=True)
 
                             if btn_sub_otp:
                                 if not inp_otp.strip() or not inp_new_pw.strip():
@@ -177,7 +177,7 @@ def check_admin_auth():
                                     valid_otp = c_v.fetchone()
 
                                     if not valid_otp:
-                                        st.error("❌ รหัส OTP ไม่ถูกต้อง หรือหมดอายุแล้ว กรุณาลองใหม่อีกครั้งค่ะ")
+                                        st.error("รหัส OTP ไม่ถูกต้อง หรือหมดอายุแล้ว กรุณาลองใหม่อีกครั้งค่ะ")
                                         conn_v.close()
                                     else:
                                         # อัปเดตรหัสผ่านใหม่
@@ -189,24 +189,24 @@ def check_admin_auth():
 
                                         st.session_state['reset_step'] = 'request_otp'
                                         st.session_state.pop('dev_otp', None)
-                                        st.toast("🎉 ตั้งรหัสผ่านใหม่สำเร็จเรียบร้อยแล้ว!", icon="✅")
-                                        st.success("🎉 ตั้งรหัสผ่านใหม่สำเร็จเรียบร้อยแล้ว! ท่านสามารถเข้าสู่ระบบด้านบนได้ทันทีค่ะ")
+                                        st.toast("ตั้งรหัสผ่านใหม่สำเร็จเรียบร้อยแล้ว!")
+                                        st.success("ตั้งรหัสผ่านใหม่สำเร็จเรียบร้อยแล้ว! ท่านสามารถเข้าสู่ระบบด้านบนได้ทันทีค่ะ")
 
-                        if st.button("🔙 ขอส่งรหัสใหม่อีกครั้ง", key="btn_cancel_otp", use_container_width=True):
+                        if st.button("ขอส่งรหัสใหม่อีกครั้ง", key="btn_cancel_otp", use_container_width=True):
                             st.session_state['reset_step'] = 'request_otp'
                             st.rerun()
 
         render_app_footer()
         st.stop()
 
-    # 🔓 กรณีที่ลงชื่อเข้าใช้สำเร็จแล้ว: แสดงแถบข้อมูลผู้ใช้งาน + จัดการบัญชี
+    # กรณีที่ลงชื่อเข้าใช้สำเร็จแล้ว: แสดงแถบข้อมูลผู้ใช้งาน + จัดการบัญชี
     u_info = st.session_state.get('admin_user_info') or {}
     u_name = u_info.get('full_name', 'ผู้ดูแลระบบ')
     u_role = u_info.get('role', 'admin')
     u_email = u_info.get('email', 'owner@fahsaitumnua.com')
 
     # --------------------------------------------------------------------------
-    # 🧭 แถบหัวเว็บ Admin Header Bar สไตล์โต๊ะลูกค้า (สีส้มโค้งมน 3 แถว)
+    # แถบหัวเว็บ Admin Header Bar สไตล์โต๊ะลูกค้า (สีส้มโค้งมน 3 แถว)
     # --------------------------------------------------------------------------
     thai_days = ["จันทร์", "อังคาร", "พุธ", "พฤหัสบดี", "ศุกร์", "เสาร์", "อาทิตย์"]
     thai_months = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน",
@@ -244,7 +244,7 @@ def check_admin_auth():
     if logo_b64:
         hdr_logo_img = f'<img src="data:image/png;base64,{logo_b64}" alt="โลโก้ฟ้าใสตำนัว" />'
     else:
-        hdr_logo_img = '<span style="font-size: 38px;">🌶️</span>'
+        hdr_logo_img = '<span style="font-size: 18px; font-weight: 800; color: #ffffff;">ฟ้าใส</span>'
 
     st.markdown("""
     <style>
@@ -418,8 +418,8 @@ def check_admin_auth():
                 st.write("")
             with r1_notif:
                 with st.container(key="admin_notif_wrap"):
-                    with st.popover("🔔 ออเดอร์ใหม่", use_container_width=True):
-                        st.markdown("##### 🔔 รายการออเดอร์เข้าใหม่")
+                    with st.popover("ออเดอร์ใหม่", use_container_width=True):
+                        st.markdown("##### รายการออเดอร์เข้าใหม่")
                         if not recent_active_orders:
                             st.info("ไม่มีออเดอร์ใหม่ค้างในขณะนี้ค่ะ")
                         else:
@@ -434,7 +434,7 @@ def check_admin_auth():
                 with u_info_col:
                     st.markdown(f"""
                     <div class="admin-hdr-user-box">
-                        <span>🟢</span>
+                        <span>●</span>
                         <b>{u_name}</b>
                         <span class="admin-hdr-user-badge">{u_role.upper()}</span>
                     </div>
@@ -457,7 +457,7 @@ def check_admin_auth():
             with r2_search:
                 st.text_input(
                     "ค้นหาข้อมูลหลังร้าน",
-                    placeholder="🔍 ค้นหาโต๊ะ, รหัสบิล, เมนูอาหาร หรือชื่อลูกค้า...",
+                    placeholder="ค้นหาโต๊ะ, รหัสบิล, เมนูอาหาร หรือชื่อลูกค้า...",
                     key="admin_header_search",
                     label_visibility="collapsed"
                 )
@@ -467,7 +467,7 @@ def check_admin_auth():
             with r3_date_social:
                 st.markdown(f"""
                 <div class="admin-hdr-date" style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; line-height: 36px;">
-                    <span>📅 {thai_date_str}</span>
+                    <span>{thai_date_str}</span>
                     <span style="opacity: 0.5;">|</span>
                     <span class="admin-hdr-social">
                         <span class="admin-hdr-follow">ติดต่อเรา:</span>
@@ -480,13 +480,13 @@ def check_admin_auth():
             with r3_table_stat:
                 st.markdown(f"""
                 <div style="text-align: center;">
-                    <span class="admin-hdr-table">🪑 โต๊ะว่าง {available_tables_cnt}/{total_tables_cnt} โต๊ะ</span>
+                    <span class="admin-hdr-table">โต๊ะว่าง {available_tables_cnt}/{total_tables_cnt} โต๊ะ</span>
                 </div>
                 """, unsafe_allow_html=True)
             with r3_settings:
-                with st.popover("⚙️ ตั้งค่าบัญชี", use_container_width=True):
-                    st.markdown("### ⚙️ จัดการบัญชีผู้ดูแล")
-                    p_tab1, p_tab2 = st.tabs(["🔑 เปลี่ยนรหัสผ่าน", "📧 ผูกอีเมลกู้คืน"])
+                with st.popover("ตั้งค่าบัญชี", use_container_width=True):
+                    st.markdown("### จัดการบัญชีผู้ดูแล")
+                    p_tab1, p_tab2 = st.tabs(["เปลี่ยนรหัสผ่าน", "ผูกอีเมลกู้คืน"])
 
                     # แท็บเปลี่ยนรหัสผ่าน
                     with p_tab1:
@@ -494,7 +494,7 @@ def check_admin_auth():
                             old_pw = st.text_input("รหัสผ่านเดิม:", type="password", key="chg_old_pw")
                             new_pw = st.text_input("รหัสผ่านใหม่ (อย่างน้อย 6 ตัวอักษร):", type="password", key="chg_new_pw")
                             cfm_pw = st.text_input("ยืนยันรหัสผ่านใหม่:", type="password", key="chg_cfm_pw")
-                            btn_sub_pw = st.form_submit_button("💾 บันทึกรหัสผ่านใหม่", type="primary", use_container_width=True)
+                            btn_sub_pw = st.form_submit_button("บันทึกรหัสผ่านใหม่", type="primary", use_container_width=True)
                             
                             if btn_sub_pw:
                                 if not old_pw or not new_pw:
@@ -510,15 +510,15 @@ def check_admin_auth():
                                     u_rec = c_pw.fetchone()
                                     
                                     if not u_rec or not verify_password(old_pw.strip(), u_rec[1], u_rec[2]):
-                                        st.error("❌ รหัสผ่านเดิมไม่ถูกต้อง กรุณาตรวจสอบอีกครั้งค่ะ")
+                                        st.error("รหัสผ่านเดิมไม่ถูกต้อง กรุณาตรวจสอบอีกครั้งค่ะ")
                                         conn_pw.close()
                                     else:
                                         new_hash, new_salt = hash_password(new_pw.strip())
                                         c_pw.execute("UPDATE admin_users SET password_hash = ?, salt = ? WHERE id = ?", (new_hash, new_salt, u_info.get('id', 1)))
                                         conn_pw.commit()
                                         conn_pw.close()
-                                        st.toast("🎉 เปลี่ยนรหัสผ่านสำเร็จเรียบร้อยแล้ว!", icon="✅")
-                                        st.success("🎉 เปลี่ยนรหัสผ่านสำเร็จเรียบร้อยแล้ว!")
+                                        st.toast("เปลี่ยนรหัสผ่านสำเร็จเรียบร้อยแล้ว!")
+                                        st.success("เปลี่ยนรหัสผ่านสำเร็จเรียบร้อยแล้ว!")
                                         st.rerun()
 
                     # แท็บผูกอีเมลกู้คืน
@@ -526,7 +526,7 @@ def check_admin_auth():
                         st.caption("อีเมลนี้ใช้สำหรับรับรหัส OTP เมื่อลืมรหัสผ่าน")
                         with st.form("form_update_email"):
                             new_email_input = st.text_input("อีเมลสำหรับกู้คืนรหัสผ่าน:", value=u_email, key="inp_upd_email")
-                            btn_sub_email = st.form_submit_button("💾 อัปเดตอีเมล", type="primary", use_container_width=True)
+                            btn_sub_email = st.form_submit_button("อัปเดตอีเมล", type="primary", use_container_width=True)
                             if btn_sub_email:
                                 if not new_email_input.strip() or "@" not in new_email_input:
                                     st.error("กรุณาระบุรูปแบบอีเมลที่ถูกต้องค่ะ")
@@ -537,14 +537,14 @@ def check_admin_auth():
                                     conn_em.commit()
                                     conn_em.close()
                                     st.session_state['admin_user_info']['email'] = new_email_input.strip()
-                                    st.toast("🎉 อัปเดตอีเมลเรียบร้อยแล้ว!", icon="✅")
-                                    st.success("🎉 อัปเดตอีเมลกู้คืนรหัสผ่านเรียบร้อยแล้ว!")
+                                    st.toast("อัปเดตอีเมลเรียบร้อยแล้ว!")
+                                    st.success("อัปเดตอีเมลกู้คืนรหัสผ่านเรียบร้อยแล้ว!")
                                     st.rerun()
 
     if u_email == 'owner@fahsaitumnua.com' and not st.session_state.get('dismiss_sec_alert', False):
         col_warn, col_ack = st.columns([5.5, 1.1])
         with col_warn:
-            st.warning("🔒 **ข้อแนะนำด้านความปลอดภัย:** บัญชีนี้ยังใช้อีเมลตั้งต้นของระบบ กรุณาคลิกที่ **'⚙️ ตั้งค่าบัญชี'** ที่แถบหัวเว็บด้านบน เพื่อผูก **อีเมลส่วนตัวของเจ้าของร้าน** และเปลี่ยนรหัสผ่าน เพื่อป้องกันไม่ให้บุคคลอื่นสามารถเข้าถึงหรือกู้คืนรหัสผ่านได้ค่ะ")
+            st.warning("**ข้อแนะนำด้านความปลอดภัย:** บัญชีนี้ยังใช้อีเมลตั้งต้นของระบบ กรุณาคลิกที่ **'ตั้งค่าบัญชี'** ที่แถบหัวเว็บด้านบน เพื่อผูก **อีเมลส่วนตัวของเจ้าของร้าน** และเปลี่ยนรหัสผ่าน เพื่อป้องกันไม่ให้บุคคลอื่นสามารถเข้าถึงหรือกู้คืนรหัสผ่านได้ค่ะ")
         with col_ack:
             st.markdown("<div style='height: 6px;'></div>", unsafe_allow_html=True)
             if st.button("รับทราบ", key="btn_ack_sec_alert", use_container_width=True):

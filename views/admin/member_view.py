@@ -1,5 +1,5 @@
 # ==============================================================================
-# 👥 ประวัติลูกค้า & ระบบสมาชิกสะสมแต้ม (Customer CRM View)
+# ประวัติลูกค้า & ระบบสมาชิกสะสมแต้ม (Customer CRM View)
 # ==============================================================================
 import sqlite3
 import streamlit as st
@@ -7,14 +7,14 @@ from config import DB_NAME, get_thai_now
 
 def render_member_tab():
     """แสดงแท็บประวัติลูกค้าและระบบสมาชิกสะสมแต้ม"""
-    st.subheader("👥 ประวัติลูกค้า & ระบบสมาชิกสะสมแต้ม")
+    st.subheader("ประวัติลูกค้า & ระบบสมาชิกสะสมแต้ม")
     st.caption("ดูข้อมูลสมาชิก จัดการคะแนนสะสม เรียงลำดับจากคะแนนมากไปน้อย และสมัครสมาชิกใหม่หน้าร้าน")
     
     conn_mem = sqlite3.connect(DB_NAME)
     c_mem = conn_mem.cursor()
 
     # ฟอร์มสมัครสมาชิกลูกค้าใหม่ (ที่เคาน์เตอร์)
-    with st.expander("➕ สมัครสมาชิกลูกค้าใหม่ (ที่เคาน์เตอร์)", expanded=False):
+    with st.expander("สมัครสมาชิกลูกค้าใหม่ (ที่เคาน์เตอร์)", expanded=False):
         st.markdown("##### กรอกข้อมูลสมาชิกลูกค้า")
         st.caption("ข้อมูลที่ใช้: ชื่อ, นามสกุล และหมายเลขโทรศัพท์")
         mf_c1, mf_c2, mf_c3 = st.columns(3)
@@ -25,7 +25,7 @@ def render_member_tab():
         with mf_c3:
             adm_phone = st.text_input("หมายเลขโทรศัพท์:", key="adm_reg_phone", placeholder="เช่น 0937734851")
             
-        if st.button("➕ บันทึกข้อมูลสมาชิก", key="btn_adm_save_member", type="primary", use_container_width=True):
+        if st.button("บันทึกข้อมูลสมาชิก", key="btn_adm_save_member", type="primary", use_container_width=True):
             cl_adm_ph = adm_phone.strip().replace("-", "").replace(" ", "")
             if not adm_fname.strip() or not adm_lname.strip() or not cl_adm_ph:
                 st.error("กรุณากรอกข้อมูล ชื่อ นามสกุล และหมายเลขโทรศัพท์ให้ครบถ้วนค่ะ")
@@ -40,13 +40,13 @@ def render_member_tab():
                         (adm_fname.strip(), adm_lname.strip(), cl_adm_ph, reg_now)
                     )
                     conn_mem.commit()
-                    st.success(f"บันทึกสมาชิก 'คุณ {adm_fname} {adm_lname}' เรียบร้อยแล้วค่ะ! 🎉")
+                    st.success(f"บันทึกสมาชิก 'คุณ {adm_fname} {adm_lname}' เรียบร้อยแล้วค่ะ!")
                     st.rerun()
 
     st.write("---")
 
     # ช่องค้นหาลูกค้า
-    search_kw = st.text_input("🔍 ค้นหาลูกค้า (ชื่อ, นามสกุล หรือ เบอร์โทรศัพท์):", placeholder="พิมพ์คำค้นหา...", key="mem_search_input")
+    search_kw = st.text_input("ค้นหาลูกค้า (ชื่อ, นามสกุล หรือ เบอร์โทรศัพท์):", placeholder="พิมพ์คำค้นหา...", key="mem_search_input")
     kw_pattern = f"%{search_kw.strip()}%"
 
     # ดึงรายชื่อลูกค้า เรียงตามคะแนนสะสมจากมากไปน้อย (ORDER BY points DESC)
@@ -73,28 +73,28 @@ def render_member_tab():
     tot_m_cnt, tot_pts_sum = c_mem.fetchone()
 
     sm1, sm2, sm3 = st.columns(3)
-    sm1.metric("👥 สมาชิกทั้งหมด", f"{tot_m_cnt} คน")
-    sm2.metric("⭐ คะแนนสะสมรวมทั้งระบบ", f"{tot_pts_sum:,} แต้ม")
+    sm1.metric("สมาชิกทั้งหมด", f"{tot_m_cnt} คน")
+    sm2.metric("คะแนนสะสมรวมทั้งระบบ", f"{tot_pts_sum:,} แต้ม")
     top_member_txt = f"{members_list[0][1]} {members_list[0][2]} ({members_list[0][4]} แต้ม)" if members_list else "-"
-    sm3.metric("🥇 แชมป์แต้มสูงสุด", top_member_txt)
+    sm3.metric("คะแนนสูงสุด", top_member_txt)
 
-    st.markdown(f"### 📋 รายชื่อสมาชิกลูกค้า (เรียงตามคะแนนสะสมมากที่สุด)")
+    st.markdown(f"### รายชื่อสมาชิกลูกค้า (เรียงตามคะแนนสะสมมากที่สุด)")
     st.caption("กฎคะแนน: ทุก ๆ 100 บาท (ยอดสุทธิ) ได้รับ 1 คะแนน | 10 คะแนน แลกส่วนลด 25 บาท")
 
     if not members_list:
         if search_kw:
             st.warning(f"ไม่พบข้อมูลสมาชิกที่ตรงกับคำค้นหา '{search_kw}'")
         else:
-            st.info("ขณะนี้ยังไม่มีข้อมูลสมาชิกลูกค้าในระบบ สามารถกด **'➕ สมัครสมาชิกลูกค้าใหม่'** ด้านบนได้เลยค่ะ")
+            st.info("ขณะนี้ยังไม่มีข้อมูลสมาชิกลูกค้าในระบบ สามารถกด **'สมัครสมาชิกลูกค้าใหม่'** ด้านบนได้เลยค่ะ")
     else:
         for idx, (mid, fname, lname, phone, pts, reg_date, order_cnt, spent) in enumerate(members_list, 1):
             # ตราอันดับคะแนน
             if idx == 1:
-                badge = "🥇 อันดับ 1"
+                badge = "อันดับ 1"
             elif idx == 2:
-                badge = "🥈 อันดับ 2"
+                badge = "อันดับ 2"
             elif idx == 3:
-                badge = "🥉 อันดับ 3"
+                badge = "อันดับ 3"
             else:
                 badge = f"#{idx}"
 
@@ -104,13 +104,13 @@ def render_member_tab():
                     st.markdown(f"<div style='font-size: 1.15rem; font-weight: 700; color: #ea580c; text-align: center; line-height: 40px;'>{badge}</div>", unsafe_allow_html=True)
                 with mc2:
                     st.markdown(f"**คุณ{fname} {lname}**")
-                    st.caption(f"📞 เบอร์โทร: **{phone}** • สมัครเมื่อ: {reg_date[:10] if reg_date else '-'}")
+                    st.caption(f"เบอร์โทร: **{phone}** • สมัครเมื่อ: {reg_date[:10] if reg_date else '-'}")
                 with mc3:
-                    st.markdown(f"⭐ คะแนนสะสม: <span style='font-size: 1.25rem; font-weight: 800; color: #ea580c;'>{pts:,}</span> แต้ม", unsafe_allow_html=True)
+                    st.markdown(f"คะแนนสะสม: <span style='font-size: 1.25rem; font-weight: 800; color: #ea580c;'>{pts:,}</span> แต้ม", unsafe_allow_html=True)
                     discount_avail = (pts // 10) * 25
                     st.caption(f"แลกส่วนลดได้สูงสุด: **฿{discount_avail:,}**")
                 with mc4:
-                    st.markdown(f"🍽️ มาทาน: **{order_cnt} ครั้ง**")
+                    st.markdown(f"มาทาน: **{order_cnt} ครั้ง**")
                     st.caption(f"ยอดซื้อสะสม: **฿{int(spent):,}**")
 
     conn_mem.close()
