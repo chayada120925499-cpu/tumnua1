@@ -639,28 +639,23 @@ button[aria-label*="fork"] {
         var currentPath = window.location.pathname;
         var currentSearch = window.location.search;
 
-        // ถ้าพบว่าติด /~/+/ หรือมี mode=admin ซ้ำซ้อน หรือ parameter เพี้ยน
-        if (currentHref.includes('mode=admin') || currentHref.includes('/~/+/')) {
+        // 1. ตรวจสอบว่าต้องดันออกจาก iframe พรีวิว (/~/+/) หรือไม่
+        if (window.top !== window.self && (window.location.pathname.includes('/~/+/') || currentHref.includes('mode=admin?mode=admin'))) {
             var isAdmin = currentHref.includes('mode=admin');
-            var isTable = currentHref.includes('table=');
-            var cleanSearch = '';
-            
-            if (isAdmin) {
-                cleanSearch = '?mode=admin';
-            } else if (isTable) {
-                var match = currentHref.match(/table=([0-9]+)/);
-                cleanSearch = match ? '?table=' + match[1] : '';
-            }
+            var matchTable = currentHref.match(/table=([0-9]+)/);
+            var destSearch = '?embed=true';
+            if (isAdmin) destSearch += '&mode=admin';
+            else if (matchTable) destSearch += '&table=' + matchTable[1];
+            try {
+                window.top.location.href = window.top.location.origin + '/' + destSearch;
+            } catch(e) {}
+        }
 
-            var cleanUrl = window.location.origin + '/' + cleanSearch;
-
-            // 1. ถ้าอยู่ภายใน iframe พรีวิวของ streamlit cloud (/~/+/) ให้ดันออกสู่หน้าต่างหลัก
-            if (window.top !== window.self && (window.location.pathname.includes('/~/+/') || currentHref.includes('mode=admin?mode=admin'))) {
-                window.top.location.href = cleanUrl;
-            } else if (window.location.href !== cleanUrl && (currentHref.includes('mode=admin?mode=admin') || currentHref.includes('/+/'))) {
-                // 2. ถ้าเป็นหน้าต่างหลัก แต่ URL มีความซ้ำซ้อน ให้คลีน URL ทันที
-                window.history.replaceState(null, '', cleanUrl);
-            }
+        // 2. ถ้า URL หลักยังไม่มี embed=true ให้ใส่ embed=true เพื่อซ่อนแถบ Streamlit Cloud อัตโนมัติ
+        if (!currentSearch.includes('embed=true')) {
+            var sep = currentSearch ? '&' : '?';
+            var newUrl = window.location.pathname + currentSearch + sep + 'embed=true';
+            window.location.replace(newUrl);
         }
     } catch(e) {}
 })();
