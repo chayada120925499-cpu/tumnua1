@@ -58,7 +58,7 @@ def render_pos_dashboard():
         st.write("---")
 
     c.execute('''
-        SELECT id, table_id, status, total_price, created_at 
+        SELECT id, table_id, status, total_price, created_at, slip_image, slip_uploaded_at 
         FROM orders 
         WHERE status NOT IN ('paid', 'archived')
         ORDER BY 
@@ -75,7 +75,7 @@ def render_pos_dashboard():
         st.success("ไม่มีออเดอร์ค้างในครัว ระบบพร้อมรับออเดอร์ใหม่เสมอค่ะ")
     else:
         grid_cols = st.columns(3)
-        for idx, (oid, t_id, st_code, total, otime) in enumerate(orders_to_manage):
+        for idx, (oid, t_id, st_code, total, otime, slip_img, slip_time) in enumerate(orders_to_manage):
             with grid_cols[idx % 3]:
                 with st.container(border=True):
                     # หัวการ์ดโต๊ะในจอครัวแบบมีสีสันสดใสไล่เฉด (Vibrant KDS Table Header)
@@ -174,6 +174,19 @@ def render_pos_dashboard():
                     st.write("---")
                     st.markdown(f"**ยอดรวม: <span style='color: #ea580c; font-size: 1.15rem; font-weight: bold;'>฿{int(total):,}</span>**", unsafe_allow_html=True)
                     
+                    # แสดงสถานะสลิปที่ลูกค้าแนบมา
+                    if slip_img and os.path.exists(slip_img):
+                        st.markdown(f"""
+                        <div style="background: #f0fdf4; border: 1.5px solid #86efac; border-radius: 8px; padding: 6px 10px; margin: 6px 0;">
+                            <span style="color: #15803d; font-weight: bold; font-size: 0.88rem;">ลูกค้าแนบสลิปแล้ว</span>
+                            <span style="color: #64748b; font-size: 0.78rem; display: block;">เวลาที่แนบ: {slip_time or '-'}</span>
+                        </div>
+                        """, unsafe_allow_html=True)
+                        with st.popover("ตรวจสอบสลิปโอนเงิน", use_container_width=True):
+                            st.markdown(f"##### สลิปโอนเงิน โต๊ะที่ {t_id} (บิล #{oid})")
+                            st.caption(f"ยอดที่ต้องชำระ: ฿{int(total):,}")
+                            st.image(slip_img, use_container_width=True)
+
                     # Requirement: เช็คบิลได้เฉพาะเมื่อเสิร์ฟครบทุกเมนูแล้วเท่านั้น
                     if not all_items_served:
                         st.warning(f"เสิร์ฟแล้ว {served_items}/{total_items} เมนู (ปุ่มเช็คบิลจะเปิดเมื่อเสิร์ฟครบ)")
@@ -196,7 +209,7 @@ def render_pos_dashboard():
     st.write("---")
     with st.expander("ประวัติบิลที่ชำระแล้ววันนี้ (ดู/พิมพ์ใบเสร็จย้อนหลัง)", expanded=False):
         c.execute("""
-            SELECT id, table_id, total_price, created_at, status 
+            SELECT id, table_id, total_price, created_at, status, slip_image 
             FROM orders 
             WHERE status IN ('paid', 'archived')
             ORDER BY id DESC LIMIT 15
@@ -205,14 +218,24 @@ def render_pos_dashboard():
         if not past_orders:
             st.info("ยังไม่มีบิลที่ชำระแล้วในวันนี้ค่ะ")
         else:
-            for p_id, p_tid, p_tot, p_time, p_st in past_orders:
-                st_p_col1, st_p_col2, st_p_col3 = st.columns([2, 1.5, 1.5])
+            for p_id, p_tid, p_tot, p_time, p_st, p_slip in past_orders:
+                st_p_col1, st_p_col2, st_p_col3 = st.columns([2, 1.2, 1.8])
                 st_p_col1.markdown(f"**บิล #{p_id}** — โต๊ะที่ {p_tid} (เวลา: {p_time})")
                 st_p_col2.markdown(f"**฿{int(p_tot):,}**")
                 with st_p_col3:
-                    if st.button("พิมพ์ใบเสร็จ", key=f"btn_reprint_{p_id}", use_container_width=True):
-                        st.session_state['active_receipt_oid'] = p_id
-                        st.rerun()
+                    if p_slip and os.path.exists(p_slip):
+                        b_col1, b_col2 = st.columns(2)
+                        with b_col1:
+                            if st.button("พิมพ์ใบเสร็จ", key=f"btn_reprint_{p_id}", use_container_width=True):
+                                st.session_state['active_receipt_oid'] = p_id
+                                st.rerun()
+                        with b_col2:
+                            with st.popover("สลิป", use_container_width=True):
+                                st.image(p_slip, caption=f"สลิปบิล #{p_id}", use_container_width=True)
+                    else:
+                        if st.button("พิมพ์ใบเสร็จ", key=f"btn_reprint_{p_id}", use_container_width=True):
+                            st.session_state['active_receipt_oid'] = p_id
+                            st.rerun()
                         
     conn.close()
 
