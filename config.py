@@ -549,13 +549,91 @@ div[data-testid="stTabs"] button[role="tab"][aria-selected="true"] p {
     font-weight: 700 !important;
 }
 
-/* ซ่อนแถบเมนูที่ไม่จำเป็นของ Streamlit เพื่อประสบการณ์แบบ App แท้ */
-#MainMenu {visibility: hidden;}
-footer {visibility: hidden;}
-header {visibility: hidden;}
+/* 🚫 ซ่อน Header, Toolbar, Fork icon, GitHub, Share, MainMenu และ Watermark ทั้งหมดของ Streamlit Cloud */
+header,
+header[data-testid="stHeader"],
+[data-testid="stHeader"],
+div[data-testid="stHeader"] {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0px !important;
+    min-height: 0px !important;
+    max-height: 0px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+[data-testid="stToolbar"],
+[data-testid="stToolbarActions"],
+[data-testid="stDecoration"],
+[data-testid="stStatusWidget"],
+[data-testid="stAppDeployButton"],
+#MainMenu,
+footer,
+footer[data-testid="stFooter"],
+div[class*="viewerBadge"],
+div[class*="ProfileButton"],
+div[class*="stToolbarActions"],
+a[href*="github.com"],
+button[title*="Fork"],
+button[title*="fork"],
+button[aria-label*="Fork"],
+button[aria-label*="fork"] {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0px !important;
+    width: 0px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* ดึงเนื้อหาเว็บขึ้นมาชิดขอบบนสุดเพื่อไม่ให้มีช่องว่างสีขาวเหลือจาก header */
+.main .block-container,
+[data-testid="stAppViewContainer"] > .main {
+    padding-top: 0.8rem !important;
+}
 </style>
 <script>
 (function() {
+    function hideStreamlitHeaders() {
+        try {
+            var selectors = [
+                'header[data-testid="stHeader"]',
+                '[data-testid="stHeader"]',
+                'header',
+                '[data-testid="stToolbar"]',
+                '[data-testid="stToolbarActions"]',
+                '[data-testid="stDecoration"]',
+                '[data-testid="stStatusWidget"]',
+                '[data-testid="stAppDeployButton"]',
+                '#MainMenu',
+                'footer',
+                'div[class*="viewerBadge"]',
+                'div[class*="ProfileButton"]'
+            ];
+            selectors.forEach(function(s) {
+                var items = document.querySelectorAll(s);
+                items.forEach(function(el) {
+                    el.style.setProperty('display', 'none', 'important');
+                    el.style.setProperty('visibility', 'hidden', 'important');
+                    el.style.setProperty('height', '0px', 'important');
+                    el.style.setProperty('opacity', '0', 'important');
+                    el.style.setProperty('pointer-events', 'none', 'important');
+                });
+            });
+        } catch(e) {}
+    }
+
+    // ซ่อนทันทีและตั้ง interval ตรวจสอบเป็นระยะ
+    hideStreamlitHeaders();
+    document.addEventListener("DOMContentLoaded", hideStreamlitHeaders);
+    window.addEventListener("load", hideStreamlitHeaders);
+    setInterval(hideStreamlitHeaders, 500);
+
     try {
         var currentHref = window.location.href;
         var currentPath = window.location.pathname;
@@ -587,5 +665,6 @@ header {visibility: hidden;}
     } catch(e) {}
 })();
 </script>
+
 """, unsafe_allow_html=True)
 
