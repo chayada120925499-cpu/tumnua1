@@ -86,7 +86,29 @@ def render_pos_dashboard():
                         <span style="background: #ffffff; color: #ea580c; padding: 2px 8px; border-radius: 6px; font-weight: 800; font-size: 0.85rem;">บิล #{oid}</span>
                     </div>
                     """, unsafe_allow_html=True)
-                    st.caption(f"เวลาสั่งอาหาร: {otime}")
+                    # แสดงป้ายสถานะรวมของบิล
+                    st_badge_map = {
+                        'pending': ('รอรับออเดอร์', '#fff7ed', '#c2410c', '#fdba74'),
+                        'accepted': ('รับออเดอร์แล้ว • กำลังปรุง', '#eff6ff', '#1d4ed8', '#93c5fd'),
+                        'cooked': ('ปรุงเสร็จบางส่วน • กำลังเสิร์ฟ', '#f3e8ff', '#7e22ce', '#d8b4fe'),
+                        'served': ('เสิร์ฟครบทุกเมนูแล้ว', '#f0fdf4', '#15803d', '#86efac'),
+                    }
+                    sb_txt, sb_bg, sb_col, sb_bdr = st_badge_map.get(st_code, ('รอดำเนินการ', '#f8fafc', '#475569', '#cbd5e1'))
+                    st.markdown(f"""
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <span style="color: #64748b; font-size: 0.82rem;">เวลาสั่ง: {otime}</span>
+                        <span style="background: {sb_bg}; color: {sb_col}; border: 1.5px solid {sb_bdr}; padding: 2px 10px; border-radius: 999px; font-size: 0.82rem; font-weight: 700;">{sb_txt}</span>
+                    </div>
+                    """, unsafe_allow_html=True)
+
+                    # ปุ่มรับออเดอร์ (แจ้งไปยังหน้าจอลูกค้าทันทีว่าครัวรับออเดอร์และกำลังปรุงอาหาร)
+                    if st_code == 'pending':
+                        if st.button("รับออเดอร์ (เริ่มปรุงอาหาร)", key=f"btn_accept_ord_{oid}", type="primary", use_container_width=True):
+                            c.execute("UPDATE orders SET status = 'accepted' WHERE id = ?", (oid,))
+                            c.execute("UPDATE order_items SET status = 'accepted' WHERE order_id = ? AND (status IS NULL OR status = 'pending')", (oid,))
+                            conn.commit()
+                            st.toast(f"รับออเดอร์ #{oid} (โต๊ะที่ {t_id}) เรียบร้อยแล้ว แจ้งเตือนไปยังหน้าจอลูกค้าแล้วค่ะ!")
+                            st.rerun()
                     
                     c.execute("""
                         SELECT oi.id, oi.item_name, oi.quantity, oi.note, oi.price, COALESCE(oi.status, 'pending'), mi.image
@@ -117,15 +139,17 @@ def render_pos_dashboard():
                                     st.caption(f"หมายเหตุ: {inote}")
                                 
                                 if istatus == 'pending':
-                                    st.markdown("<span style='background: #fff7ed; color: #c2410c; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; border: 1px solid #fdba74;'>กำลังปรุง</span>", unsafe_allow_html=True)
+                                    st.markdown("<span style='background: #fff7ed; color: #c2410c; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; border: 1px solid #fdba74;'>รอรับออเดอร์</span>", unsafe_allow_html=True)
+                                elif istatus == 'accepted':
+                                    st.markdown("<span style='background: #eff6ff; color: #1d4ed8; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; border: 1px solid #93c5fd;'>กำลังปรุง</span>", unsafe_allow_html=True)
                                 elif istatus == 'cooked':
-                                    st.markdown("<span style='background: #f3e8ff; color: #7e22ce; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; border: 1px solid #d8b4fe;'>เสร็จแล้ว</span>", unsafe_allow_html=True)
+                                    st.markdown("<span style='background: #f3e8ff; color: #7e22ce; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; border: 1px solid #d8b4fe;'>ปรุงเสร็จแล้ว</span>", unsafe_allow_html=True)
                                 elif istatus == 'served':
                                     st.markdown("<span style='background: #f0fdf4; color: #15803d; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; border: 1px solid #86efac;'>เสิร์ฟแล้ว</span>", unsafe_allow_html=True)
                             
                             # ปุ่มเปลี่ยนสถานะแต่ละเมนู: เสร็จแล้ว / นำเสิร์ฟแล้ว
                             act_c1, act_c2 = st.columns(2)
-                            if istatus == 'pending':
+                            if istatus in ('pending', 'accepted'):
                                 with act_c1:
                                     if st.button("เสร็จ", key=f"btn_ck_{oi_id}", use_container_width=True, help="เปลี่ยนสถานะเป็นปรุงเสร็จแล้ว"):
                                         c.execute("UPDATE order_items SET status = 'cooked' WHERE id = ?", (oi_id,))
@@ -151,6 +175,8 @@ def render_pos_dashboard():
                                         c.execute("SELECT COUNT(*) FROM order_items WHERE order_id = ? AND status != 'served'", (oid,))
                                         if c.fetchone()[0] == 0:
                                             c.execute("UPDATE orders SET status = 'served' WHERE id = ?", (oid,))
+                                        else:
+                                            c.execute("UPDATE orders SET status = 'cooked' WHERE id = ?", (oid,))
                                         conn.commit()
                                         st.rerun()
                             elif istatus == 'served':
@@ -158,8 +184,8 @@ def render_pos_dashboard():
                                     st.write("")
                                 with act_c2:
                                     if st.button("ยกเลิก", key=f"btn_un_{oi_id}", use_container_width=True, help="ย้อนกลับเป็นกำลังปรุง"):
-                                        c.execute("UPDATE order_items SET status = 'pending' WHERE id = ?", (oi_id,))
-                                        c.execute("UPDATE orders SET status = 'cooked' WHERE id = ?", (oid,))
+                                        c.execute("UPDATE order_items SET status = 'accepted' WHERE id = ?", (oi_id,))
+                                        c.execute("UPDATE orders SET status = 'accepted' WHERE id = ?", (oid,))
                                         conn.commit()
                                         st.rerun()
                     
