@@ -53,7 +53,7 @@ def render_customer_view():
             if st.button("ไปที่ระบบจัดการหลังร้าน (Admin)", type="primary", use_container_width=True):
                 st.query_params["mode"] = "admin"
                 st.rerun()
-            st.markdown("<div style='text-align: center; margin-top: 8px;'><a href='/?embed=true&mode=admin' target='_top' style='color: #ea580c; text-decoration: underline; font-weight: bold; font-size: 14px;'>หรือคลิกที่นี่หากปุ่มไม่ตอบสนอง</a></div>", unsafe_allow_html=True)
+            st.markdown("<div style='text-align: center; margin-top: 8px;'><a href='/?mode=admin' target='_top' style='color: #ea580c; text-decoration: underline; font-weight: bold; font-size: 14px;'>หรือคลิกที่นี่หากปุ่มไม่ตอบสนอง</a></div>", unsafe_allow_html=True)
         st.stop()
         valid_tables = [1]
 
