@@ -454,6 +454,29 @@ def check_admin_auth():
         border-radius: 6px !important;
         margin-top: 5px !important;
     }
+    .st-key-adm_row_search [data-testid="stHorizontalBlock"] {
+        align-items: center !important;
+        gap: 6px !important;
+        flex-wrap: nowrap !important;
+    }
+    .st-key-adm_search_btn button {
+        height: 40px !important;
+        min-height: 40px !important;
+        max-height: 40px !important;
+        background: #ffffff !important;
+        color: #c2410c !important;
+        border: 2px solid #ffffff !important;
+        font-weight: 700 !important;
+        font-size: 13px !important;
+        border-radius: 8px !important;
+        white-space: nowrap !important;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1) !important;
+        width: 100% !important;
+    }
+    .st-key-adm_search_btn button:hover {
+        background: #ffedd5 !important;
+        color: #9a3412 !important;
+    }
 
     /* ==================== Responsive สำหรับหน้าจอมือถือ / iPhone (<= 768px) ==================== */
     @media (max-width: 768px) {
@@ -486,6 +509,29 @@ def check_admin_auth():
         }
         .admin-hdr-user-name-full { display: none !important; }
         .admin-hdr-user-box { font-size: 0.78rem !important; gap: 4px !important; }
+
+        /* แถวช่องค้นหาบนมือถือ: ล็อคขนาดปุ่มค้นหาให้พอดีนิ้วกด */
+        .st-key-adm_row_search [data-testid="stHorizontalBlock"] {
+            flex-wrap: nowrap !important;
+            gap: 5px !important;
+        }
+        .st-key-adm_row_search [data-testid="stColumn"]:nth-child(1) {
+            flex: 1 1 auto !important;
+            min-width: 0 !important;
+        }
+        .st-key-adm_row_search [data-testid="stColumn"]:nth-child(2) {
+            flex: 0 0 68px !important;
+            width: 68px !important;
+            max-width: 68px !important;
+            min-width: 68px !important;
+        }
+        .st-key-adm_search_btn button {
+            height: 38px !important;
+            min-height: 38px !important;
+            max-height: 38px !important;
+            font-size: 12px !important;
+            padding: 0 4px !important;
+        }
 
         /* แถวโลโก้และชื่อร้าน: ย่อขนาดให้กะทัดรัดบนหน้าจอ iPhone */
         .admin-hdr-brand img.admin-hdr-logo-img {
@@ -586,99 +632,18 @@ def check_admin_auth():
         </div>
         """, unsafe_allow_html=True)
 
-        # ---------- แถวที่ 3: ช่องค้นหาข้อมูลหลังร้าน (แยกเป็นแถวเดี่ยวเต็มความกว้าง 100% ไม่ชนกับโลโก้หรือข้อความ) ----------
-        search_admin_kw = st.text_input(
-            "ค้นหาข้อมูลหลังร้าน",
-            placeholder="ค้นหาโต๊ะ, รหัสบิล, เมนูอาหาร หรือชื่อลูกค้า...",
-            key="admin_header_search",
-            label_visibility="collapsed"
-        ).strip()
-
-        # แสดงกล่องผลการค้นหาข้อมูลหลังร้านแบบเรียลไทม์ (เมื่อผู้ใช้พิมพ์คำค้นหา)
-        if search_admin_kw:
-            with st.container(border=True):
-                st.markdown(f"**ผลการค้นหาข้อมูลสำหรับ:** `<span style='color: #ea580c; font-weight: 700;'>{search_admin_kw}</span>`", unsafe_allow_html=True)
-                conn_s = sqlite3.connect(DB_NAME)
-                c_s = conn_s.cursor()
-                kw_pat = f"%{search_admin_kw}%"
-
-                # 1. ค้นหาเมนูอาหาร (ชื่อ, หมวดหมู่, คำอธิบาย)
-                c_s.execute("""
-                    SELECT id, name, category, price 
-                    FROM menu_items 
-                    WHERE name LIKE ? OR category LIKE ? OR description LIKE ?
-                    LIMIT 6
-                """, (kw_pat, kw_pat, kw_pat))
-                res_menus = c_s.fetchall()
-
-                # 2. ค้นหาออเดอร์/บิล (รหัสบิล, โต๊ะ)
-                c_s.execute("""
-                    SELECT id, table_id, status, total_price, created_at 
-                    FROM orders 
-                    WHERE id LIKE ? OR table_id LIKE ? OR status LIKE ?
-                    ORDER BY id DESC LIMIT 6
-                """, (kw_pat, kw_pat, kw_pat))
-                res_orders = c_s.fetchall()
-
-                # 3. ค้นหาลูกค้า/สมาชิก (ชื่อ, นามสกุล, เบอร์โทร)
-                c_s.execute("""
-                    SELECT id, first_name, last_name, phone, points 
-                    FROM members 
-                    WHERE first_name LIKE ? OR last_name LIKE ? OR phone LIKE ?
-                    LIMIT 6
-                """, (kw_pat, kw_pat, kw_pat))
-                res_members = c_s.fetchall()
-
-                # 4. ค้นหาโต๊ะอาหาร (หมายเลข, ชื่อโต๊ะ)
-                c_s.execute("""
-                    SELECT table_number, name 
-                    FROM tables 
-                    WHERE table_number LIKE ? OR name LIKE ?
-                    LIMIT 6
-                """, (kw_pat, kw_pat))
-                res_tables = c_s.fetchall()
-                conn_s.close()
-
-                total_found = len(res_menus) + len(res_orders) + len(res_members) + len(res_tables)
-
-                if total_found == 0:
-                    st.info(f"ไม่พบข้อมูลที่ตรงกับคำค้นหา '{search_admin_kw}' ในระบบค่ะ ลองพิมพ์ชื่อเมนู โต๊ะ รหัสบิล หรือเบอร์โทรศัพท์นะคะ")
-                else:
-                    tab_s1, tab_s2, tab_s3, tab_s4 = st.tabs([
-                        f"เมนูอาหาร ({len(res_menus)})",
-                        f"ออเดอร์/บิล ({len(res_orders)})",
-                        f"สมาชิก/ลูกค้า ({len(res_members)})",
-                        f"โต๊ะอาหาร ({len(res_tables)})"
-                    ])
-
-                    with tab_s1:
-                        if not res_menus:
-                            st.caption("ไม่พบรายการอาหารที่ตรงกัน")
-                        else:
-                            for m_id, m_name, m_cat, m_price in res_menus:
-                                st.markdown(f"• **{m_name}** • หมวด: `{m_cat}` • ราคา: **฿{m_price:,.2f}**")
-
-                    with tab_s2:
-                        if not res_orders:
-                            st.caption("ไม่พบบิลออเดอร์ที่ตรงกัน")
-                        else:
-                            for o_id, o_tbl, o_stat, o_tot, o_time in res_orders:
-                                stat_color = "#16a34a" if o_stat in ('paid', 'served') else "#ea580c"
-                                st.markdown(f"• **บิล #{o_id}** • โต๊ะ {o_tbl} • ยอดรวม: **฿{int(o_tot):,}** • สถานะ: <span style='color: {stat_color}; font-weight: 600;'>{o_stat}</span> <span style='color: #64748b; font-size: 12px;'>({o_time})</span>", unsafe_allow_html=True)
-
-                    with tab_s3:
-                        if not res_members:
-                            st.caption("ไม่พบรายชื่อสมาชิกที่ตรงกัน")
-                        else:
-                            for mem_id, f_name, l_name, ph, pts in res_members:
-                                st.markdown(f"• คุณ{f_name} {l_name} • โทร: `{ph}` • แต้มสะสม: **{pts:,}** คะแนน")
-
-                    with tab_s4:
-                        if not res_tables:
-                            st.caption("ไม่พบข้อมูลโต๊ะที่ตรงกัน")
-                        else:
-                            for t_num, t_name in res_tables:
-                                st.markdown(f"• โต๊ะที่ {t_num} : **{t_name}**")
+        # ---------- แถวที่ 3: ช่องค้นหาข้อมูลหลังร้าน พร้อมปุ่มกดค้นหา ----------
+        with st.container(key="adm_row_search"):
+            c_sinp, c_sbtn = st.columns([4.2, 1.1])
+            with c_sinp:
+                search_admin_kw = st.text_input(
+                    "ค้นหาข้อมูลหลังร้าน",
+                    placeholder="ค้นหาโต๊ะ, รหัสบิล, เมนูอาหาร หรือชื่อลูกค้า...",
+                    key="admin_header_search",
+                    label_visibility="collapsed"
+                ).strip()
+            with c_sbtn:
+                st.button("ค้นหา", key="adm_search_btn", type="primary", use_container_width=True)
 
         # ---------- แถวที่ 4 (ล่าง): วัน เดือน ปี & โซเชียล | สถานะโต๊ะ | ตั้งค่าบัญชี ----------
         with st.container(key="adm_row_bot"):
@@ -761,6 +726,11 @@ def check_admin_auth():
                                     st.success("อัปเดตอีเมลกู้คืนรหัสผ่านเรียบร้อยแล้ว!")
                                     st.rerun()
 
+    # กล่องผลการค้นหาข้อมูลหลังร้านแบบรวมศูนย์ (แสดงเด่นชัดใต้ Header เมื่อมีคำค้นหา)
+    cur_adm_kw = st.session_state.get('admin_header_search', '').strip()
+    if cur_adm_kw:
+        render_admin_search_results(cur_adm_kw)
+
     if u_email == 'owner@fahsaitumnua.com' and not st.session_state.get('dismiss_sec_alert', False):
         col_warn, col_ack = st.columns([5.5, 1.1])
         with col_warn:
@@ -770,5 +740,125 @@ def check_admin_auth():
             if st.button("รับทราบ", key="btn_ack_sec_alert", use_container_width=True):
                 st.session_state['dismiss_sec_alert'] = True
                 st.rerun()
+
+def render_admin_search_results(kw: str):
+    """แสดงการ์ดผลการค้นหาข้อมูลหลังร้านแบบรวมศูนย์ ใต้แถบหัวเว็บ"""
+    import re
+    conn = sqlite3.connect(DB_NAME)
+    c = conn.cursor()
+    kw_clean = kw.strip()
+    kw_pat = f"%{kw_clean}%"
+
+    digits = re.findall(r'\d+', kw_clean)
+    num_val = int(digits[0]) if digits else None
+
+    # 1. โต๊ะอาหาร (ค้นหาตามหมายเลข หรือชื่อโต๊ะ เช่น '1' หรือ 'โต๊ะที่ 1')
+    if num_val is not None:
+        c.execute("""
+            SELECT t.table_number, t.name,
+                   COUNT(CASE WHEN o.status NOT IN ('paid', 'archived') THEN 1 END) as active_orders
+            FROM tables t
+            LEFT JOIN orders o ON t.table_number = o.table_id
+            WHERE t.table_number = ? OR t.name LIKE ?
+            GROUP BY t.table_number
+            LIMIT 6
+        """, (num_val, kw_pat))
+    else:
+        c.execute("""
+            SELECT t.table_number, t.name,
+                   COUNT(CASE WHEN o.status NOT IN ('paid', 'archived') THEN 1 END) as active_orders
+            FROM tables t
+            LEFT JOIN orders o ON t.table_number = o.table_id
+            WHERE t.name LIKE ?
+            GROUP BY t.table_number
+            LIMIT 6
+        """, (kw_pat,))
+    res_tables = c.fetchall()
+
+    # 2. บิล / ออเดอร์ (ค้นหาตามเลขบิล, โต๊ะ, สถานะ หรือชื่ออาหารที่สั่ง)
+    if num_val is not None:
+        c.execute("""
+            SELECT id, table_id, status, total_price, created_at 
+            FROM orders 
+            WHERE id = ? OR table_id = ?
+            ORDER BY id DESC LIMIT 6
+        """, (num_val, num_val))
+    else:
+        c.execute("""
+            SELECT DISTINCT o.id, o.table_id, o.status, o.total_price, o.created_at 
+            FROM orders o
+            LEFT JOIN order_items oi ON o.id = oi.order_id
+            WHERE o.status LIKE ? OR oi.item_name LIKE ?
+            ORDER BY o.id DESC LIMIT 6
+        """, (kw_pat, kw_pat))
+    res_orders = c.fetchall()
+
+    # 3. เมนูอาหาร (ค้นหาตามชื่อ, หมวดหมู่, คำอธิบาย)
+    c.execute("""
+        SELECT id, name, category, price, image 
+        FROM menu_items 
+        WHERE name LIKE ? OR category LIKE ? OR description LIKE ?
+        LIMIT 8
+    """, (kw_pat, kw_pat, kw_pat))
+    res_menus = c.fetchall()
+
+    # 4. สมาชิก / ลูกค้า (ค้นหาตามชื่อ, นามสกุล, เบอร์โทร)
+    c.execute("""
+        SELECT id, first_name, last_name, phone, points 
+        FROM members 
+        WHERE first_name LIKE ? OR last_name LIKE ? OR phone LIKE ?
+        LIMIT 6
+    """, (kw_pat, kw_pat, kw_pat))
+    res_members = c.fetchall()
+    conn.close()
+
+    total_count = len(res_tables) + len(res_orders) + len(res_menus) + len(res_members)
+
+    with st.container(border=True):
+        c_ttl, c_cls = st.columns([5, 1.4])
+        with c_ttl:
+            st.markdown(f"#### ผลการค้นหาข้อมูลหลังร้าน: <span style='color: #ea580c;'>\"{kw_clean}\"</span> (พบ {total_count} รายการ)", unsafe_allow_html=True)
+        with c_cls:
+            if st.button("ปิดผลค้นหา", key="btn_clear_adm_search", type="primary", use_container_width=True):
+                st.session_state['admin_header_search'] = ""
+                st.rerun()
+
+        if total_count == 0:
+            st.info(f"ไม่พบข้อมูลที่ตรงกับคำค้นหา '{kw_clean}' ค่ะ ลองพิมพ์คำอื่น เช่น ชื่อเมนู (ตำ, ยำ, ไก่), หมายเลขโต๊ะ (1, 2) หรือเบอร์โทรศัพท์นะคะ")
+            return
+
+        # แสดงโต๊ะอาหารที่พบ
+        if res_tables:
+            st.markdown("##### โต๊ะอาหาร")
+            t_cols = st.columns(min(len(res_tables), 4))
+            for idx, (t_num, t_name, act_cnt) in enumerate(res_tables):
+                with t_cols[idx % len(t_cols)]:
+                    with st.container(border=True):
+                        st.markdown(f"**{t_name}**")
+                        if act_cnt > 0:
+                            st.markdown(f"<span style='color: #ea580c; font-weight: 600; font-size: 13px;'>มีออเดอร์ ({act_cnt} บิล)</span>", unsafe_allow_html=True)
+                        else:
+                            st.markdown(f"<span style='color: #16a34a; font-weight: 600; font-size: 13px;'>โต๊ะว่าง</span>", unsafe_allow_html=True)
+
+        # แสดงบิล / ออเดอร์ที่พบ
+        if res_orders:
+            st.markdown("##### บิล / ออเดอร์")
+            for o_id, o_tbl, o_stat, o_tot, o_time in res_orders:
+                stat_th = {"pending": "รอครัวรับ", "accepted": "กำลังปรุง", "served": "เสิร์ฟแล้ว", "paid": "เช็คบิลแล้ว", "archived": "ปิดบิลแล้ว"}.get(o_stat, o_stat)
+                stat_color = "#16a34a" if o_stat in ('paid', 'served') else "#ea580c"
+                st.markdown(f"• **บิล #{o_id}** (โต๊ะ {o_tbl}) — ยอดรวม: **฿{int(o_tot):,}** — สถานะ: <span style='color: {stat_color}; font-weight: 600;'>{stat_th}</span> <span style='color: #64748b; font-size: 12px;'>({o_time})</span>", unsafe_allow_html=True)
+
+        # แสดงเมนูอาหารที่พบ
+        if res_menus:
+            st.markdown("##### รายการอาหาร")
+            for m_id, m_name, m_cat, m_price, m_img in res_menus:
+                st.markdown(f"• **{m_name}** ({m_cat}) — ราคา: **฿{m_price:,.2f}**")
+
+        # แสดงสมาชิกที่พบ
+        if res_members:
+            st.markdown("##### สมาชิก / ลูกค้า")
+            for mem_id, f_name, l_name, ph, pts in res_members:
+                st.markdown(f"• คุณ{f_name} {l_name} — เบอร์โทร: `{ph}` — แต้มสะสม: **{pts:,}** คะแนน")
+
 
 
