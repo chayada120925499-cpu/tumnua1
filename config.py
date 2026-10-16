@@ -43,7 +43,7 @@ def get_base64_image(image_path):
             return base64.b64encode(img_file.read()).decode()
     return ""
 
-def get_current_base_url(default="https://tumnua1-cae26py9kvbzmz4juo3sey.streamlit.app"):
+def get_current_base_url(default="https://tumnua1-fcjmlnyaebejaetpjkjbmd.streamlit.app"):
     """ตรวจจับ URL เว็บไซต์อัตโนมัติจาก Request Headers เพื่อใช้สร้าง QR Code"""
     try:
         if hasattr(st, 'context') and hasattr(st.context, 'headers'):
@@ -1025,23 +1025,16 @@ button[aria-label*="fork"] {
         var currentPath = window.location.pathname;
         var currentSearch = window.location.search;
 
-        // 1. ตรวจสอบว่าต้องดันออกจาก iframe พรีวิว (/~/+/) หรือไม่
+        // ตรวจสอบว่าต้องดันออกจาก iframe พรีวิว (/~/+/) หรือไม่
         if (window.top !== window.self && (window.location.pathname.includes('/~/+/') || currentHref.includes('mode=admin?mode=admin'))) {
             var isAdmin = currentHref.includes('mode=admin');
             var matchTable = currentHref.match(/table=([0-9]+)/);
-            var destSearch = '?embed=true';
-            if (isAdmin) destSearch += '&mode=admin';
-            else if (matchTable) destSearch += '&table=' + matchTable[1];
+            var destSearch = '';
+            if (isAdmin) destSearch = '?mode=admin';
+            else if (matchTable) destSearch = '?table=' + matchTable[1];
             try {
                 window.top.location.href = window.top.location.origin + '/' + destSearch;
             } catch(e) {}
-        }
-
-        // 2. ถ้า URL หลักบน Streamlit Cloud ยังไม่มี embed=true ให้ใส่ embed=true เพื่อซ่อนแถบอัตโนมัติ
-        if (window.location.hostname.includes('streamlit.app') && !currentSearch.includes('embed=true')) {
-            var sep = currentSearch ? '&' : '?';
-            var newUrl = window.location.pathname + currentSearch + sep + 'embed=true';
-            window.location.replace(newUrl);
         }
     } catch(e) {}
 })();
