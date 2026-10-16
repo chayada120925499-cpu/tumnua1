@@ -242,7 +242,7 @@ def check_admin_auth():
     conn_hdr.close()
 
     if logo_b64:
-        hdr_logo_img = f'<img src="data:image/png;base64,{logo_b64}" alt="โลโก้ฟ้าใสตำนัว" />'
+        hdr_logo_img = f'<img src="data:image/png;base64,{logo_b64}" class="admin-hdr-logo-img" style="width: 52px; height: 52px; min-width: 52px; max-width: 52px; min-height: 52px; max-height: 52px; border-radius: 50%; object-fit: cover; border: 2.5px solid #ffffff; background: #ffffff; flex-shrink: 0; display: block; margin: 0;" alt="โลโก้ฟ้าใสตำนัว" />'
     else:
         hdr_logo_img = '<span style="font-size: 18px; font-weight: 800; color: #ffffff;">ฟ้าใส</span>'
 
@@ -251,16 +251,27 @@ def check_admin_auth():
     .st-key-admin_header {
         background: linear-gradient(180deg, #f97316 0%, #ea580c 100%);
         border-radius: 14px;
-        padding: 10px 16px 12px 16px;
+        padding: 10px 14px 12px 14px;
         box-shadow: 0 4px 14px rgba(234, 88, 12, 0.30);
         margin-bottom: 12px;
         display: flex !important;
         flex-direction: column !important;
         gap: 6px !important;
     }
+    .st-key-admin_header [data-testid="stElementContainer"] {
+        display: block !important;
+        width: 100% !important;
+        margin: 0 !important;
+        text-align: left !important;
+    }
     .st-key-admin_header [data-testid="stHorizontalBlock"] {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
         align-items: center !important;
-        gap: 8px !important;
+        justify-content: space-between !important;
+        gap: 6px !important;
+        width: 100% !important;
     }
     .st-key-admin_header [data-testid="stColumn"] {
         min-width: 0 !important;
@@ -273,8 +284,9 @@ def check_admin_auth():
         color: #ffffff !important;
         min-height: 34px !important;
         height: 34px !important;
-        padding: 2px 10px !important;
+        padding: 2px 8px !important;
         white-space: nowrap !important;
+        width: 100% !important;
     }
     .st-key-admin_header [data-testid="stPopover"] button:hover {
         background: rgba(255, 255, 255, 0.28) !important;
@@ -284,123 +296,146 @@ def check_admin_auth():
         font-weight: 600 !important;
         font-size: 13px !important;
         white-space: nowrap !important;
+        margin: 0 !important;
+    }
+    .st-key-admin_header [data-testid="stTextInput"] {
+        width: 100% !important;
     }
     .st-key-admin_header [data-testid="stTextInput"] input {
         background: #ffffff !important;
         color: #1c1917 !important;
-        height: 42px !important;
+        height: 40px !important;
         font-size: 14px !important;
+        width: 100% !important;
     }
     .st-key-admin_header [data-testid="stTextInput"] > div > div {
         border: 2px solid #ffffff !important;
-        border-radius: 6px !important;
+        border-radius: 8px !important;
         background: #ffffff !important;
     }
     .admin-hdr-brand {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        color: #ffffff;
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 12px !important;
+        color: #ffffff !important;
+        width: 100% !important;
+        margin: 2px 0 !important;
     }
-    .admin-hdr-brand img {
-        width: 72px !important;
-        height: 72px !important;
-        min-width: 72px !important;
+    .admin-hdr-brand img.admin-hdr-logo-img {
+        width: 52px !important;
+        height: 52px !important;
+        min-width: 52px !important;
+        max-width: 52px !important;
+        min-height: 52px !important;
+        max-height: 52px !important;
         border-radius: 50% !important;
-        border: 3px solid #ffffff !important;
+        border: 2.5px solid #ffffff !important;
         background: #ffffff !important;
         box-shadow: 0 3px 10px rgba(0,0,0,0.18) !important;
         object-fit: cover !important;
         flex-shrink: 0 !important;
+        display: block !important;
+        margin: 0 !important;
     }
     .admin-hdr-name {
-        color: #ffffff;
-        font-size: 1.55rem;
-        font-weight: 800;
-        line-height: 1.15;
-        white-space: nowrap;
+        color: #ffffff !important;
+        font-size: 1.4rem !important;
+        font-weight: 800 !important;
+        line-height: 1.15 !important;
+        white-space: nowrap !important;
+        margin: 0 !important;
     }
     .admin-hdr-tag {
-        color: #ffedd5;
-        font-size: 0.84rem;
-        font-weight: 600;
-        white-space: nowrap;
+        color: #ffedd5 !important;
+        font-size: 0.8rem !important;
+        font-weight: 500 !important;
+        white-space: nowrap !important;
+        margin: 0 !important;
     }
     .admin-hdr-social {
-        color: #ffffff;
-        font-size: 13px;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        white-space: nowrap;
+        color: #ffffff !important;
+        font-size: 13px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        white-space: nowrap !important;
     }
-    .admin-hdr-social a { display: inline-flex; align-items: center; }
-    .admin-hdr-social img { width: 17px !important; height: 17px !important; border-radius: 0 !important; }
-    .admin-hdr-date { color: #ffffff; font-size: 0.88rem; white-space: nowrap; }
-    .admin-hdr-date-short { display: none; }
+    .admin-hdr-social a { display: inline-flex !important; align-items: center !important; }
+    .admin-hdr-social img {
+        width: 17px !important;
+        height: 17px !important;
+        min-width: 17px !important;
+        max-width: 17px !important;
+        border-radius: 0 !important;
+        margin: 0 !important;
+    }
+    .admin-hdr-date { color: #ffffff !important; font-size: 0.86rem !important; white-space: nowrap !important; }
+    .admin-hdr-date-short { display: none !important; }
     .admin-hdr-table {
-        display: inline-block;
-        background: #ffffff;
-        color: #c2410c;
-        font-weight: 800;
-        padding: 4px 12px;
-        border-radius: 999px;
-        font-size: 0.88rem;
-        white-space: nowrap;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        display: inline-block !important;
+        background: #ffffff !important;
+        color: #c2410c !important;
+        font-weight: 800 !important;
+        padding: 4px 10px !important;
+        border-radius: 999px !important;
+        font-size: 0.84rem !important;
+        white-space: nowrap !important;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1) !important;
     }
     .admin-hdr-badge {
-        display: inline-block;
-        background: #dc2626;
-        color: #ffffff;
-        border: 1.5px solid #ffffff;
-        border-radius: 999px;
-        font-size: 11px;
-        font-weight: 800;
-        line-height: 1;
-        padding: 2px 6px;
+        display: inline-block !important;
+        background: #dc2626 !important;
+        color: #ffffff !important;
+        border: 1.5px solid #ffffff !important;
+        border-radius: 999px !important;
+        font-size: 11px !important;
+        font-weight: 800 !important;
+        line-height: 1 !important;
+        padding: 2px 6px !important;
     }
-    .st-key-admin_notif_wrap { position: relative; }
+    .st-key-admin_notif_wrap { position: relative !important; }
     .st-key-admin_notif_wrap [data-testid="stElementContainer"]:has(.admin-hdr-badge) {
         position: absolute !important;
-        top: -6px;
-        right: 4px;
+        top: -6px !important;
+        right: 4px !important;
         width: auto !important;
-        z-index: 10;
-        pointer-events: none;
+        z-index: 10 !important;
+        pointer-events: none !important;
     }
     .admin-hdr-user-box {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        color: #ffffff;
-        font-size: 0.88rem;
-        font-weight: 600;
-        white-space: nowrap;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        color: #ffffff !important;
+        font-size: 0.88rem !important;
+        font-weight: 600 !important;
+        white-space: nowrap !important;
     }
     .admin-hdr-user-badge {
-        background: rgba(255,255,255,0.22);
-        padding: 2px 7px;
-        border-radius: 999px;
-        font-size: 0.72rem;
-        font-weight: 700;
-        line-height: 1;
-        display: inline-flex;
-        align-items: center;
+        background: rgba(255,255,255,0.22) !important;
+        padding: 3px 8px !important;
+        border-radius: 999px !important;
+        font-size: 0.74rem !important;
+        font-weight: 700 !important;
+        line-height: 1 !important;
+        display: inline-flex !important;
+        align-items: center !important;
     }
     .st-key-btn_admin_logout_top button {
-        height: 32px !important;
-        min-height: 32px !important;
-        max-height: 32px !important;
+        height: 34px !important;
+        min-height: 34px !important;
+        max-height: 34px !important;
         font-size: 12px !important;
         font-weight: 700 !important;
-        padding: 0 10px !important;
+        padding: 0 8px !important;
         background: rgba(255, 255, 255, 0.22) !important;
         border: 1.5px solid rgba(255, 255, 255, 0.75) !important;
         color: #ffffff !important;
         border-radius: 8px !important;
         box-shadow: none !important;
         white-space: nowrap !important;
+        width: 100% !important;
     }
     .st-key-btn_admin_logout_top button:hover {
         background: #dc2626 !important;
@@ -420,76 +455,90 @@ def check_admin_auth():
         margin-top: 5px !important;
     }
 
-    /* ==================== Responsive สำหรับหน้าจอมือถือ (<= 768px) ==================== */
+    /* ==================== Responsive สำหรับหน้าจอมือถือ / iPhone (<= 768px) ==================== */
     @media (max-width: 768px) {
         .st-key-admin_header {
-            padding: 10px 12px !important;
-            gap: 8px !important;
+            padding: 8px 10px 10px 10px !important;
+            gap: 6px !important;
         }
-        /* แถวบน: ชื่อผู้ใช้ | ปุ่มออเดอร์ใหม่ | ปุ่มออก อยู่บรรทัดเดียวกัน ไม่ซ้อนทับ */
+        /* แถวบน: กำหนดความกว้างคอลัมน์เป็นเปอร์เซ็นต์ชัดเจน ป้องกัน WebKit iPhone บีบปุ่มซ้อนกัน */
         .st-key-adm_row_top [data-testid="stHorizontalBlock"] {
             flex-wrap: nowrap !important;
-            justify-content: space-between !important;
-            gap: 6px !important;
+            gap: 4px !important;
         }
         .st-key-adm_row_top [data-testid="stColumn"]:nth-child(1) {
-            flex: 1 1 auto !important;
+            flex: 0 0 32% !important;
+            width: 32% !important;
+            max-width: 32% !important;
             min-width: 0 !important;
         }
-        .st-key-adm_row_top [data-testid="stColumn"]:nth-child(2),
+        .st-key-adm_row_top [data-testid="stColumn"]:nth-child(2) {
+            flex: 0 0 40% !important;
+            width: 40% !important;
+            max-width: 40% !important;
+            min-width: 0 !important;
+        }
         .st-key-adm_row_top [data-testid="stColumn"]:nth-child(3) {
-            flex: 0 0 auto !important;
-            width: auto !important;
+            flex: 0 0 24% !important;
+            width: 24% !important;
+            max-width: 24% !important;
+            min-width: 0 !important;
         }
         .admin-hdr-user-name-full { display: none !important; }
-        .admin-hdr-user-box { font-size: 0.8rem !important; gap: 4px !important; }
+        .admin-hdr-user-box { font-size: 0.78rem !important; gap: 4px !important; }
 
-        /* แถวกลาง: โลโก้+ชื่อร้าน ด้านบน และ ช่องค้นหา เต็มความกว้างด้านล่าง */
-        .st-key-adm_row_mid [data-testid="stHorizontalBlock"] {
-            flex-wrap: wrap !important;
-            gap: 8px !important;
+        /* แถวโลโก้และชื่อร้าน: ย่อขนาดให้กะทัดรัดบนหน้าจอ iPhone */
+        .admin-hdr-brand img.admin-hdr-logo-img {
+            width: 44px !important;
+            height: 44px !important;
+            min-width: 44px !important;
+            max-width: 44px !important;
+            min-height: 44px !important;
+            max-height: 44px !important;
         }
-        .st-key-adm_row_mid [data-testid="stColumn"]:nth-child(1) {
-            flex: 1 1 100% !important;
-            width: 100% !important;
-        }
-        .st-key-adm_row_mid [data-testid="stColumn"]:nth-child(2) {
-            flex: 1 1 100% !important;
-            width: 100% !important;
-        }
-        .admin-hdr-brand img {
-            width: 50px !important;
-            height: 50px !important;
-            min-width: 50px !important;
-        }
-        .admin-hdr-name { font-size: 1.25rem !important; }
-        .admin-hdr-tag { font-size: 0.75rem !important; }
+        .admin-hdr-name { font-size: 1.2rem !important; }
+        .admin-hdr-tag { font-size: 0.72rem !important; }
 
-        /* แถวล่าง: วันที่แบบย่อ | โต๊ะว่าง | ตั้งค่าบัญชี เรียงสวยงามไม่ตกขอบ */
+        /* แถวล่าง: กำหนดความกว้างคอลัมน์เป็นเปอร์เซ็นต์ชัดเจน ไม่ให้ล้นหรือทับซ้อน */
         .st-key-adm_row_bot [data-testid="stHorizontalBlock"] {
             flex-wrap: nowrap !important;
-            justify-content: space-between !important;
-            gap: 6px !important;
+            gap: 4px !important;
         }
         .st-key-adm_row_bot [data-testid="stColumn"]:nth-child(1) {
-            flex: 1 1 auto !important;
+            flex: 0 0 28% !important;
+            width: 28% !important;
+            max-width: 28% !important;
             min-width: 0 !important;
         }
-        .st-key-adm_row_bot [data-testid="stColumn"]:nth-child(2),
+        .st-key-adm_row_bot [data-testid="stColumn"]:nth-child(2) {
+            flex: 0 0 40% !important;
+            width: 40% !important;
+            max-width: 40% !important;
+            min-width: 0 !important;
+        }
         .st-key-adm_row_bot [data-testid="stColumn"]:nth-child(3) {
-            flex: 0 0 auto !important;
-            width: auto !important;
+            flex: 0 0 29% !important;
+            width: 29% !important;
+            max-width: 29% !important;
+            min-width: 0 !important;
         }
         .admin-hdr-date-full, .admin-hdr-social { display: none !important; }
-        .admin-hdr-date-short { display: inline !important; font-size: 0.78rem !important; font-weight: 600; }
-        .admin-hdr-table { font-size: 0.76rem !important; padding: 3px 9px !important; }
+        .admin-hdr-date-short { display: inline-block !important; font-size: 0.74rem !important; font-weight: 600 !important; }
+        .admin-hdr-table { font-size: 0.74rem !important; padding: 3px 8px !important; }
         .st-key-admin_header [data-testid="stPopover"] button {
-            padding: 2px 8px !important;
+            padding: 2px 6px !important;
             min-height: 30px !important;
             height: 30px !important;
         }
         .st-key-admin_header [data-testid="stPopover"] button p {
-            font-size: 12px !important;
+            font-size: 11.5px !important;
+        }
+        .st-key-btn_admin_logout_top button {
+            min-height: 30px !important;
+            height: 30px !important;
+            max-height: 30px !important;
+            font-size: 11.5px !important;
+            padding: 0 6px !important;
         }
     }
     </style>
@@ -498,7 +547,7 @@ def check_admin_auth():
     with st.container(key="admin_header"):
         # ---------- แถวที่ 1 (บน): สถานะผู้ดูแล | ออเดอร์ใหม่ | ปุ่มออกจากระบบ ----------
         with st.container(key="adm_row_top"):
-            r1_user, r1_notif, r1_logout = st.columns([4.2, 1.6, 1.0])
+            r1_user, r1_notif, r1_logout = st.columns([1.2, 1.3, 0.8])
             with r1_user:
                 st.markdown(f"""
                 <div class="admin-hdr-user-box">
@@ -526,35 +575,33 @@ def check_admin_auth():
                     st.session_state['admin_user_info'] = None
                     st.rerun()
 
-        # ---------- แถวที่ 2 (กลาง): โลโก้ + ชื่อร้าน | ช่องค้นหาข้อมูลหลังร้าน ----------
-        with st.container(key="adm_row_mid"):
-            r2_brand, r2_search = st.columns([2.8, 4.2])
-            with r2_brand:
-                st.markdown(f"""
-                <div class="admin-hdr-brand">
-                    {hdr_logo_img}
-                    <div>
-                        <div class="admin-hdr-name">ฟ้าใสตำนัว</div>
-                        <div class="admin-hdr-tag">ระบบจัดการหลังร้าน (POS & Kitchen)</div>
-                    </div>
-                </div>
-                """, unsafe_allow_html=True)
-            with r2_search:
-                st.text_input(
-                    "ค้นหาข้อมูลหลังร้าน",
-                    placeholder="ค้นหาโต๊ะ, รหัสบิล, เมนูอาหาร หรือชื่อลูกค้า...",
-                    key="admin_header_search",
-                    label_visibility="collapsed"
-                )
+        # ---------- แถวที่ 2: โลโก้ + ชื่อร้าน (แยกเป็นแถวอิสระ ไม่ใช้ st.columns เพื่อป้องกันการซ้อนทับบน iPhone 100%) ----------
+        st.markdown(f"""
+        <div class="admin-hdr-brand">
+            {hdr_logo_img}
+            <div style="min-width: 0; overflow: hidden;">
+                <div class="admin-hdr-name">ฟ้าใสตำนัว</div>
+                <div class="admin-hdr-tag">ระบบจัดการหลังร้าน (POS & Kitchen)</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
 
-        # ---------- แถวที่ 3 (ล่าง): วัน เดือน ปี & โซเชียล | สถานะโต๊ะ | ตั้งค่าบัญชี ----------
+        # ---------- แถวที่ 3: ช่องค้นหาข้อมูลหลังร้าน (แยกเป็นแถวเดี่ยวเต็มความกว้าง 100% ไม่ชนกับโลโก้หรือข้อความ) ----------
+        st.text_input(
+            "ค้นหาข้อมูลหลังร้าน",
+            placeholder="ค้นหาโต๊ะ, รหัสบิล, เมนูอาหาร หรือชื่อลูกค้า...",
+            key="admin_header_search",
+            label_visibility="collapsed"
+        )
+
+        # ---------- แถวที่ 4 (ล่าง): วัน เดือน ปี & โซเชียล | สถานะโต๊ะ | ตั้งค่าบัญชี ----------
         with st.container(key="adm_row_bot"):
-            r3_date_social, r3_table_stat, r3_settings = st.columns([3.8, 1.6, 1.4])
+            r3_date_social, r3_table_stat, r3_settings = st.columns([1.1, 1.4, 1.1])
             with r3_date_social:
                 st.markdown(f"""
-                <div class="admin-hdr-date" style="display: flex; align-items: center; gap: 8px; flex-wrap: nowrap;">
+                <div class="admin-hdr-date" style="display: flex; align-items: center; gap: 6px; flex-wrap: nowrap;">
                     <span class="admin-hdr-date-full">{thai_date_str}</span>
-                    <span class="admin-hdr-date-short">วัน{thai_days[now_th.weekday()]} {now_th.day}/{now_th.month}/{now_th.year + 543}</span>
+                    <span class="admin-hdr-date-short">ศ. {now_th.day}/{now_th.month}/{str(now_th.year + 543)[-2:]}</span>
                     <span class="admin-hdr-social">
                         <span style="opacity: 0.5;">|</span>
                         <span class="admin-hdr-follow">ติดต่อเรา:</span>
