@@ -340,10 +340,65 @@ def render_customer_view():
                         st.rerun()
 
     # ==========================================================================
-    # เนื้อหาภายในปุ่มแจ้งเตือน (สถานะอาหารของโต๊ะนี้ แสดงแบบละเอียดและเรียลไทม์)
+    # เนื้อหาภายในปุ่มแจ้งเตือน (สถานะอาหารของโต๊ะนี้ แสดงแบบละเอียดและอัปเดตสดทุก 3 วินาที)
     # ==========================================================================
-    def render_notif_body():
-        st.markdown(f"### ติดตามสถานะอาหาร ({current_table_name})")
+    def render_order_status_summary(oid, status, total, otime, order_items_trk):
+        st_map = {
+            'pending': ('รอร้านรับออเดอร์', 'orange', 0.25, 'กำลังส่งออเดอร์เข้าจอครัว...'),
+            'accepted': ('ครัวรับออเดอร์แล้ว • กำลังปรุงอาหาร', 'blue', 0.50, 'แม่ครัวกำลังตั้งกระทะ ปรุงสดใหม่ค่ะ'),
+            'cooked': ('ปรุงเสร็จ กำลังทยอยเสิร์ฟ', 'purple', 0.75, 'อาหารปรุงเสร็จแล้ว พนักงานกำลังยกไปเสิร์ฟค่ะ'),
+            'served': ('เสิร์ฟถึงโต๊ะครบแล้ว', 'green', 1.0, 'เสิร์ฟครบทุกเมนูแล้ว ทานให้อร่อยนะคะ'),
+            'paid': ('เช็คบิลเรียบร้อยแล้ว', 'gray', 1.0, 'ขอบคุณที่มาอุดหนุนฟ้าใสตำนัวนะคะ')
+        }
+
+        total_it = len(order_items_trk)
+        served_it = sum(1 for it in order_items_trk if it[3] == 'served')
+        cooked_it = sum(1 for it in order_items_trk if it[3] == 'cooked')
+        accepted_it = sum(1 for it in order_items_trk if it[3] == 'accepted')
+
+        if status == 'paid':
+            prog_val = 1.0
+            label, color, _, desc_status = st_map['paid']
+        elif status == 'served' or (total_it > 0 and served_it == total_it):
+            prog_val = 1.0
+            label, color, _, desc_status = st_map['served']
+        elif served_it > 0:
+            prog_val = 0.5 + 0.4 * (served_it / total_it)
+            label, color, _, desc_status = (f'กำลังทยอยเสิร์ฟ ({served_it}/{total_it} เมนู)', 'purple', prog_val, 'พนักงานกำลังยกอาหารมาเสิร์ฟที่โต๊ะค่ะ')
+        elif status == 'cooked' or cooked_it > 0:
+            prog_val = 0.65
+            label, color, _, desc_status = (f'ปรุงเสร็จแล้ว ({cooked_it}/{total_it} เมนู) รอเสิร์ฟ', 'purple', prog_val, 'อาหารปรุงเสร็จแล้ว พนักงานกำลังยกไปเสิร์ฟค่ะ')
+        elif status == 'accepted' or accepted_it > 0:
+            prog_val = 0.50
+            label, color, _, desc_status = st_map['accepted']
+        else:
+            prog_val = 0.25
+            label, color, _, desc_status = st_map['pending']
+
+        c_oh1, c_oh2 = st.columns([2.5, 1])
+        with c_oh1:
+            st.markdown(f"**ออเดอร์ #{oid}** — <span style='font-size: 0.95rem; font-weight: bold;'>:{color}[{label}]</span>", unsafe_allow_html=True)
+            st.caption(f"{desc_status} • สั่งเมื่อ {otime}")
+        with c_oh2:
+            st.markdown(f"<div style='text-align: right; font-weight: bold; font-size: 1.05rem; color: #ea580c;'>฿{int(total):,}</div>", unsafe_allow_html=True)
+
+        st.progress(prog_val)
+
+        with st.expander(f"ดูรายการอาหาร & สถานะแต่ละจาน (เสิร์ฟแล้ว {served_it}/{total_it} เมนู)", expanded=(status != 'paid')):
+            for iname, iqty, inote, ist in order_items_trk:
+                note_text = f" *(โน้ต: {inote})*" if inote else ""
+                if ist == 'served':
+                    st_badge = ":green[**[เสิร์ฟแล้ว]**]"
+                elif ist == 'cooked':
+                    st_badge = ":purple[**[ปรุงเสร็จแล้ว • รอเสิร์ฟ]**]"
+                elif ist == 'accepted' or status in ('accepted', 'cooked', 'served'):
+                    st_badge = ":blue[**[รับออเดอร์แล้ว • กำลังปรุง]**]"
+                else:
+                    st_badge = ":orange[**[รอร้านรับออเดอร์]**]"
+                st.markdown(f"• **{iname}** x{iqty}{note_text} — {st_badge}")
+
+    @st.fragment(run_every=3)
+    def render_live_notif_status_list():
         conn_trk = sqlite3.connect(DB_NAME)
         c_trk = conn_trk.cursor()
         c_trk.execute("""
@@ -359,65 +414,32 @@ def render_customer_view():
             conn_trk.close()
             return
 
-        st_map = {
-            'pending': ('รอร้านรับออเดอร์', 'orange', 0.25, 'กำลังส่งออเดอร์เข้าจอครัว...'),
-            'accepted': ('ครัวกำลังปรุงอาหาร', 'blue', 0.50, 'แม่ครัวกำลังตั้งกระทะ ปรุงสดใหม่ค่ะ'),
-            'cooked': ('ปรุงเสร็จ กำลังทยอยเสิร์ฟ', 'purple', 0.75, 'อาหารปรุงเสร็จแล้ว พนักงานกำลังยกไปเสิร์ฟค่ะ'),
-            'served': ('เสิร์ฟถึงโต๊ะครบแล้ว', 'green', 1.0, 'เสิร์ฟครบทุกเมนูแล้ว ทานให้อร่อยนะคะ'),
-            'paid': ('เช็คบิลเรียบร้อยแล้ว', 'gray', 1.0, 'ขอบคุณที่มาอุดหนุนฟ้าใสตำนัวนะคะ')
-        }
-
+        st.caption(f":green[**● อัปเดตสถานะจากครัวอัตโนมัติทุก 3 วินาที**] (เวลาปัจจุบัน: {get_thai_now().strftime('%H:%M:%S')})")
         for oid, status, total, otime, slip_img, slip_time in cur_orders:
             c_trk.execute("SELECT item_name, quantity, note, COALESCE(status, 'pending') FROM order_items WHERE order_id = ?", (oid,))
             order_items_trk = c_trk.fetchall()
-            
-            total_it = len(order_items_trk)
-            served_it = sum(1 for it in order_items_trk if it[3] == 'served')
-            
-            if status == 'paid':
-                prog_val = 1.0
-                label, color, _, desc_status = st_map['paid']
-            elif status == 'served' or (total_it > 0 and served_it == total_it):
-                prog_val = 1.0
-                label, color, _, desc_status = st_map['served']
-            elif served_it > 0:
-                prog_val = 0.5 + 0.4 * (served_it / total_it)
-                label, color, _, desc_status = (f'กำลังทยอยเสิร์ฟ ({served_it}/{total_it})', 'purple', prog_val, 'พนักงานกำลังยกอาหารมาเสิร์ฟที่โต๊ะค่ะ')
-            elif status == 'cooked':
-                prog_val = 0.65
-                label, color, _, desc_status = st_map['cooked']
-            elif status == 'accepted':
-                prog_val = 0.45
-                label, color, _, desc_status = st_map['accepted']
-            else:
-                prog_val = 0.25
-                label, color, _, desc_status = st_map['pending']
-
             with st.container(border=True):
-                c_oh1, c_oh2 = st.columns([2.5, 1])
-                with c_oh1:
-                    st.markdown(f"**ออเดอร์ #{oid}** — <span style='font-size: 0.95rem; font-weight: bold;'>:{color}[{label}]</span>", unsafe_allow_html=True)
-                    st.caption(f"{desc_status} • สั่งเมื่อ {otime}")
-                with c_oh2:
-                    st.markdown(f"<div style='text-align: right; font-weight: bold; font-size: 1.05rem; color: #ea580c;'>฿{int(total):,}</div>", unsafe_allow_html=True)
-                
-                st.progress(prog_val)
-                
-                with st.expander("ดูรายการอาหาร & สถานะแต่ละจาน", expanded=(status != 'paid')):
-                    for iname, iqty, inote, ist in order_items_trk:
-                        note_text = f" *(โน้ต: {inote})*" if inote else ""
-                        if ist == 'served':
-                            st_badge = ":green[**[เสิร์ฟแล้ว]**]"
-                        elif ist == 'cooked':
-                            st_badge = ":purple[**[ปรุงเสร็จแล้ว]**]"
-                        else:
-                            st_badge = ":orange[**[กำลังปรุง]**]"
-                        st.markdown(f"• **{iname}** x{iqty}{note_text} — {st_badge}")
-                
-                if status != 'paid':
-                    with st.expander("สแกน QR ชำระเงิน & แนบสลิป", expanded=(status == 'served' or bool(slip_img))):
-                        render_slip_payment_block(oid, total, slip_img, slip_time, is_main_card=False)
+                render_order_status_summary(oid, status, total, otime, order_items_trk)
         conn_trk.close()
+
+    def render_notif_body():
+        st.markdown(f"### ติดตามสถานะอาหาร ({current_table_name})")
+        render_live_notif_status_list()
+
+        conn_pay = sqlite3.connect(DB_NAME)
+        c_pay = conn_pay.cursor()
+        c_pay.execute("""
+            SELECT id, status, total_price, slip_image, slip_uploaded_at 
+            FROM orders 
+            WHERE table_id = ? AND status NOT IN ('paid', 'archived')
+            ORDER BY id DESC LIMIT 5
+        """, (current_table_num,))
+        unpaid_orders = c_pay.fetchall()
+        conn_pay.close()
+
+        for oid, status, total, slip_img, slip_time in unpaid_orders:
+            with st.expander(f"สแกน QR ชำระเงิน & แนบสลิป (บิล #{oid} • ฿{int(total):,})", expanded=(status == 'served' or bool(slip_img))):
+                render_slip_payment_block(oid, total, slip_img, slip_time, is_main_card=False)
 
     # ==========================================================================
     # เนื้อหาภายในปุ่มสมัครสมาชิก / เข้าสู่ระบบ
@@ -855,32 +877,60 @@ def render_customer_view():
                         st.rerun()
 
     # ==========================================================================
-    # แถบแจ้งเตือนชำระเงินด่วน (แสดงเมื่ออาหารเสิร์ฟครบแล้ว หรือลูกค้าเคยแนบสลิปไว้)
+    # แถบแสดงสถานะออเดอร์สดแบบเรียลไทม์ (อัปเดตอัตโนมัติทุก 3 วินาทีเมื่อครัวกดรับออเดอร์ / เสิร์ฟ)
     # ==========================================================================
+    @st.fragment(run_every=3)
+    def render_live_main_order_tracker():
+        conn_lv = sqlite3.connect(DB_NAME)
+        c_lv = conn_lv.cursor()
+        c_lv.execute("""
+            SELECT id, status, total_price, created_at, slip_image, slip_uploaded_at 
+            FROM orders 
+            WHERE table_id = ? AND status NOT IN ('paid', 'archived')
+            ORDER BY id DESC
+        """, (current_table_num,))
+        live_orders = c_lv.fetchall()
+
+        if not live_orders:
+            conn_lv.close()
+            return
+
+        with st.container(border=True):
+            st.markdown(f"**สถานะออเดอร์ปัจจุบัน ({current_table_name})** • :green[● อัปเดตสดอัตโนมัติ]")
+            for oid, status, total, otime, slip_img, slip_time in live_orders:
+                c_lv.execute("SELECT item_name, quantity, note, COALESCE(status, 'pending') FROM order_items WHERE order_id = ?", (oid,))
+                items_lv = c_lv.fetchall()
+                render_order_status_summary(oid, status, total, otime, items_lv)
+                if slip_img:
+                    st.markdown(f"<div style='color: #15803d; font-size: 0.88rem; font-weight: 700; margin-top: 4px;'>บิล #{oid}: แนบสลิปโอนเงินเรียบร้อยแล้ว (เวลา {slip_time or '-'}) กำลังรอพนักงานตรวจสอบยอดค่ะ</div>", unsafe_allow_html=True)
+        conn_lv.close()
+
+    render_live_main_order_tracker()
+
+    # แถบปุ่มสแกนจ่าย / แนบสลิปด่วน (แยกอยู่นอก Fragment 3 วินาที เพื่อไม่ให้รบกวนขณะลูกค้ากำลังเลือกรูปสลิป)
     c.execute("""
         SELECT id, status, total_price, slip_image, slip_uploaded_at 
         FROM orders 
-        WHERE table_id = ? AND status != 'paid' AND status != 'archived'
+        WHERE table_id = ? AND status NOT IN ('paid', 'archived')
         ORDER BY id DESC LIMIT 1
     """, (current_table_num,))
     cur_active_pay = c.fetchone()
     
     if cur_active_pay:
         cap_id, cap_st, cap_tot, cap_slip, cap_slip_t = cur_active_pay
-        if cap_st == 'served' or cap_slip:
-            with st.container(border=True):
-                p_c1, p_c2 = st.columns([2.5, 1.3], gap="small")
-                with p_c1:
-                    if cap_slip:
-                        st.markdown(f"**บิล #{cap_id}** — <span style='color: #15803d; font-weight: bold;'>แนบสลิปเรียบร้อยแล้ว กำลังรอร้านตรวจยอด</span> (฿{int(cap_tot):,})", unsafe_allow_html=True)
-                        st.caption("พนักงานแคชเชียร์กำลังตรวจยอดเงินและเตรียมเช็คบิลให้ค่ะ")
-                    else:
-                        st.markdown(f"**อาหารเสิร์ฟครบแล้ว (บิล #{cap_id})** — ยอดชำระสุทธิ: <span style='color: #ea580c; font-weight: bold; font-size: 1.15rem;'>฿{int(cap_tot):,}</span>", unsafe_allow_html=True)
-                        st.caption("สามารถสแกน QR โอนเงินและแนบสลิปได้ทันทีค่ะ")
-                with p_c2:
-                    btn_pay_label = "ดูสลิปที่แนบ" if cap_slip else "สแกนจ่าย / แนบสลิป"
-                    with st.popover(btn_pay_label, use_container_width=True):
-                        render_slip_payment_block(cap_id, cap_tot, cap_slip, cap_slip_t, is_main_card=True)
+        with st.container(border=True):
+            p_c1, p_c2 = st.columns([2.5, 1.3], gap="small")
+            with p_c1:
+                if cap_slip:
+                    st.markdown(f"**ชำระเงินบิล #{cap_id}** — <span style='color: #15803d; font-weight: bold;'>แนบสลิปเรียบร้อยแล้ว</span> (฿{int(cap_tot):,})", unsafe_allow_html=True)
+                    st.caption("พนักงานแคชเชียร์กำลังตรวจยอดเงินและเตรียมเช็คบิลให้ค่ะ")
+                else:
+                    st.markdown(f"**ชำระเงินบิล #{cap_id}** — ยอดชำระสุทธิ: <span style='color: #ea580c; font-weight: bold; font-size: 1.15rem;'>฿{int(cap_tot):,}</span>", unsafe_allow_html=True)
+                    st.caption("สามารถสแกน QR โอนเงินและแนบสลิปได้ทันทีค่ะ")
+            with p_c2:
+                btn_pay_label = "ดู / เปลี่ยนสลิป" if cap_slip else "สแกนจ่าย / แนบสลิป"
+                with st.popover(btn_pay_label, use_container_width=True):
+                    render_slip_payment_block(cap_id, cap_tot, cap_slip, cap_slip_t, is_main_card=True)
 
     # ==========================================================================
     # เลือกหมวดหมู่อาหาร / ผลการค้นหา
