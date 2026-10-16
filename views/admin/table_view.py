@@ -126,8 +126,8 @@ def render_table_tab():
                     <div style="font-size: 0.9rem; margin-bottom: 8px;">สถานะ: {stat_text}</div>
                     """, unsafe_allow_html=True)
 
-                    # ลิงก์สำหรับลูกค้าโต๊ะนี้ (ใส่ embed=true เพื่อซ่อนแถบ Streamlit Cloud อัตโนมัติ)
-                    cust_table_url = f"{base_url_for_qr}/?embed=true&table={t_no}"
+                    # ลิงก์สำหรับลูกค้าโต๊ะนี้ (รูปแบบสะอาด: ?table=หมายเลขโต๊ะ)
+                    cust_table_url = f"{base_url_for_qr}/?table={t_no}"
                     qr_image_url = f"https://api.qrserver.com/v1/create-qr-code/?size=180x180&data={quote(cust_table_url)}&margin=8"
                     
                     # แสดงภาพ QR Code (ลดขนาดลงประมาณ 50% จัดกึ่งกลางการ์ด)
