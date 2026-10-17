@@ -209,10 +209,13 @@ def check_admin_auth():
     # แถบหัวเว็บ Admin Header Bar สไตล์โต๊ะลูกค้า (สีส้มโค้งมน 3 แถว)
     # --------------------------------------------------------------------------
     thai_days = ["จันทร์", "อังคาร", "พุธ", "พฤหัสบดี", "ศุกร์", "เสาร์", "อาทิตย์"]
+    thai_short_days = ["จ.", "อ.", "พ.", "พฤ.", "ศ.", "ส.", "อา."]
     thai_months = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน",
                    "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"]
     now_th = get_thai_now()
-    thai_date_str = f"วัน{thai_days[now_th.weekday()]}ที่ {now_th.day} {thai_months[now_th.month - 1]} พ.ศ. {now_th.year + 543}"
+    thai_time_str = now_th.strftime('%H:%M') + " น."
+    thai_date_str = f"วัน{thai_days[now_th.weekday()]}ที่ {now_th.day} {thai_months[now_th.month - 1]} พ.ศ. {now_th.year + 543} เวลา {thai_time_str}"
+    thai_date_short = f"{thai_short_days[now_th.weekday()]} {now_th.day}/{now_th.month}/{str(now_th.year + 543)[-2:]} {now_th.strftime('%H:%M')} น."
 
     SOCIAL_LINKS = {
         "facebook": "https://www.facebook.com/",
@@ -641,12 +644,12 @@ def check_admin_auth():
 
         # ---------- แถวล่าง: วัน เดือน ปี | โต๊ะว่าง | ออกจากระบบ ----------
         with st.container(key="adm_row_bottom"):
-            r3_date, r3_table, r3_logout = st.columns([2, 1.2, 1])
+            r3_date, r3_table, r3_logout = st.columns([2.5, 1.1, 0.8])
             with r3_date:
                 st.markdown(f"""
                 <div class="adm-hdr-date">
                     <span class="adm-hdr-date-full">{thai_date_str}</span>
-                    <span class="adm-hdr-date-short">ศ. {now_th.day}/{now_th.month}/{str(now_th.year + 543)[-2:]}</span>
+                    <span class="adm-hdr-date-short">{thai_date_short}</span>
                 </div>
                 """, unsafe_allow_html=True)
             with r3_table:
