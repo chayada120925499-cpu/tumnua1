@@ -4,7 +4,7 @@
 import os
 import sqlite3
 import streamlit as st
-from config import DB_NAME, get_thai_now
+from config import DB_NAME, get_thai_now, get_valid_image_path
 from utils.audio import play_order_sound
 from utils.receipt import render_receipt_box
 
@@ -128,8 +128,9 @@ def render_pos_dashboard():
                         with st.container(border=True):
                             it_c1, it_c2 = st.columns([1.1, 2.3])
                             with it_c1:
-                                if dish_img and (dish_img.startswith("http") or os.path.exists(dish_img)):
-                                    st.image(dish_img, use_container_width=True)
+                                valid_dish_img = get_valid_image_path(dish_img)
+                                if valid_dish_img:
+                                    st.image(valid_dish_img, use_container_width=True)
                                 else:
                                     st.markdown("<div style='font-size: 13px; text-align: center; color: #9a3412; font-weight: 600; line-height: 60px;'>ไม่มีรูป</div>", unsafe_allow_html=True)
                             with it_c2:

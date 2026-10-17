@@ -4,7 +4,7 @@
 import os
 import sqlite3
 import streamlit as st
-from config import DB_NAME
+from config import DB_NAME, get_valid_image_path
 
 def render_menu_tab():
     """แสดงแท็บจัดการรายการอาหาร เพิ่ม ลบ ค้นหา แก้ไขราคาต้นทุน"""
@@ -150,8 +150,9 @@ def render_menu_tab():
                 row_img, row_info, row_price, row_action = st.columns([1.1, 3.2, 1.8, 1.1])
                 
                 with row_img:
-                    if m_img and (m_img.startswith("http") or os.path.exists(m_img)):
-                        st.image(m_img, use_container_width=True)
+                    valid_m_img = get_valid_image_path(m_img)
+                    if valid_m_img:
+                        st.image(valid_m_img, use_container_width=True)
                     else:
                         st.markdown("<div style='font-size: 13px; color: #9a3412; font-weight: 600; text-align: center; line-height: 65px; background: #fff7ed; border-radius: 8px;'>ไม่มีรูป</div>", unsafe_allow_html=True)
                 
