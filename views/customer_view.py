@@ -5,7 +5,7 @@ import os
 import sqlite3
 import streamlit as st
 from datetime import datetime
-from config import DB_NAME, LOGO_PATH, get_thai_now, get_base64_image, render_app_footer
+from config import DB_NAME, LOGO_PATH, get_thai_now, get_base64_image, render_app_footer, get_valid_image_path
 
 def render_customer_view():
     """แสดงหน้าจอสั่งอาหารสำหรับลูกค้าที่โต๊ะ"""
@@ -1124,15 +1124,16 @@ def render_customer_view():
         text-align: center !important;
     }
 
-    /* บังคับรูปภาพ <img> ขยายเต็มและจัดกึ่งกลาง พร้อมครอบภาพ (object-fit: cover) */
+    /* บังคับรูปภาพ <img> แสดงผลสี่เหลี่ยมจัตุรัส 1:1 จัดกึ่งกลาง พร้อมครอบภาพ (object-fit: cover) */
     div[class*="st-key-fcard_"] img,
     .st-key-menu_grid_flex img {
         width: 100% !important;
         min-width: 0 !important;
         max-width: 100% !important;
-        height: 130px !important;
-        max-height: 130px !important;
-        min-height: 130px !important;
+        aspect-ratio: 1 / 1 !important;
+        height: auto !important;
+        max-height: none !important;
+        min-height: 0 !important;
         object-fit: cover !important;
         object-position: center !important;
         border-radius: 8px !important;
@@ -1144,15 +1145,16 @@ def render_customer_view():
         box-sizing: border-box !important;
     }
 
-    /* กล่องข้อความกรณีไม่มีรูปภาพ จัดกึ่งกลาง */
+    /* กล่องข้อความกรณีไม่มีรูปภาพ ให้เป็นสี่เหลี่ยมจัตุรัส 1:1 จัดกึ่งกลาง */
     div[class*="st-key-fcard_"] .no-img-box,
     .st-key-menu_grid_flex .no-img-box {
         width: 100% !important;
         min-width: 100% !important;
         max-width: 100% !important;
-        height: 130px !important;
-        max-height: 130px !important;
-        min-height: 130px !important;
+        aspect-ratio: 1 / 1 !important;
+        height: auto !important;
+        max-height: none !important;
+        min-height: 0 !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
@@ -1242,9 +1244,10 @@ def render_customer_view():
         .st-key-menu_grid_flex img,
         div[class*="st-key-fcard_"] .no-img-box,
         .st-key-menu_grid_flex .no-img-box {
-            height: 110px !important;
-            max-height: 110px !important;
-            min-height: 110px !important;
+            aspect-ratio: 1 / 1 !important;
+            height: auto !important;
+            max-height: none !important;
+            min-height: 0 !important;
             border-radius: 6px !important;
         }
         div[class*="st-key-fcard_"] .stButton > button,
@@ -1264,11 +1267,12 @@ def render_customer_view():
             with st.container(border=True, key=f"fcard_{m_id}"):
                 st.markdown("<div class='fcard-marker' style='display:none;'></div>", unsafe_allow_html=True)
                 # รูปภาพอาหารขนาดกะทัดรัด (จัดวางกึ่งกลาง ขยายความกว้างเต็มการ์ด)
-                if img and (img.startswith("http") or os.path.exists(img)):
+                valid_img = get_valid_image_path(img)
+                if valid_img:
                     try:
-                        st.image(img, width="stretch")
+                        st.image(valid_img, width="stretch")
                     except TypeError:
-                        st.image(img, use_container_width=True)
+                        st.image(valid_img, use_container_width=True)
                 else:
                     st.markdown("<div class='no-img-box' style='font-size: 13px; color: #9a3412;'>ไม่มีรูปภาพ</div>", unsafe_allow_html=True)
                 
