@@ -329,7 +329,8 @@ div[class*="st-key-fcard_"][data-testid="stVerticalBlock"] {
     width: 100% !important;
     max-width: 100% !important;
     min-width: 0 !important;
-    height: 100% !important;
+    height: auto !important;
+    min-height: 100% !important;
     padding: 8px !important;
     border-radius: 12px !important;
     margin: 0 !important;
@@ -371,59 +372,74 @@ div[class*="st-key-fcard_"] [data-testid="stElementContainer"],
     text-align: center !important;
 }
 
-/* บังคับ wrapper ทุกระดับชั้นของรูปภาพ (stFullScreenFrame, div ชั้นใน, stImage, stImageContainer) จัดวางกึ่งกลาง */
-div[class*="st-key-fcard_"] [data-testid="stFullScreenFrame"],
-.st-key-menu_grid_flex div[data-testid="stVerticalBlock"]:has(.fcard-marker) [data-testid="stFullScreenFrame"],
-div[class*="st-key-fcard_"] [data-testid="stFullScreenFrame"] > div,
-.st-key-menu_grid_flex div[data-testid="stVerticalBlock"]:has(.fcard-marker) [data-testid="stFullScreenFrame"] > div,
-div[class*="st-key-fcard_"] [data-testid="stImage"],
-div[class*="st-key-fcard_"] [data-testid="stImageContainer"],
-.st-key-menu_grid_flex [data-testid="stImage"],
-.st-key-menu_grid_flex [data-testid="stImageContainer"] {
+/* บังคับ wrapper รูปภาพทุกชั้น ให้รักษาอัตราส่วนสี่เหลี่ยมจัตุรัส 1:1 และห้ามหดตัว (flex-shrink: 0) */
+div[class*="st-key-fcard_"] [data-testid="stElementContainer"]:has([data-testid="stImage"]),
+.st-key-menu_grid_flex div[data-testid="stVerticalBlock"]:has(.fcard-marker) [data-testid="stElementContainer"]:has([data-testid="stImage"]),
+div[class*="st-key-fcard_"] [data-testid="stElementContainer"]:has(.no-img-box),
+.st-key-menu_grid_flex div[data-testid="stVerticalBlock"]:has(.fcard-marker) [data-testid="stElementContainer"]:has(.no-img-box) {
     width: 100% !important;
-    min-width: 0 !important;
     max-width: 100% !important;
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-    padding: 0 !important;
-    box-sizing: border-box !important;
-    text-align: center !important;
-}
-
-/* บังคับรูปภาพ <img> แสดงผลสี่เหลี่ยมจัตุรัส 1:1 จัดกึ่งกลาง พร้อมครอบภาพ (object-fit: cover) */
-div[class*="st-key-fcard_"] img,
-.st-key-menu_grid_flex img {
-    width: 100% !important;
     min-width: 0 !important;
-    max-width: 100% !important;
     aspect-ratio: 1 / 1 !important;
-    height: auto !important;
-    max-height: none !important;
-    min-height: 0 !important;
-    object-fit: cover !important;
-    object-position: center !important;
-    border-radius: 8px !important;
+    display: block !important;
+    flex-shrink: 0 !important;
     margin-left: auto !important;
     margin-right: auto !important;
     margin-top: 0 !important;
     margin-bottom: 6px !important;
+    padding: 0 !important;
+}
+
+div[class*="st-key-fcard_"] [data-testid="stFullScreenFrame"],
+.st-key-menu_grid_flex [data-testid="stFullScreenFrame"],
+div[class*="st-key-fcard_"] [data-testid="stFullScreenFrame"] > div,
+.st-key-menu_grid_flex [data-testid="stFullScreenFrame"] > div,
+div[class*="st-key-fcard_"] [data-testid="stImage"],
+.st-key-menu_grid_flex [data-testid="stImage"],
+div[class*="st-key-fcard_"] [data-testid="stImageContainer"],
+.st-key-menu_grid_flex [data-testid="stImageContainer"] {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    aspect-ratio: 1 / 1 !important;
+    display: block !important;
+    flex-shrink: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+}
+
+/* บังคับรูปภาพ <img> แสดงผลสี่เหลี่ยมจัตุรัส 1:1 เป๊ะทุกขนาดหน้าจอ */
+div[class*="st-key-fcard_"] img,
+.st-key-menu_grid_flex img {
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 100% !important;
+    min-height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    aspect-ratio: 1 / 1 !important;
+    object-fit: cover !important;
+    object-position: center !important;
+    border-radius: 8px !important;
+    margin: 0 !important;
+    padding: 0 !important;
     display: block !important;
     box-sizing: border-box !important;
+    flex-shrink: 0 !important;
 }
 
 /* กล่องข้อความกรณีไม่มีรูปภาพ ให้เป็นสี่เหลี่ยมจัตุรัส 1:1 จัดกึ่งกลาง */
 div[class*="st-key-fcard_"] .no-img-box,
 .st-key-menu_grid_flex .no-img-box {
     width: 100% !important;
-    min-width: 100% !important;
-    max-width: 100% !important;
     aspect-ratio: 1 / 1 !important;
-    height: auto !important;
-    max-height: none !important;
+    height: 100% !important;
     min-height: 0 !important;
+    max-height: none !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -431,9 +447,10 @@ div[class*="st-key-fcard_"] .no-img-box,
     background: linear-gradient(135deg, #fff7ed, #ffedd5) !important;
     border: 1px solid #fed7aa !important;
     border-radius: 8px !important;
-    margin: 0 auto 6px auto !important;
+    margin: 0 auto !important;
     box-sizing: border-box !important;
     text-align: center !important;
+    flex-shrink: 0 !important;
 }
 
 /* จัดข้อความชื่ออาหารและราคาให้อยู่กึ่งกลางการ์ด */
@@ -514,9 +531,8 @@ div[class*="st-key-fcard_"] [data-testid="stHorizontalBlock"] .stButton > button
     div[class*="st-key-fcard_"] .no-img-box,
     .st-key-menu_grid_flex .no-img-box {
         aspect-ratio: 1 / 1 !important;
-        height: auto !important;
-        max-height: none !important;
-        min-height: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
         border-radius: 6px !important;
     }
     div[class*="st-key-fcard_"] .stButton > button,
