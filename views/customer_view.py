@@ -295,10 +295,10 @@ def render_customer_view():
                     st.rerun()
             else:
                 st.markdown("**แนบสลิปโอนเงิน (ทำได้ง่ายใน 2 ขั้นตอน):**")
-                st.caption("1. สแกน QR โอนเงินตามยอดด้านซ้าย\n2. แตะเลือกรูปสลิปแล้วกดส่งได้ทันทีค่ะ")
+                st.caption("1. สแกน QR โอนเงินตามยอดด้านซ้าย\n2. แตะเลือกรูปสลิปแล้วกดส่งได้ทันทีค่ะ (รองรับ JPG, JPEG, JFIF, PNG, WEBP)")
                 upl_slip = st.file_uploader(
                     "เลือกรูปภาพสลิป",
-                    type=["jpg", "jpeg", "png", "webp"],
+                    type=["jpg", "jpeg", "jfif", "png", "webp"],
                     key=f"upl_slip_inp_{oid}_{is_main_card}",
                     label_visibility="collapsed"
                 )
