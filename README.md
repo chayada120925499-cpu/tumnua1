@@ -54,6 +54,8 @@
 
 แสดงขอบเขตสูงสุดของระบบ (System Boundary) ในลักษณะกระบวนการเดี่ยว และความสัมพันธ์กับหน่วยงานภายนอก
 
+![แผนภาพบริบท (Context Diagram / DFD Level 0)](static/img/diagrams/1_context_diagram_dfd_level0.png)
+
 ```mermaid
 flowchart LR
     Customer["ลูกค้า (Customer)"]
@@ -76,6 +78,8 @@ flowchart LR
 ### 1.3 แผนภาพกระแสข้อมูลระดับที่ 1 (DFD Level 1)
 
 การแจกแจงกระบวนการหลักออกเป็น 8 กระบวนการย่อย พร้อมความสัมพันธ์กับแหล่งจัดเก็บข้อมูล 7 แหล่ง
+
+![แผนภาพกระแสข้อมูลระดับที่ 1 (DFD Level 1)](static/img/diagrams/2_dfd_level1.png)
 
 ```mermaid
 flowchart TB
@@ -156,6 +160,8 @@ flowchart TB
 
 ### 1.4 แผนภาพกระแสข้อมูลระดับที่ 2: กระบวนการสั่งอาหาร (DFD Level 2)
 
+![แผนภาพกระแสข้อมูลระดับที่ 2 (DFD Level 2: Process 4.0)](static/img/diagrams/3_dfd_level2_ordering.png)
+
 ```mermaid
 flowchart TB
     C["ลูกค้า (Customer)"]
@@ -200,6 +206,8 @@ flowchart TB
 ---
 
 ### 1.5 แผนภาพวงจรสถานะของคำสั่งซื้อ (Order State Transition Diagram)
+
+![แผนภาพวงจรสถานะของคำสั่งซื้อ (Order State Transition Diagram)](static/img/diagrams/4_order_state_transition.png)
 
 ```mermaid
 stateDiagram-v2
@@ -364,7 +372,7 @@ stateDiagram-v2
 
 ### 4.6 การชำระเงินผ่าน QR PromptPay และการส่งหลักฐานโอนเงิน (Payment & Slip Upload)
 - ตรวจสอบยอดสุทธิ และสแกน QR Code พร้อมเพย์ของทางร้านเพื่อโอนเงิน
-- แนบรูปถ่ายสลิปการโอนเงินผ่านระบบเพื่อให้แคชเชียร์ตรวจสอบและปิดบิล
+- แนบรูปถ่ายสลิปการโอนเงินผ่านระบบเพื่อให้แคชเชียร์ตรวจสอบและปิดบิล (รองรับไฟล์ภาพ JPG, JPEG, JFIF, PNG, WEBP พร้อมระบบบีบอัดอัตโนมัติ)
 
 ---
 
