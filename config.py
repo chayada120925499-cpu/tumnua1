@@ -43,6 +43,53 @@ def get_base64_image(image_path):
             return base64.b64encode(img_file.read()).decode()
     return ""
 
+def get_valid_image_path(img_path):
+    """
+    ตรวจสอบและค้นหาตำแหน่งไฟล์รูปภาพที่ใช้งานได้จริง
+    รองรับทั้ง WebP, PNG, JPG และจัดการเรื่องชื่อไฟล์มี/ไม่มีช่องว่างโดยอัตโนมัติ
+    """
+    if not img_path:
+        return None
+    if isinstance(img_path, str) and (img_path.startswith("http://") or img_path.startswith("https://")):
+        return img_path
+    
+    norm_path = str(img_path).replace("/", os.sep).replace("\\", os.sep)
+    if os.path.exists(norm_path):
+        return norm_path
+    
+    # ตรวจสอบนามสกุลทางเลือก (.webp, .png, .jpg, .jpeg)
+    base, _ = os.path.splitext(norm_path)
+    for alt_ext in [".webp", ".png", ".jpg", ".jpeg"]:
+        if os.path.exists(base + alt_ext):
+            return base + alt_ext
+            
+    # ตรวจสอบกรณีชื่อมีช่องว่าง เช่น menu 1 vs menu1
+    candidates = []
+    if "menu " in norm_path:
+        candidates.append(norm_path.replace("menu ", "menu"))
+    elif "menu" in norm_path:
+        candidates.append(norm_path.replace("menu", "menu "))
+        
+    for c in candidates:
+        if os.path.exists(c):
+            return c
+        c_base, _ = os.path.splitext(c)
+        for alt_ext in [".webp", ".png", ".jpg", ".jpeg"]:
+            if os.path.exists(c_base + alt_ext):
+                return c_base + alt_ext
+                
+    # กรณีพิเศษ menu132 <-> menu124
+    if "menu132" in norm_path:
+        alt124 = norm_path.replace("menu132", "menu124")
+        if os.path.exists(alt124):
+            return alt124
+        b124, _ = os.path.splitext(alt124)
+        for alt_ext in [".webp", ".png", ".jpg", ".jpeg"]:
+            if os.path.exists(b124 + alt_ext):
+                return b124 + alt_ext
+                
+    return None
+
 def get_current_base_url(default="https://tumnua1-fcjmlnyaebejaetpjkjbmd.streamlit.app"):
     """ตรวจจับ URL เว็บไซต์อัตโนมัติจาก Request Headers เพื่อใช้สร้าง QR Code"""
     try:
@@ -346,15 +393,16 @@ div[class*="st-key-fcard_"] [data-testid="stImageContainer"],
     text-align: center !important;
 }
 
-/* บังคับรูปภาพ <img> ขยายเต็มและจัดกึ่งกลาง พร้อมครอบภาพ (object-fit: cover) */
+/* บังคับรูปภาพ <img> แสดงผลสี่เหลี่ยมจัตุรัส 1:1 จัดกึ่งกลาง พร้อมครอบภาพ (object-fit: cover) */
 div[class*="st-key-fcard_"] img,
 .st-key-menu_grid_flex img {
     width: 100% !important;
     min-width: 0 !important;
     max-width: 100% !important;
-    height: 130px !important;
-    max-height: 130px !important;
-    min-height: 130px !important;
+    aspect-ratio: 1 / 1 !important;
+    height: auto !important;
+    max-height: none !important;
+    min-height: 0 !important;
     object-fit: cover !important;
     object-position: center !important;
     border-radius: 8px !important;
@@ -366,15 +414,16 @@ div[class*="st-key-fcard_"] img,
     box-sizing: border-box !important;
 }
 
-/* กล่องข้อความกรณีไม่มีรูปภาพ จัดกึ่งกลาง */
+/* กล่องข้อความกรณีไม่มีรูปภาพ ให้เป็นสี่เหลี่ยมจัตุรัส 1:1 จัดกึ่งกลาง */
 div[class*="st-key-fcard_"] .no-img-box,
 .st-key-menu_grid_flex .no-img-box {
     width: 100% !important;
     min-width: 100% !important;
     max-width: 100% !important;
-    height: 130px !important;
-    max-height: 130px !important;
-    min-height: 130px !important;
+    aspect-ratio: 1 / 1 !important;
+    height: auto !important;
+    max-height: none !important;
+    min-height: 0 !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -464,9 +513,10 @@ div[class*="st-key-fcard_"] [data-testid="stHorizontalBlock"] .stButton > button
     .st-key-menu_grid_flex img,
     div[class*="st-key-fcard_"] .no-img-box,
     .st-key-menu_grid_flex .no-img-box {
-        height: 110px !important;
-        max-height: 110px !important;
-        min-height: 110px !important;
+        aspect-ratio: 1 / 1 !important;
+        height: auto !important;
+        max-height: none !important;
+        min-height: 0 !important;
         border-radius: 6px !important;
     }
     div[class*="st-key-fcard_"] .stButton > button,
