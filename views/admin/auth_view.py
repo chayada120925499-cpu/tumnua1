@@ -750,14 +750,15 @@ def render_admin_search_results(kw: str):
 
     total_count = len(res_tables) + len(res_orders) + len(res_menus) + len(res_members)
 
+    def clear_admin_search_kw():
+        st.session_state['admin_header_search'] = ""
+
     with st.container(border=True):
         c_ttl, c_cls = st.columns([5, 1.4])
         with c_ttl:
             st.markdown(f"#### ผลการค้นหาข้อมูลหลังร้าน: <span style='color: #ea580c;'>\"{kw_clean}\"</span> (พบ {total_count} รายการ)", unsafe_allow_html=True)
         with c_cls:
-            if st.button("ปิดผลค้นหา", key="btn_clear_adm_search", type="primary", use_container_width=True):
-                st.session_state['admin_header_search'] = ""
-                st.rerun()
+            st.button("ปิดผลค้นหา", key="btn_clear_adm_search", type="primary", use_container_width=True, on_click=clear_admin_search_kw)
 
         if total_count == 0:
             st.info(f"ไม่พบข้อมูลที่ตรงกับคำค้นหา '{kw_clean}' ค่ะ ลองพิมพ์คำอื่น เช่น ชื่อเมนู (ตำ, ยำ, ไก่), หมายเลขโต๊ะ (1, 2) หรือเบอร์โทรศัพท์นะคะ")
