@@ -1,5 +1,5 @@
 # ==============================================================================
-# ระบบยืนยันตัวตนผู้ดูแลร้าน & กู้คืนรหัสผ่าน (Admin Auth & Password Recovery)
+# ระบบยืนยันตัวตนผู้ดูแลร้าน & กู้คืนรหัสผ่าน (Admin Auth & Password Recovery) กด Ctrl + F
 # ==============================================================================
 import os
 import secrets
@@ -535,8 +535,8 @@ def check_admin_auth():
                 st.markdown(f"""
                 <div class="adm-hdr-social">
                     <span class="adm-hdr-follow">ติดตามเราบน</span>
-                    <a href="{SOCIAL_LINKS['facebook']}" target="_blank" title="Facebook"><img src="https://cdn.simpleicons.org/facebook/ffffff" alt="Facebook" /></a>
-                    <a href="{SOCIAL_LINKS['instagram']}" target="_blank" title="Instagram"><img src="https://cdn.simpleicons.org/instagram/ffffff" alt="Instagram" /></a>
+                    <a href="https://www.facebook.com/chayada.singhawat.2024" target="_blank" title="Facebook"><img src="https://cdn.simpleicons.org/facebook/ffffff" alt="Facebook" /></a>
+                    <a href="https://www.instagram.com/hiiam_faxsxii/" target="_blank" title="Instagram"><img src="https://cdn.simpleicons.org/instagram/ffffff" alt="Instagram" /></a>
                     <a href="{SOCIAL_LINKS['line']}" target="_blank" title="LINE"><img src="https://cdn.simpleicons.org/line/ffffff" alt="LINE" /></a>
                 </div>
                 """, unsafe_allow_html=True)
