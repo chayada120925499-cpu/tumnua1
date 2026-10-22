@@ -6,7 +6,7 @@ import sqlite3
 import streamlit as st
 from config import DB_NAME, get_thai_now, get_valid_image_path
 from utils.audio import play_order_sound
-from utils.receipt import render_receipt_box
+from utils.receipt import render_receipt_box, render_counter_qr_payment_card
 
 # ==============================================================================
 # จอครัว & เคาน์เตอร์คิดเงิน (Fragment ทำงานอัตโนมัติทุก 3 วินาที)
@@ -201,6 +201,8 @@ def render_pos_dashboard():
 
                     st.write("---")
                     st.markdown(f"**ยอดรวม: <span style='color: #ea580c; font-size: 1.15rem; font-weight: bold;'>฿{int(total):,}</span>**", unsafe_allow_html=True)
+                    with st.popover(f"แสดง QR โอนเงิน (฿{int(total):,})", use_container_width=True):
+                        render_counter_qr_payment_card(t_id, oid, total)
                     
                     # แสดงสถานะสลิปที่ลูกค้าแนบมา
                     if slip_img and os.path.exists(slip_img):
