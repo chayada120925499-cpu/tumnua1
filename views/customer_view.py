@@ -1,5 +1,5 @@
 # ==============================================================================
-# หน้าจอฝั่งลูกค้าสั่งอาหาร (Customer Ordering View) ctrl + F
+# หน้าจอฝั่งลูกค้าสั่งอาหาร (Customer Ordering View)
 # ==============================================================================
 import os
 import sqlite3
@@ -344,11 +344,11 @@ def render_customer_view():
     # ==========================================================================
     def render_order_status_summary(oid, status, total, otime, order_items_trk):
         st_map = {
-            'pending': ('รอร้านรับออเดอร์', 'orange', 0.25, 'กำลังส่งออเดอร์เข้าจอครัว...'),
-            'accepted': ('ครัวรับออเดอร์แล้ว • กำลังปรุงอาหาร', 'blue', 0.50, 'แม่ครัวกำลังตั้งกระทะ ปรุงสดใหม่ค่ะ'),
-            'cooked': ('ปรุงเสร็จ กำลังทยอยเสิร์ฟ', 'purple', 0.75, 'อาหารปรุงเสร็จแล้ว พนักงานกำลังยกไปเสิร์ฟค่ะ'),
-            'served': ('เสิร์ฟถึงโต๊ะครบแล้ว', 'green', 1.0, 'เสิร์ฟครบทุกเมนูแล้ว ทานให้อร่อยนะคะ'),
-            'paid': ('เช็คบิลเรียบร้อยแล้ว', 'gray', 1.0, 'ขอบคุณที่มาอุดหนุนฟ้าใสตำนัวนะคะ')
+            'pending': ('รอร้านรับออเดอร์', '#ea580c', 0.25, 'กำลังส่งออเดอร์เข้าจอครัว...'),
+            'accepted': ('ครัวรับออเดอร์แล้ว • กำลังปรุงอาหาร', '#2563eb', 0.50, 'แม่ครัวกำลังตั้งกระทะ ปรุงสดใหม่ค่ะ'),
+            'cooked': ('ปรุงเสร็จ กำลังทยอยเสิร์ฟ', '#7e22ce', 0.75, 'อาหารปรุงเสร็จแล้ว พนักงานกำลังยกไปเสิร์ฟค่ะ'),
+            'served': ('เสิร์ฟถึงโต๊ะครบแล้ว', '#15803d', 1.0, 'เสิร์ฟครบทุกเมนูแล้ว ทานให้อร่อยนะคะ'),
+            'paid': ('เช็คบิลเรียบร้อยแล้ว', '#64748b', 1.0, 'ขอบคุณที่มาอุดหนุนฟ้าใสตำนัวนะคะ')
         }
 
         total_it = len(order_items_trk)
@@ -364,10 +364,10 @@ def render_customer_view():
             label, color, _, desc_status = st_map['served']
         elif served_it > 0:
             prog_val = 0.5 + 0.4 * (served_it / total_it)
-            label, color, _, desc_status = (f'กำลังทยอยเสิร์ฟ ({served_it}/{total_it} เมนู)', 'purple', prog_val, 'พนักงานกำลังยกอาหารมาเสิร์ฟที่โต๊ะค่ะ')
+            label, color, _, desc_status = (f'กำลังทยอยเสิร์ฟ ({served_it}/{total_it} เมนู)', '#7e22ce', prog_val, 'พนักงานกำลังยกอาหารมาเสิร์ฟที่โต๊ะค่ะ')
         elif status == 'cooked' or cooked_it > 0:
             prog_val = 0.65
-            label, color, _, desc_status = (f'ปรุงเสร็จแล้ว ({cooked_it}/{total_it} เมนู) รอเสิร์ฟ', 'purple', prog_val, 'อาหารปรุงเสร็จแล้ว พนักงานกำลังยกไปเสิร์ฟค่ะ')
+            label, color, _, desc_status = (f'ปรุงเสร็จแล้ว ({cooked_it}/{total_it} เมนู) รอเสิร์ฟ', '#7e22ce', prog_val, 'อาหารปรุงเสร็จแล้ว พนักงานกำลังยกไปเสิร์ฟค่ะ')
         elif status == 'accepted' or accepted_it > 0:
             prog_val = 0.50
             label, color, _, desc_status = st_map['accepted']
@@ -377,7 +377,7 @@ def render_customer_view():
 
         c_oh1, c_oh2 = st.columns([2.5, 1])
         with c_oh1:
-            st.markdown(f"**ออเดอร์ #{oid}** — <span style='font-size: 0.95rem; font-weight: bold;'>:{color}[{label}]</span>", unsafe_allow_html=True)
+            st.markdown(f"**ออเดอร์ #{oid}** — <span style='font-size: 0.95rem; font-weight: bold; color: {color};'>{label}</span>", unsafe_allow_html=True)
             st.caption(f"{desc_status} • สั่งเมื่อ {otime}")
         with c_oh2:
             st.markdown(f"<div style='text-align: right; font-weight: bold; font-size: 1.05rem; color: #ea580c;'>฿{int(total):,}</div>", unsafe_allow_html=True)
@@ -388,14 +388,14 @@ def render_customer_view():
             for iname, iqty, inote, ist in order_items_trk:
                 note_text = f" *(โน้ต: {inote})*" if inote else ""
                 if ist == 'served':
-                    st_badge = ":green[**[เสิร์ฟแล้ว]**]"
+                    st_badge = "<span style='color: #15803d; font-weight: 700;'>[เสิร์ฟแล้ว]</span>"
                 elif ist == 'cooked':
-                    st_badge = ":purple[**[ปรุงเสร็จแล้ว • รอเสิร์ฟ]**]"
+                    st_badge = "<span style='color: #7e22ce; font-weight: 700;'>[ปรุงเสร็จแล้ว • รอเสิร์ฟ]</span>"
                 elif ist == 'accepted' or status in ('accepted', 'cooked', 'served'):
-                    st_badge = ":blue[**[รับออเดอร์แล้ว • กำลังปรุง]**]"
+                    st_badge = "<span style='color: #2563eb; font-weight: 700;'>[รับออเดอร์แล้ว • กำลังปรุง]</span>"
                 else:
-                    st_badge = ":orange[**[รอร้านรับออเดอร์]**]"
-                st.markdown(f"• **{iname}** x{iqty}{note_text} — {st_badge}")
+                    st_badge = "<span style='color: #ea580c; font-weight: 700;'>[รอร้านรับออเดอร์]</span>"
+                st.markdown(f"• **{iname}** x{iqty}{note_text} — {st_badge}", unsafe_allow_html=True)
 
     @st.fragment(run_every=3)
     def render_live_notif_status_list():
@@ -805,8 +805,8 @@ def render_customer_view():
                 st.markdown(f"""
                 <div class="hdr-social">
                     <span class="hdr-follow">ติดตามเราบน</span>
-                    <a href="https://www.facebook.com/chayada.singhawat.2024" target="_blank" title="Facebook"><img src="https://cdn.simpleicons.org/facebook/ffffff" alt="Facebook" /></a>
-                    <a href="https://www.instagram.com/hiiam_faxsxii/" target="_blank" title="Instagram"><img src="https://cdn.simpleicons.org/instagram/ffffff" alt="Instagram" /></a>
+                    <a href="{SOCIAL_LINKS['facebook']}" target="_blank" title="Facebook"><img src="https://cdn.simpleicons.org/facebook/ffffff" alt="Facebook" /></a>
+                    <a href="{SOCIAL_LINKS['instagram']}" target="_blank" title="Instagram"><img src="https://cdn.simpleicons.org/instagram/ffffff" alt="Instagram" /></a>
                     <a href="{SOCIAL_LINKS['line']}" target="_blank" title="LINE"><img src="https://cdn.simpleicons.org/line/ffffff" alt="LINE" /></a>
                 </div>
                 """, unsafe_allow_html=True)
