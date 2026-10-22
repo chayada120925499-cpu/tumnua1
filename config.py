@@ -560,10 +560,20 @@ div[data-testid="stMetricValue"] {
     font-weight: 700 !important;
 }
 
-/* รูปภาพอาหารตัดมุมโค้งสวยงาม พร้อมเงา */
-img {
+/* รูปภาพอาหารตัดมุมโค้งสวยงาม พร้อมเงา (ยกเว้นรูป QR Code ชำระเงินที่ต้องแสดงเต็มภาพไม่ถูกตัดขอบ) */
+img:not(.qr-payment-img) {
     border-radius: 14px !important;
     object-fit: cover !important;
+}
+img.qr-payment-img {
+    border-radius: 8px !important;
+    object-fit: contain !important;
+    width: 100% !important;
+    max-width: min(78vw, 245px) !important;
+    height: auto !important;
+    aspect-ratio: auto !important;
+    display: block !important;
+    margin: 0 auto !important;
 }
 
 /* ปุ่มเลือกหมวดหมู่อาหาร ให้เป็นปุ่มทรงเหลี่ยมชัดเจน สีสันสดใส */
