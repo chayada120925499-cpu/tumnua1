@@ -1,5 +1,5 @@
 # ==============================================================================
-# ระบบยืนยันตัวตนผู้ดูแลร้าน & กู้คืนรหัสผ่าน (Admin Auth & Password Recovery) กด Ctrl + F
+# ระบบยืนยันตัวตนผู้ดูแลร้าน & กู้คืนรหัสผ่าน (Admin Auth & Password Recovery)
 # ==============================================================================
 import os
 import secrets
@@ -254,12 +254,12 @@ def check_admin_auth():
     .st-key-admin_header {
         background: linear-gradient(180deg, #f97316 0%, #ea580c 100%);
         border-radius: 14px;
-        padding: 10px 14px 12px 14px;
+        padding: 12px 16px 14px 16px;
         box-shadow: 0 4px 14px rgba(234, 88, 12, 0.30);
-        margin-bottom: 12px;
+        margin-bottom: 14px;
         display: flex !important;
         flex-direction: column !important;
-        gap: 6px !important;
+        gap: 8px !important;
     }
     .st-key-admin_header [data-testid="stHorizontalBlock"] {
         align-items: center !important;
@@ -288,10 +288,10 @@ def check_admin_auth():
     }
     .st-key-adm_action_wrap [data-testid="stPopover"] button,
     .st-key-adm_action_wrap button {
-        background: rgba(255, 255, 255, 0.16) !important;
-        border: 1px solid rgba(255, 255, 255, 0.4) !important;
+        background: rgba(255, 255, 255, 0.18) !important;
+        border: 1.5px solid rgba(255, 255, 255, 0.5) !important;
         border-radius: 8px !important;
-        padding: 4px 10px !important;
+        padding: 4px 12px !important;
         min-height: 38px !important;
         width: 100% !important;
     }
@@ -303,30 +303,76 @@ def check_admin_auth():
         color: #ffffff !important;
     }
     .st-key-adm_logout_wrap button {
-        background: rgba(255, 255, 255, 0.16) !important;
-        border: 1px solid rgba(255, 255, 255, 0.4) !important;
+        background: rgba(255, 255, 255, 0.18) !important;
+        border: 1.5px solid rgba(255, 255, 255, 0.5) !important;
         border-radius: 8px !important;
         color: #ffffff !important;
         min-height: 34px !important;
         height: 34px !important;
-        padding: 2px 8px !important;
+        padding: 2px 10px !important;
         font-size: 13px !important;
-        font-weight: 600 !important;
+        font-weight: 700 !important;
         white-space: nowrap !important;
         box-shadow: none !important;
         width: 100% !important;
     }
-    .st-key-admin_header [data-testid="stTextInput"] input {
+
+    /* ช่องค้นหา: ล็อกความสูงและซ่อน Label/คำแนะนำ เพื่อไม่ให้ล้นไปทับแถวล่าง */
+    .st-key-adm_row_search {
+        width: 100% !important;
+        margin: 2px 0 4px 0 !important;
+        padding: 0 !important;
+        position: relative !important;
+        z-index: 2 !important;
+    }
+    .st-key-adm_row_search [data-testid="stElementContainer"],
+    .st-key-adm_row_search [data-testid="stTextInput"],
+    .st-key-adm_row_search [data-testid="stTextInputRootElement"] {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    .st-key-admin_header [data-testid="stTextInput"] label,
+    .st-key-admin_header [data-testid="stTextInput"] [data-testid="stWidgetLabel"],
+    .st-key-admin_header [data-testid="stTextInput"] [data-testid="InputInstructions"] {
+        display: none !important;
+        height: 0 !important;
+        min-height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    .st-key-admin_header [data-testid="stTextInput"] > div,
+    .st-key-admin_header [data-testid="stTextInput"] [data-baseweb="input"],
+    .st-key-admin_header [data-testid="stTextInput"] [data-baseweb="base-input"] {
         background: #ffffff !important;
-        color: #1c1917 !important;
-        height: 42px !important;
-        font-size: 14px !important;
-        border-radius: 6px !important;
-    }
-    .st-key-admin_header [data-testid="stTextInput"] > div > div {
         border: 2px solid #ffffff !important;
-        border-radius: 6px !important;
+        border-radius: 8px !important;
+        height: 42px !important;
+        min-height: 42px !important;
+        max-height: 42px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
+        display: flex !important;
+        align-items: center !important;
+        overflow: hidden !important;
     }
+    .st-key-admin_header [data-testid="stTextInput"] input {
+        background: transparent !important;
+        color: #1c1917 !important;
+        height: 38px !important;
+        min-height: 38px !important;
+        max-height: 38px !important;
+        line-height: 38px !important;
+        font-size: 14px !important;
+        padding: 0 12px !important;
+        margin: 0 !important;
+        border: none !important;
+        box-sizing: border-box !important;
+        width: 100% !important;
+    }
+
     .adm-hdr-social {
         color: #ffffff !important;
         font-size: 14px !important;
@@ -358,14 +404,14 @@ def check_admin_auth():
         text-align: left !important;
     }
     .adm-hdr-logo img, .st-key-admin_header .adm-hdr-logo img {
-        width: 50px !important; min-width: 50px !important; max-width: 50px !important;
-        height: 50px !important; min-height: 50px !important; max-height: 50px !important;
+        width: 48px !important; min-width: 48px !important; max-width: 48px !important;
+        height: 48px !important; min-height: 48px !important; max-height: 48px !important;
         border-radius: 50% !important; border: 2px solid #ffffff !important; background: #ffffff !important;
         margin: 0 !important; display: inline-block !important; object-fit: cover !important;
     }
     .adm-hdr-logo .adm-hdr-name {
         color: #ffffff !important;
-        font-size: 1.4rem !important;
+        font-size: 1.35rem !important;
         font-weight: 800 !important;
         line-height: 1.1 !important;
         text-align: left !important;
@@ -376,6 +422,24 @@ def check_admin_auth():
         font-size: 0.78rem !important;
         text-align: left !important;
         white-space: nowrap !important;
+    }
+
+    /* แถวล่าง: แยกออกจากช่องค้นหาอย่างชัดเจนด้วยเส้นคั่นและระยะห่าง */
+    .st-key-adm_row_bottom {
+        margin-top: 2px !important;
+        padding-top: 8px !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.26) !important;
+        position: relative !important;
+        z-index: 1 !important;
+    }
+    .adm-bottom-info-bar {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: wrap !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 6px 12px !important;
+        width: 100% !important;
     }
     .adm-hdr-date {
         color: #ffffff !important;
@@ -391,8 +455,9 @@ def check_admin_auth():
         font-weight: 800 !important;
         padding: 3px 12px !important;
         border-radius: 999px !important;
-        font-size: 0.92rem !important;
+        font-size: 0.88rem !important;
         white-space: nowrap !important;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.10) !important;
     }
     .adm-hdr-badge {
         display: inline-block !important;
@@ -409,22 +474,32 @@ def check_admin_auth():
     .st-key-adm_notif_wrap [data-testid="stElementContainer"]:has(.adm-hdr-badge) {
         position: absolute !important; top: -6px; right: 2px; width: auto !important; z-index: 10; pointer-events: none;
     }
-    .st-key-admin_header [data-testid="stElementContainer"] {
-        display: block !important; width: auto !important; margin: 0 !important; text-align: left !important;
+
+    /* บังคับให้แถวบน, แถวโลโก้, และแถวล่าง เรียงแนวนอนเสมอโดยไม่ซ้อนทับ */
+    .st-key-adm_row_top [data-testid="stHorizontalBlock"],
+    .st-key-adm_row_main [data-testid="stHorizontalBlock"],
+    .st-key-adm_row_bottom [data-testid="stHorizontalBlock"] {
+        flex-wrap: nowrap !important;
+        align-items: center !important;
+        justify-content: space-between !important;
     }
 
-    /* สไตล์สำหรับหน้าจอเดสก์ท็อปและแท็บเล็ต (กว้างกว่า 640px) */
-    @media (min-width: 641px) {
-        .st-key-admin_header [data-testid="stHorizontalBlock"] {
-            flex-wrap: nowrap !important;
+    /* สไตล์สำหรับแท็บเล็ตแนวตั้งและหน้าจอกลาง (ความกว้างไม่เกิน 768px) */
+    @media (max-width: 768px) {
+        .adm-hdr-date-full {
+            display: none !important;
+        }
+        .adm-hdr-date-short {
+            display: inline-block !important;
+            font-size: 12.5px !important;
         }
     }
 
-    /* สไตล์สำหรับสมาร์ตโฟน (ความกว้างหน้าจอไม่เกิน 640px) */
+    /* สไตล์สำหรับสมาร์ตโฟนและหน้าจอขนาดเล็ก (ความกว้างหน้าจอไม่เกิน 640px) */
     @media (max-width: 640px) {
         .st-key-admin_header {
-            padding: 8px 10px 10px 10px !important;
-            gap: 4px !important;
+            padding: 10px 12px 12px 12px !important;
+            gap: 6px !important;
         }
         .adm-hdr-social .adm-hdr-follow, .adm-hdr-logo .adm-hdr-tag {
             display: none !important;
@@ -451,92 +526,61 @@ def check_admin_auth():
         }
         .adm-hdr-date-short {
             display: inline-block !important;
-            font-size: 11px !important;
+            font-size: 11.5px !important;
         }
         .adm-hdr-table {
-            font-size: 0.82rem !important;
-            padding: 2px 8px !important;
+            font-size: 0.78rem !important;
+            padding: 2px 9px !important;
         }
 
         /* แถวบน: โซเชียล, ออเดอร์ใหม่, ผู้ใช้ */
-        .st-key-adm_row_top [data-testid="stHorizontalBlock"] {
-            flex-wrap: nowrap !important;
-            justify-content: space-between !important;
-        }
-        .st-key-adm_row_top [data-testid="stColumn"]:nth-child(1) {
-            width: auto !important;
-            flex: 0 0 auto !important;
-        }
+        .st-key-adm_row_top [data-testid="stColumn"]:nth-child(1),
         .st-key-adm_row_top [data-testid="stColumn"]:nth-child(2),
         .st-key-adm_row_top [data-testid="stColumn"]:nth-child(3) {
             width: auto !important;
             flex: 0 0 auto !important;
+            min-width: 0 !important;
         }
 
-        /* แถวกลาง: โลโก้, ช่องค้นหา, ตั้งค่าบัญชี: ป้องกันภาพซ้อนทับกันบนมือถือ */
-        .st-key-adm_row_main [data-testid="stHorizontalBlock"] {
-            flex-wrap: wrap !important;
-            justify-content: space-between !important;
-            align-items: center !important;
-            gap: 6px 0 !important;
-        }
-        /* โลโก้: อยู่บรรทัดบน ชิดซ้าย ไม่ให้ตัวหนังสือล้น */
+        /* แถวโลโก้และปุ่มตั้งค่า */
         .st-key-adm_row_main [data-testid="stColumn"]:nth-child(1) {
-            order: 1 !important;
-            width: calc(100% - 95px) !important;
-            max-width: calc(100% - 95px) !important;
             flex: 1 1 auto !important;
+            min-width: 0 !important;
         }
-        /* ปุ่มขวา (ตั้งค่า): อยู่บรรทัดบน ชิดขวา ไม่ถูกบีบ */
-        .st-key-adm_row_main [data-testid="stColumn"]:nth-child(3) {
-            order: 2 !important;
-            width: 85px !important;
-            min-width: 85px !important;
-            max-width: 85px !important;
-            flex: 0 0 85px !important;
+        .st-key-adm_row_main [data-testid="stColumn"]:nth-child(2) {
+            flex: 0 0 90px !important;
+            width: 90px !important;
+            min-width: 90px !important;
+            max-width: 90px !important;
             text-align: right !important;
         }
-        /* ช่องค้นหา: ตกมาอยู่บรรทัดถัดไป ขยายเต็มความกว้าง 100% ไม่ทับซ้อนกับโลโก้หรือข้อความใดๆ */
-        .st-key-adm_row_main [data-testid="stColumn"]:nth-child(2) {
-            order: 3 !important;
-            width: 100% !important;
-            min-width: 100% !important;
-            flex: 1 1 100% !important;
-            margin-top: 4px !important;
-        }
 
-        /* แถวล่าง: วันที่, โต๊ะว่าง, ปุ่มออก */
-        .st-key-adm_row_bottom [data-testid="stHorizontalBlock"] {
-            flex-wrap: nowrap !important;
-            align-items: center !important;
-            justify-content: space-between !important;
-        }
+        /* แถวล่าง: วันที่ + โต๊ะว่าง (คอลัมน์ 1) และ ปุ่มออก (คอลัมน์ 2) */
         .st-key-adm_row_bottom [data-testid="stColumn"]:nth-child(1) {
             flex: 1 1 auto !important;
             min-width: 0 !important;
         }
         .st-key-adm_row_bottom [data-testid="stColumn"]:nth-child(2) {
-            flex: 0 0 auto !important;
-            min-width: 0 !important;
-        }
-        .st-key-adm_row_bottom [data-testid="stColumn"]:nth-child(3) {
-            flex: 0 0 auto !important;
-            min-width: 0 !important;
+            flex: 0 0 64px !important;
+            width: 64px !important;
+            min-width: 64px !important;
+            max-width: 64px !important;
+            text-align: right !important;
         }
     }
     </style>
     """, unsafe_allow_html=True)
 
     with st.container(key="admin_header"):
-        # ---------- แถวบน: โซเชียล | แจ้งเตือนออเดอร์ใหม่ | บัญชีผู้ดูแล ----------
+        # ---------- แถวที่ 1 (บน): โซเชียล | แจ้งเตือนออเดอร์ใหม่ | บัญชีผู้ดูแล ----------
         with st.container(key="adm_row_top"):
             r1_social, r1_notif, r1_user = st.columns([1.5, 1, 1.2])
             with r1_social:
                 st.markdown(f"""
                 <div class="adm-hdr-social">
                     <span class="adm-hdr-follow">ติดตามเราบน</span>
-                    <a href="https://www.facebook.com/chayada.singhawat.2024" target="_blank" title="Facebook"><img src="https://cdn.simpleicons.org/facebook/ffffff" alt="Facebook" /></a>
-                    <a href="https://www.instagram.com/hiiam_faxsxii/" target="_blank" title="Instagram"><img src="https://cdn.simpleicons.org/instagram/ffffff" alt="Instagram" /></a>
+                    <a href="{SOCIAL_LINKS['facebook']}" target="_blank" title="Facebook"><img src="https://cdn.simpleicons.org/facebook/ffffff" alt="Facebook" /></a>
+                    <a href="{SOCIAL_LINKS['instagram']}" target="_blank" title="Instagram"><img src="https://cdn.simpleicons.org/instagram/ffffff" alt="Instagram" /></a>
                     <a href="{SOCIAL_LINKS['line']}" target="_blank" title="LINE"><img src="https://cdn.simpleicons.org/line/ffffff" alt="LINE" /></a>
                 </div>
                 """, unsafe_allow_html=True)
@@ -563,9 +607,9 @@ def check_admin_auth():
                         st.session_state['admin_user_info'] = None
                         st.rerun()
 
-        # ---------- แถวกลาง: โลโก้ | ช่องค้นหา | ตั้งค่าบัญชี ----------
+        # ---------- แถวที่ 2: โลโก้ร้าน (ซ้าย) | ปุ่มตั้งค่าบัญชี (ขวา) ----------
         with st.container(key="adm_row_main"):
-            r2_logo, r2_search, r2_settings = st.columns([2.5, 4.5, 1.3])
+            r2_logo, r2_settings = st.columns([4.5, 1.2])
             with r2_logo:
                 st.markdown(f"""
                 <div class="adm-hdr-logo">
@@ -576,13 +620,6 @@ def check_admin_auth():
                     </div>
                 </div>
                 """, unsafe_allow_html=True)
-            with r2_search:
-                search_admin_kw = st.text_input(
-                    "ค้นหาข้อมูลหลังร้าน",
-                    placeholder="ค้นหาโต๊ะ, รหัสบิล, เมนู, ลูกค้า...",
-                    key="admin_header_search",
-                    label_visibility="collapsed"
-                ).strip()
             with r2_settings:
                 with st.container(key="adm_action_wrap"):
                     with st.popover("ตั้งค่า", use_container_width=True):
@@ -642,19 +679,25 @@ def check_admin_auth():
                                         st.success("อัปเดตอีเมลกู้คืนรหัสผ่านเรียบร้อยแล้ว!")
                                         st.rerun()
 
-        # ---------- แถวล่าง: วัน เดือน ปี | โต๊ะว่าง | ออกจากระบบ ----------
+        # ---------- แถวที่ 3: ช่องค้นหาข้อมูลหลังร้าน (แยกแถวอิสระเต็มความกว้าง ไม่ทับกับป้ายโต๊ะว่าง) ----------
+        with st.container(key="adm_row_search"):
+            search_admin_kw = st.text_input(
+                "ค้นหาข้อมูลหลังร้าน",
+                placeholder="ค้นหาโต๊ะ, รหัสบิล, เมนู, ลูกค้า...",
+                key="admin_header_search",
+                label_visibility="collapsed"
+            ).strip()
+
+        # ---------- แถวที่ 4 (ล่าง): วัน เดือน ปี เวลา + โต๊ะว่าง | ปุ่มออกจากระบบ ----------
         with st.container(key="adm_row_bottom"):
-            r3_date, r3_table, r3_logout = st.columns([2.5, 1.1, 0.8])
-            with r3_date:
+            r3_info, r3_logout = st.columns([3.8, 0.8])
+            with r3_info:
                 st.markdown(f"""
-                <div class="adm-hdr-date">
-                    <span class="adm-hdr-date-full">{thai_date_str}</span>
-                    <span class="adm-hdr-date-short">{thai_date_short}</span>
-                </div>
-                """, unsafe_allow_html=True)
-            with r3_table:
-                st.markdown(f"""
-                <div style="text-align: center;">
+                <div class="adm-bottom-info-bar">
+                    <div class="adm-hdr-date">
+                        <span class="adm-hdr-date-full">{thai_date_str}</span>
+                        <span class="adm-hdr-date-short">{thai_date_short}</span>
+                    </div>
                     <span class="adm-hdr-table">โต๊ะว่าง {available_tables_cnt}/{total_tables_cnt} โต๊ะ</span>
                 </div>
                 """, unsafe_allow_html=True)
@@ -663,6 +706,7 @@ def check_admin_auth():
                     if st.button("ออก", key="btn_admin_logout_bottom", use_container_width=True):
                         st.session_state['admin_logged_in'] = False
                         st.session_state['admin_user_info'] = None
+                        st.rerun()
 
 
     # กล่องผลการค้นหาข้อมูลหลังร้านแบบรวมศูนย์ (แสดงเด่นชัดใต้ Header เมื่อมีคำค้นหา)
