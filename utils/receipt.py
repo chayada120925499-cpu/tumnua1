@@ -1,5 +1,5 @@
 # ==============================================================================
-# ระบบพิมพ์และสร้างใบเสร็จรับเงิน (Receipt & Billing System)
+# ระบบพิมพ์และสร้างใบเสร็จรับเงิน & แสดง QR ชำระเงินสำหรับหน้าจอมือถือ (Receipt & Mobile QR Billing)
 # ==============================================================================
 import os
 import base64
@@ -10,8 +10,11 @@ from config import DB_NAME, get_thai_now
 
 # ==============================================================================
 def get_payment_qr_base64():
-    """ดึงรูปภาพ QR ธนาคาร/พร้อมเพย์ (payment.jpg) จากโฟลเดอร์ static มาแปลงเป็น Base64 สำหรับแสดงในใบเสร็จ HTML"""
+    """ดึงรูปภาพ QR ธนาคาร/พร้อมเพย์ (payment.jpg) จากโฟลเดอร์ static มาแปลงเป็น Base64"""
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     possible_paths = [
+        os.path.join(base_dir, "static", "img", "payment.jpg"),
+        os.path.join(base_dir, "static", "payment.jpg"),
         os.path.join(os.path.dirname(__file__), "static", "img", "payment.jpg"),
         os.path.join(os.path.dirname(__file__), "static", "payment.jpg"),
         os.path.join("static", "img", "payment.jpg"),
@@ -27,6 +30,99 @@ def get_payment_qr_base64():
     return ""
 
 
+def render_counter_qr_payment_card(table_id, order_id, total_price, subtotal=None, discount=0):
+    """
+    แสดงการ์ด QR-Code สำหรับให้ลูกค้าสแกนโอนเงินที่หน้าเคาน์เตอร์
+    ออกแบบ Responsive รองรับหน้าจอสมาร์ตโฟนทุกขนาด (iOS / Android) ไม่ล้นจอและไม่ถูกตัดขอบ
+    """
+    qr_b64 = get_payment_qr_base64()
+    if not qr_b64:
+        st.warning("ไม่พบไฟล์รูปภาพ QR-Code ชำระเงิน (static/payment.jpg)")
+        return
+
+    discount_badge_html = ""
+    if discount and discount > 0 and subtotal:
+        discount_badge_html = f"""
+        <div style="font-size: 0.8rem; color: #15803d; font-weight: 600; margin-top: 2px;">
+            (ยอดปกติ ฿{int(subtotal):,} • หักส่วนลดสมาชิก -฿{int(discount):,})
+        </div>
+        """
+
+    card_html = f"""
+    <div class="counter-qr-mobile-card" style="
+        width: 100%;
+        max-width: min(92vw, 330px);
+        margin: 4px auto 8px auto;
+        background: #ffffff;
+        border: 2px solid #ea580c;
+        border-radius: 16px;
+        padding: 12px;
+        box-shadow: 0 6px 20px rgba(234, 88, 12, 0.14);
+        text-align: center;
+        box-sizing: border-box;
+    ">
+        <div style="
+            background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
+            color: #ffffff;
+            padding: 8px 12px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+        ">
+            <div style="font-size: 1.15rem; font-weight: 800; line-height: 1.25;">
+                โต๊ะที่ {table_id} • บิล #{order_id}
+            </div>
+            <div style="font-size: 0.78rem; color: #ffedd5; margin-top: 2px;">
+                สแกน QR-Code เพื่อโอนเงินชำระค่าอาหาร
+            </div>
+        </div>
+
+        <div style="
+            background: #fff7ed;
+            border: 1.5px dashed #fdba74;
+            border-radius: 10px;
+            padding: 8px 10px;
+            margin-bottom: 10px;
+        ">
+            <div style="font-size: 0.82rem; color: #9a3412; font-weight: 600;">ยอดโอนสุทธิ (PromptPay / ทุกธนาคาร)</div>
+            <div style="font-size: 1.65rem; font-weight: 800; color: #c2410c; line-height: 1.2; margin-top: 2px;">
+                ฿{int(total_price):,}
+            </div>
+            {discount_badge_html}
+        </div>
+
+        <div style="
+            background: #ffffff;
+            padding: 6px;
+            border-radius: 12px;
+            border: 1.5px solid #e2e8f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+        ">
+            <img src="data:image/jpeg;base64,{qr_b64}"
+                 alt="QR Code ชำระเงิน"
+                 class="qr-payment-img"
+                 style="
+                     width: 100% !important;
+                     max-width: min(78vw, 245px) !important;
+                     height: auto !important;
+                     aspect-ratio: auto !important;
+                     object-fit: contain !important;
+                     border-radius: 8px !important;
+                     display: block !important;
+                     margin: 0 auto !important;
+                 " />
+        </div>
+
+        <div style="font-size: 0.78rem; color: #64748b; margin-top: 8px; font-weight: 500; line-height: 1.35;">
+            สามารถยื่นหน้าจอนี้ให้ลูกค้าสแกนผ่านแอปธนาคารได้ทันที
+        </div>
+    </div>
+    """
+    st.markdown(card_html, unsafe_allow_html=True)
+
+
 def generate_receipt_html(order_id, table_id, items, total_price, order_time, subtotal=None, discount=0, points_used=0, points_earned=0, member_phone=None, member_name=None, remaining_points=None):
     total_qty = sum(item[1] for item in items)
     if subtotal is None or subtotal <= 0:
@@ -39,20 +135,16 @@ def generate_receipt_html(order_id, table_id, items, total_price, order_time, su
     if qr_b64:
         qr_payment_html = f"""
         <div class="dashed"></div>
-        <div class="text-center" style="margin: 8px 0;">
-            <div style="font-size: 13px; font-weight: bold; color: #1e3a8a; margin-bottom: 2px;">
-                สแกน QR เพื่อชำระเงิน
-            </div>
-            <div style="font-size: 11px; color: #64748b; margin-bottom: 6px;">
-                (PromptPay / สแกนผ่านแอปธนาคาร)
-            </div>
-            <div style="display: flex; justify-content: center; align-items: center; margin: 4px 0;">
+        <div class="qr-section text-center">
+            <div class="qr-title">สแกน QR เพื่อชำระเงิน</div>
+            <div class="qr-subtitle">(PromptPay / สแกนผ่านแอปธนาคารได้ทุกธนาคาร)</div>
+            <div class="qr-img-wrap">
                 <img src="data:image/jpeg;base64,{qr_b64}" 
-                     style="width: 175px; max-width: 90%; height: auto; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 4px; background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.06);" 
+                     class="qr-receipt-img"
                      alt="QR ธนาคารชำระเงิน" />
             </div>
-            <div style="font-size: 12px; color: #1e293b; margin-top: 5px;">
-                ยอดที่ต้องชำระ: <strong style="color: #c2410c; font-size: 14px;">฿{int(total_price):,}</strong>
+            <div class="qr-amount-box">
+                ยอดโอนสุทธิ: <strong>฿{int(total_price):,}</strong>
             </div>
         </div>
         """
@@ -67,7 +159,7 @@ def generate_receipt_html(order_id, table_id, items, total_price, order_time, su
         line_total = int(iqty * iprice)
         items_rows_html += f"""
         <tr>
-            <td style="padding: 4px 0; text-align: left; font-size: 13px;">{idx}. {iname}</td>
+            <td style="padding: 4px 0; text-align: left; font-size: 13px; word-break: break-word;">{idx}. {iname}</td>
             <td style="padding: 4px 0; text-align: center; font-size: 13px;">{iqty}</td>
             <td style="padding: 4px 0; text-align: right; font-size: 13px;">{int(iprice)}</td>
             <td style="padding: 4px 0; text-align: right; font-size: 13px; font-weight: bold;">{line_total:,}</td>
@@ -105,6 +197,7 @@ def generate_receipt_html(order_id, table_id, items, total_price, order_time, su
     <html lang="th">
     <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <title>ใบเสร็จรับเงินอย่างย่อ #{order_id}</title>
     <style>
         @page {{
@@ -116,28 +209,32 @@ def generate_receipt_html(order_id, table_id, items, total_price, order_time, su
                 margin: 0 !important;
                 padding: 4px !important;
                 width: 76mm !important;
+                max-width: 76mm !important;
                 box-shadow: none !important;
                 border: none !important;
             }}
             .no-print {{
                 display: none !important;
             }}
-            img {{
-                max-width: 48mm !important;
+            .qr-receipt-img {{
+                max-width: 52mm !important;
             }}
+        }}
+        * {{
+            box-sizing: border-box;
         }}
         body {{
             font-family: 'Sarabun', 'Segoe UI', Tahoma, monospace, sans-serif;
             color: #111;
             background: #fff;
-            width: 290px;
+            width: 100%;
+            max-width: 315px;
             margin: 4px auto;
-            padding: 14px 10px;
+            padding: 14px 12px;
             font-size: 13px;
-            line-height: 1.38;
-            border: 1px dashed #bbb;
-            border-radius: 6px;
-            box-sizing: border-box;
+            line-height: 1.4;
+            border: 1.5px dashed #bbb;
+            border-radius: 10px;
         }}
         .text-center {{ text-align: center; }}
         .text-right {{ text-align: right; }}
@@ -160,20 +257,81 @@ def generate_receipt_html(order_id, table_id, items, total_price, order_time, su
             font-size: 12px;
         }}
         .btn-print {{
-            background: #ea580c;
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
             color: white;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             padding: 10px 14px;
             font-size: 14px;
             font-weight: bold;
             cursor: pointer;
             width: 100%;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+            box-shadow: 0 2px 6px rgba(234, 88, 12, 0.25);
             transition: background 0.2s;
         }}
         .btn-print:hover {{
             background: #c2410c;
+        }}
+        .qr-section {{
+            margin: 10px 0 6px 0;
+            padding: 8px 6px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+        }}
+        .qr-title {{
+            font-size: 13.5px;
+            font-weight: 800;
+            color: #1e3a8a;
+            margin-bottom: 2px;
+        }}
+        .qr-subtitle {{
+            font-size: 11px;
+            color: #64748b;
+            margin-bottom: 6px;
+        }}
+        .qr-img-wrap {{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 4px auto;
+            width: 100%;
+        }}
+        .qr-receipt-img {{
+            width: 100%;
+            max-width: 225px;
+            height: auto;
+            object-fit: contain;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 4px;
+            background: #fff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+            display: block;
+            margin: 0 auto;
+        }}
+        .qr-amount-box {{
+            font-size: 13px;
+            color: #1e293b;
+            margin-top: 6px;
+            background: #fff7ed;
+            border: 1px dashed #fdba74;
+            border-radius: 6px;
+            padding: 4px 8px;
+            display: inline-block;
+        }}
+        .qr-amount-box strong {{
+            color: #c2410c;
+            font-size: 16px;
+        }}
+        @media (max-width: 360px) {{
+            body {{
+                padding: 10px 8px;
+                font-size: 12px;
+            }}
+            .qr-receipt-img {{
+                max-width: 195px;
+            }}
         }}
     </style>
     </head>
@@ -292,16 +450,26 @@ def render_receipt_box(oid, conn):
     )
     
     with st.container(border=True):
-        st.markdown(f"### ใบเสร็จรับเงินอย่างย่อ — โต๊ะที่ {t_id} (บิล #{oid})")
-        st.caption("สามารถกดปุ่ม **สั่งพิมพ์ใบเสร็จ / บันทึกเป็น PDF** ด้านล่างนี้ หรือดาวน์โหลดไฟล์ได้ทันทีค่ะ")
+        st.markdown(f"### เช็คบิล & ใบเสร็จรับเงินอย่างย่อ — โต๊ะที่ {t_id} (บิล #{oid})")
+        st.caption("รองรับการแสดงผลทั้งบนคอมพิวเตอร์ แท็บเล็ต และสมาร์ตโฟนทุกขนาดหน้าจอ")
         
         # แสดงสลิปโอนเงินที่ลูกค้าแนบมา (ถ้ามี)
         if slip_img and os.path.exists(slip_img):
             with st.expander("สลิปโอนเงินที่ลูกค้าแนบมา (คลิกเพื่อตรวจยอดเงิน)", expanded=True):
                 st.caption(f"เวลาที่ลูกค้าส่งสลิป: {slip_time or '-'}")
-                st.image(slip_img, width=280)
+                st.image(slip_img, width=260)
 
-        components.html(receipt_html, height=750, scrolling=True)
+        # แบ่งแท็บ/คอลัมน์ให้เหมาะสมกับสมาร์ตโฟน: แสดงการ์ด QR โอนเงินขนาดพอดีจอมือถือควบคู่กับใบเสร็จ
+        col_qr_mob, col_rec_view = st.columns([1, 1.2], gap="medium")
+        with col_qr_mob:
+            st.markdown("##### QR-Code สำหรับให้ลูกค้าสแกนโอนเงิน")
+            st.caption("ขนาดพอดีหน้าจอสมาร์ตโฟน ยื่นให้ลูกค้าสแกนได้ทันที")
+            render_counter_qr_payment_card(t_id, oid, total, subtotal=subtotal, discount=discount)
+
+        with col_rec_view:
+            st.markdown("##### ตัวอย่างใบเสร็จรับเงินอย่างย่อ")
+            st.caption("กดปุ่มในกรอบเพื่อสั่งพิมพ์ หรือบันทึกเป็น PDF")
+            components.html(receipt_html, height=760, scrolling=True)
         
         # ส่วนแสดง/ผูกข้อมูลสมาชิกที่เคาน์เตอร์คิดเงิน
         if st_code != 'paid':
@@ -356,5 +524,3 @@ def render_receipt_box(oid, conn):
             if st.button("ปิดหน้าต่างใบเสร็จ", key=f"close_receipt_btn_{oid}", use_container_width=True):
                 st.session_state['active_receipt_oid'] = None
                 st.rerun()
-
-
