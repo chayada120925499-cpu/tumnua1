@@ -680,7 +680,7 @@ def init_db():
     if 'member_phone' not in order_cols:
         c.execute("ALTER TABLE orders ADD COLUMN member_phone TEXT DEFAULT NULL")
 
-    # บันทึกชุดเมนูอาหารทั้งหมดของร้าน "ฟ้าใสตำนัว" (10 หมวดหมู่ 131 เมนูแซ่บ)
+    # บันทึกชุดเมนูอาหารทั้งหมดของร้าน "ฟ้าใสตำนัว" (10 หมวดหมู่ 128 เมนูแซ่บ)
     fahsai_menu = [
         # --- 1. หมวด "ตำนัว" (16 เมนู) ---
         ("ตำไทย", "ตำนัว", 50, 18, "static/img/menu/menu1.png", "รสเปรี้ยวหวานกลมกล่อม ถั่วคั่วใหม่ กุ้งแห้งเกรดเอ"),
