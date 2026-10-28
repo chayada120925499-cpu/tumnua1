@@ -259,13 +259,55 @@ def check_admin_auth():
         margin-bottom: 14px;
         display: flex !important;
         flex-direction: column !important;
-        gap: 8px !important;
+        gap: 10px !important;
     }
-    .st-key-admin_header [data-testid="stHorizontalBlock"] {
-        align-items: center !important;
-        gap: 8px !important;
+    /* ล้างค่า margin ติดลบของ stMarkdown ใน Streamlit เพื่อไม่ให้องค์ประกอบเหลื่อมหรือซ้อนทับกัน */
+    .st-key-admin_header [data-testid="stMarkdown"],
+    .st-key-admin_header [data-testid="stMarkdownContainer"],
+    .st-key-admin_header [data-testid="stElementContainer"] {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+    }
+    .st-key-admin_header [data-testid="stColumn"] > div,
+    .st-key-admin_header [data-testid="stColumn"] [data-testid="stVerticalBlock"] {
+        gap: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
     }
     .st-key-admin_header [data-testid="stColumn"] {
+        min-width: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    /* ======================================================================
+       แถวที่ 1 (บน): "ติดตามเรา" + ไอคอนโซเชียล (ชิดซ้าย) | "ออเดอร์ใหม่", "Admin", "ตั้งค่า" (ชิดขวา)
+       ====================================================================== */
+    .st-key-adm_row_top [data-testid="stHorizontalBlock"] {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        align-items: center !important;
+        justify-content: flex-end !important;
+        gap: 8px !important;
+        width: 100% !important;
+    }
+    .st-key-adm_row_top [data-testid="stColumn"]:nth-child(1) {
+        flex: 0 1 auto !important;
+        width: auto !important;
+        min-width: 0 !important;
+        margin-right: auto !important;
+    }
+    .st-key-adm_row_top [data-testid="stColumn"]:nth-child(2),
+    .st-key-adm_row_top [data-testid="stColumn"]:nth-child(3),
+    .st-key-adm_row_top [data-testid="stColumn"]:nth-child(4) {
+        flex: 0 0 auto !important;
+        width: auto !important;
         min-width: 0 !important;
     }
     .st-key-admin_header [data-testid="stPopover"] button {
@@ -273,12 +315,15 @@ def check_admin_auth():
         border: none !important;
         box-shadow: none !important;
         color: #ffffff !important;
-        min-height: 36px !important;
+        min-height: 34px !important;
+        height: 34px !important;
         padding: 4px 8px !important;
         white-space: nowrap !important;
+        width: auto !important;
     }
     .st-key-admin_header [data-testid="stPopover"] button:hover {
         background: rgba(255, 255, 255, 0.18) !important;
+        border-radius: 8px !important;
     }
     .st-key-admin_header [data-testid="stPopover"] button p {
         color: #ffffff !important;
@@ -289,45 +334,153 @@ def check_admin_auth():
     .st-key-adm_action_wrap [data-testid="stPopover"] button,
     .st-key-adm_action_wrap button {
         background: rgba(255, 255, 255, 0.18) !important;
-        border: 1.5px solid rgba(255, 255, 255, 0.5) !important;
+        border: 1.5px solid rgba(255, 255, 255, 0.55) !important;
         border-radius: 8px !important;
         padding: 4px 12px !important;
-        min-height: 38px !important;
-        width: 100% !important;
+        min-height: 34px !important;
+        height: 34px !important;
+        width: auto !important;
     }
     .st-key-adm_action_wrap [data-testid="stPopover"] button p,
     .st-key-adm_action_wrap button p {
-        font-size: 14px !important;
+        font-size: 13.5px !important;
         font-weight: 700 !important;
         white-space: nowrap !important;
         color: #ffffff !important;
-    }
-    .st-key-adm_logout_wrap button {
-        background: rgba(255, 255, 255, 0.18) !important;
-        border: 1.5px solid rgba(255, 255, 255, 0.5) !important;
-        border-radius: 8px !important;
-        color: #ffffff !important;
-        min-height: 34px !important;
-        height: 34px !important;
-        padding: 2px 10px !important;
-        font-size: 13px !important;
-        font-weight: 700 !important;
-        white-space: nowrap !important;
-        box-shadow: none !important;
-        width: 100% !important;
     }
 
-    /* ช่องค้นหา: ล็อกความสูงและซ่อน Label/คำแนะนำ เพื่อไม่ให้ล้นไปทับแถวล่าง */
-    .st-key-adm_row_search {
-        width: 100% !important;
-        margin: 2px 0 4px 0 !important;
+    .adm-hdr-social {
+        color: #ffffff !important;
+        font-size: 14px !important;
+        font-weight: 600 !important;
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 8px !important;
+        white-space: nowrap !important;
+        margin: 0 !important;
+    }
+    .adm-hdr-social a {
+        display: inline-flex !important;
+        align-items: center !important;
+        margin: 0 !important;
         padding: 0 !important;
+    }
+    .adm-hdr-social img, .st-key-admin_header .adm-hdr-social img {
+        width: 18px !important; min-width: 18px !important; max-width: 18px !important;
+        height: 18px !important; min-height: 18px !important; max-height: 18px !important;
+        border-radius: 0 !important; margin: 0 !important; display: inline-block !important; object-fit: contain !important;
+    }
+    .adm-hdr-badge {
+        display: inline-block !important;
+        background: #ef4444 !important;
+        color: #ffffff !important;
+        border: 1.5px solid #ffffff !important;
+        border-radius: 999px !important;
+        font-size: 11px !important;
+        font-weight: 800 !important;
+        line-height: 1 !important;
+        padding: 2px 6px !important;
+    }
+    .st-key-adm_notif_wrap {
+        position: relative !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        width: auto !important;
+    }
+    .st-key-adm_notif_wrap [data-testid="stElementContainer"]:has(.adm-hdr-badge) {
+        position: absolute !important;
+        top: -4px !important;
+        right: -8px !important;
+        width: auto !important;
+        z-index: 10 !important;
+        pointer-events: none !important;
+    }
+
+    /* ======================================================================
+       แถวที่ 2 (กลาง): โลโก้ขนาดใหญ่ + ชื่อร้าน + คำอธิบาย (ซ้าย) และ ช่องค้นหา (ขวา) อยู่แถวเดียวกัน ไม่ซ้อนทับกัน
+       ====================================================================== */
+    .st-key-adm_row_main {
+        width: 100% !important;
+        height: auto !important;
+        margin: 2px 0 !important;
         position: relative !important;
         z-index: 2 !important;
     }
-    .st-key-adm_row_search [data-testid="stElementContainer"],
-    .st-key-adm_row_search [data-testid="stTextInput"],
-    .st-key-adm_row_search [data-testid="stTextInputRootElement"] {
+    .st-key-adm_row_main [data-testid="stHorizontalBlock"] {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 14px !important;
+        width: 100% !important;
+    }
+    .st-key-adm_row_main [data-testid="stColumn"]:nth-child(1) {
+        flex: 1 1 52% !important;
+        width: 52% !important;
+        max-width: 54% !important;
+        min-width: 0 !important;
+    }
+    .st-key-adm_row_main [data-testid="stColumn"]:nth-child(2) {
+        flex: 1 1 48% !important;
+        width: 48% !important;
+        max-width: 48% !important;
+        min-width: 150px !important;
+    }
+    .adm-hdr-logo {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 12px !important;
+        margin: 0 !important;
+        padding: 2px 0 !important;
+        text-align: left !important;
+        width: 100% !important;
+        min-width: 0 !important;
+    }
+    .adm-hdr-logo img, .st-key-admin_header .adm-hdr-logo img {
+        width: clamp(72px, 14vw, 115px) !important;
+        min-width: clamp(72px, 14vw, 115px) !important;
+        max-width: clamp(72px, 14vw, 115px) !important;
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        aspect-ratio: 1 / 1 !important;
+        border-radius: 50% !important;
+        border: 2.5px solid #ffffff !important;
+        background: #ffffff !important;
+        padding: 2px !important;
+        box-sizing: border-box !important;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.16) !important;
+        margin: 0 !important;
+        display: block !important;
+        object-fit: contain !important;
+        flex-shrink: 0 !important;
+    }
+    .adm-hdr-logo-text {
+        min-width: 0 !important;
+        flex: 1 1 auto !important;
+    }
+    .adm-hdr-logo .adm-hdr-name {
+        color: #ffffff !important;
+        font-size: 1.4rem !important;
+        font-weight: 800 !important;
+        line-height: 1.15 !important;
+        text-align: left !important;
+        white-space: nowrap !important;
+    }
+    .adm-hdr-logo .adm-hdr-tag {
+        color: #ffedd5 !important;
+        font-size: 0.82rem !important;
+        line-height: 1.25 !important;
+        text-align: left !important;
+        margin-top: 2px !important;
+    }
+
+    /* ช่องค้นหาในแถวกลาง: ล็อกความสูง 42px และซ่อน Label เพื่อจัดกึ่งกลางแนวตั้งตรงกับโลโก้ */
+    .st-key-adm_row_main [data-testid="stTextInput"],
+    .st-key-adm_row_main [data-testid="stTextInputRootElement"] {
         width: 100% !important;
         max-width: 100% !important;
         margin: 0 !important;
@@ -357,6 +510,7 @@ def check_admin_auth():
         display: flex !important;
         align-items: center !important;
         overflow: hidden !important;
+        width: 100% !important;
     }
     .st-key-admin_header [data-testid="stTextInput"] input {
         background: transparent !important;
@@ -373,73 +527,37 @@ def check_admin_auth():
         width: 100% !important;
     }
 
-    .adm-hdr-social {
-        color: #ffffff !important;
-        font-size: 14px !important;
-        display: flex !important;
-        flex-direction: row !important;
-        align-items: center !important;
-        gap: 8px !important;
-        white-space: nowrap !important;
-        margin: 0 !important;
-    }
-    .adm-hdr-social a {
-        display: inline-flex !important;
-        align-items: center !important;
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-    .adm-hdr-social img, .st-key-admin_header .adm-hdr-social img {
-        width: 18px !important; min-width: 18px !important; max-width: 18px !important;
-        height: 18px !important; min-height: 18px !important; max-height: 18px !important;
-        border-radius: 0 !important; margin: 0 !important; display: inline-block !important; object-fit: contain !important;
-    }
-    .adm-hdr-logo {
-        display: flex !important;
-        flex-direction: row !important;
-        align-items: center !important;
-        gap: 10px !important;
-        white-space: nowrap !important;
-        margin: 0 !important;
-        text-align: left !important;
-    }
-    .adm-hdr-logo img, .st-key-admin_header .adm-hdr-logo img {
-        width: 48px !important; min-width: 48px !important; max-width: 48px !important;
-        height: 48px !important; min-height: 48px !important; max-height: 48px !important;
-        border-radius: 50% !important; border: 2px solid #ffffff !important; background: #ffffff !important;
-        margin: 0 !important; display: inline-block !important; object-fit: cover !important;
-    }
-    .adm-hdr-logo .adm-hdr-name {
-        color: #ffffff !important;
-        font-size: 1.35rem !important;
-        font-weight: 800 !important;
-        line-height: 1.1 !important;
-        text-align: left !important;
-        white-space: nowrap !important;
-    }
-    .adm-hdr-logo .adm-hdr-tag {
-        color: #ffedd5 !important;
-        font-size: 0.78rem !important;
-        text-align: left !important;
-        white-space: nowrap !important;
-    }
-
-    /* แถวล่าง: แยกออกจากช่องค้นหาอย่างชัดเจนด้วยเส้นคั่นและระยะห่าง */
+    /* ======================================================================
+       แถวที่ 3 (ล่าง): วันเดือนปี เวลา (ชิดซ้าย) | ป้ายโต๊ะว่าง/จำนวนโต๊ะ + ปุ่มออก (ชิดขวา)
+       ====================================================================== */
     .st-key-adm_row_bottom {
         margin-top: 2px !important;
         padding-top: 8px !important;
         border-top: 1px solid rgba(255, 255, 255, 0.26) !important;
         position: relative !important;
         z-index: 1 !important;
+        width: 100% !important;
     }
-    .adm-bottom-info-bar {
+    .st-key-adm_row_bottom [data-testid="stHorizontalBlock"] {
         display: flex !important;
         flex-direction: row !important;
-        flex-wrap: wrap !important;
+        flex-wrap: nowrap !important;
         align-items: center !important;
-        justify-content: space-between !important;
-        gap: 6px 12px !important;
+        justify-content: flex-end !important;
+        gap: 10px !important;
         width: 100% !important;
+    }
+    .st-key-adm_row_bottom [data-testid="stColumn"]:nth-child(1) {
+        flex: 0 1 auto !important;
+        width: auto !important;
+        min-width: 0 !important;
+        margin-right: auto !important;
+    }
+    .st-key-adm_row_bottom [data-testid="stColumn"]:nth-child(2),
+    .st-key-adm_row_bottom [data-testid="stColumn"]:nth-child(3) {
+        flex: 0 0 auto !important;
+        width: auto !important;
+        min-width: 0 !important;
     }
     .adm-hdr-date {
         color: #ffffff !important;
@@ -453,35 +571,25 @@ def check_admin_auth():
         background: #ffffff !important;
         color: #c2410c !important;
         font-weight: 800 !important;
-        padding: 3px 12px !important;
+        padding: 4px 12px !important;
         border-radius: 999px !important;
         font-size: 0.88rem !important;
         white-space: nowrap !important;
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.10) !important;
     }
-    .adm-hdr-badge {
-        display: inline-block !important;
-        background: #ef4444 !important;
+    .st-key-adm_logout_wrap button {
+        background: rgba(255, 255, 255, 0.18) !important;
+        border: 1.5px solid rgba(255, 255, 255, 0.55) !important;
+        border-radius: 8px !important;
         color: #ffffff !important;
-        border: 1.5px solid #ffffff !important;
-        border-radius: 999px !important;
-        font-size: 11px !important;
-        font-weight: 800 !important;
-        line-height: 1 !important;
-        padding: 2px 6px !important;
-    }
-    .st-key-adm_notif_wrap { position: relative !important; }
-    .st-key-adm_notif_wrap [data-testid="stElementContainer"]:has(.adm-hdr-badge) {
-        position: absolute !important; top: -6px; right: 2px; width: auto !important; z-index: 10; pointer-events: none;
-    }
-
-    /* บังคับให้แถวบน, แถวโลโก้, และแถวล่าง เรียงแนวนอนเสมอโดยไม่ซ้อนทับ */
-    .st-key-adm_row_top [data-testid="stHorizontalBlock"],
-    .st-key-adm_row_main [data-testid="stHorizontalBlock"],
-    .st-key-adm_row_bottom [data-testid="stHorizontalBlock"] {
-        flex-wrap: nowrap !important;
-        align-items: center !important;
-        justify-content: space-between !important;
+        min-height: 34px !important;
+        height: 34px !important;
+        padding: 2px 14px !important;
+        font-size: 13px !important;
+        font-weight: 700 !important;
+        white-space: nowrap !important;
+        box-shadow: none !important;
+        width: auto !important;
     }
 
     /* สไตล์สำหรับแท็บเล็ตแนวตั้งและหน้าจอกลาง (ความกว้างไม่เกิน 768px) */
@@ -499,27 +607,69 @@ def check_admin_auth():
     @media (max-width: 640px) {
         .st-key-admin_header {
             padding: 10px 12px 12px 12px !important;
-            gap: 6px !important;
+            gap: 8px !important;
         }
-        .adm-hdr-social .adm-hdr-follow, .adm-hdr-logo .adm-hdr-tag {
-            display: none !important;
+        .adm-hdr-social {
+            font-size: 12px !important;
+            gap: 5px !important;
         }
-        .adm-hdr-logo img, .st-key-admin_header .adm-hdr-logo img {
-            width: 38px !important; height: 38px !important; min-width: 38px !important; min-height: 38px !important;
-        }
-        .adm-hdr-logo .adm-hdr-name {
-            font-size: 1.15rem !important;
+        .adm-hdr-social img, .st-key-admin_header .adm-hdr-social img {
+            width: 15px !important; min-width: 15px !important; max-width: 15px !important;
+            height: 15px !important; min-height: 15px !important; max-height: 15px !important;
         }
         .st-key-admin_header [data-testid="stPopover"] button {
-            padding: 2px 6px !important;
+            padding: 2px 5px !important;
+            min-height: 30px !important;
+            height: 30px !important;
         }
         .st-key-admin_header [data-testid="stPopover"] button p {
-            font-size: 12px !important;
+            font-size: 11.5px !important;
+        }
+        .st-key-adm_action_wrap [data-testid="stPopover"] button,
+        .st-key-adm_action_wrap button {
+            padding: 2px 8px !important;
+            min-height: 30px !important;
+            height: 30px !important;
         }
         .st-key-adm_action_wrap [data-testid="stPopover"] button p,
         .st-key-adm_action_wrap button p {
-            font-size: 13px !important;
+            font-size: 11.5px !important;
             font-weight: 700 !important;
+        }
+        .st-key-adm_row_main [data-testid="stHorizontalBlock"] {
+            gap: 8px !important;
+        }
+        .adm-hdr-logo {
+            gap: 8px !important;
+        }
+        .adm-hdr-logo img, .st-key-admin_header .adm-hdr-logo img {
+            width: clamp(58px, 16vw, 84px) !important;
+            min-width: clamp(58px, 16vw, 84px) !important;
+            max-width: clamp(58px, 16vw, 84px) !important;
+            height: auto !important;
+            aspect-ratio: 1 / 1 !important;
+            object-fit: contain !important;
+        }
+        .adm-hdr-logo .adm-hdr-name {
+            font-size: 1.05rem !important;
+        }
+        .adm-hdr-logo .adm-hdr-tag {
+            font-size: 0.68rem !important;
+        }
+        .st-key-admin_header [data-testid="stTextInput"] > div,
+        .st-key-admin_header [data-testid="stTextInput"] [data-baseweb="input"],
+        .st-key-admin_header [data-testid="stTextInput"] [data-baseweb="base-input"] {
+            height: 38px !important;
+            min-height: 38px !important;
+            max-height: 38px !important;
+        }
+        .st-key-admin_header [data-testid="stTextInput"] input {
+            height: 34px !important;
+            min-height: 34px !important;
+            max-height: 34px !important;
+            line-height: 34px !important;
+            font-size: 12.5px !important;
+            padding: 0 8px !important;
         }
         .adm-hdr-date-full {
             display: none !important;
@@ -530,55 +680,26 @@ def check_admin_auth():
         }
         .adm-hdr-table {
             font-size: 0.78rem !important;
-            padding: 2px 9px !important;
+            padding: 3px 9px !important;
         }
-
-        /* แถวบน: โซเชียล, ออเดอร์ใหม่, ผู้ใช้ */
-        .st-key-adm_row_top [data-testid="stColumn"]:nth-child(1),
-        .st-key-adm_row_top [data-testid="stColumn"]:nth-child(2),
-        .st-key-adm_row_top [data-testid="stColumn"]:nth-child(3) {
-            width: auto !important;
-            flex: 0 0 auto !important;
-            min-width: 0 !important;
-        }
-
-        /* แถวโลโก้และปุ่มตั้งค่า */
-        .st-key-adm_row_main [data-testid="stColumn"]:nth-child(1) {
-            flex: 1 1 auto !important;
-            min-width: 0 !important;
-        }
-        .st-key-adm_row_main [data-testid="stColumn"]:nth-child(2) {
-            flex: 0 0 90px !important;
-            width: 90px !important;
-            min-width: 90px !important;
-            max-width: 90px !important;
-            text-align: right !important;
-        }
-
-        /* แถวล่าง: วันที่ + โต๊ะว่าง (คอลัมน์ 1) และ ปุ่มออก (คอลัมน์ 2) */
-        .st-key-adm_row_bottom [data-testid="stColumn"]:nth-child(1) {
-            flex: 1 1 auto !important;
-            min-width: 0 !important;
-        }
-        .st-key-adm_row_bottom [data-testid="stColumn"]:nth-child(2) {
-            flex: 0 0 64px !important;
-            width: 64px !important;
-            min-width: 64px !important;
-            max-width: 64px !important;
-            text-align: right !important;
+        .st-key-adm_logout_wrap button {
+            min-height: 30px !important;
+            height: 30px !important;
+            padding: 2px 10px !important;
+            font-size: 12px !important;
         }
     }
     </style>
     """, unsafe_allow_html=True)
 
     with st.container(key="admin_header"):
-        # ---------- แถวที่ 1 (บน): โซเชียล | แจ้งเตือนออเดอร์ใหม่ | บัญชีผู้ดูแล ----------
+        # ---------- แถวที่ 1 (บน): "ติดตามเรา" + โซเชียล (ชิดซ้าย) | ออเดอร์ใหม่, Admin, ตั้งค่า (ชิดขวา) ----------
         with st.container(key="adm_row_top"):
-            r1_social, r1_notif, r1_user = st.columns([1.5, 1, 1.2])
+            r1_social, r1_notif, r1_user, r1_settings = st.columns([2.2, 1.0, 1.2, 0.9])
             with r1_social:
                 st.markdown(f"""
                 <div class="adm-hdr-social">
-                    <span class="adm-hdr-follow">ติดตามเราบน</span>
+                    <span class="adm-hdr-follow">ติดตามเรา</span>
                     <a href="{SOCIAL_LINKS['facebook']}" target="_blank" title="Facebook"><img src="https://cdn.simpleicons.org/facebook/ffffff" alt="Facebook" /></a>
                     <a href="{SOCIAL_LINKS['instagram']}" target="_blank" title="Instagram"><img src="https://cdn.simpleicons.org/instagram/ffffff" alt="Instagram" /></a>
                     <a href="{SOCIAL_LINKS['line']}" target="_blank" title="LINE"><img src="https://cdn.simpleicons.org/line/ffffff" alt="LINE" /></a>
@@ -586,7 +707,7 @@ def check_admin_auth():
                 """, unsafe_allow_html=True)
             with r1_notif:
                 with st.container(key="adm_notif_wrap"):
-                    with st.popover("ออเดอร์ใหม่", use_container_width=True):
+                    with st.popover("ออเดอร์ใหม่", use_container_width=False):
                         st.markdown("##### รายการออเดอร์เข้าใหม่")
                         if not recent_active_orders:
                             st.info("ไม่มีออเดอร์ใหม่ค้างในขณะนี้ค่ะ")
@@ -598,7 +719,7 @@ def check_admin_auth():
                     if new_orders_cnt > 0:
                         st.markdown(f'<span class="adm-hdr-badge">{new_orders_cnt if new_orders_cnt < 10 else "9+"}</span>', unsafe_allow_html=True)
             with r1_user:
-                with st.popover(f"คุณ{u_name}", use_container_width=True):
+                with st.popover(f"คุณ{u_name}", use_container_width=False):
                     st.markdown(f"**{u_name}** ({u_role.upper()})")
                     st.caption(f"อีเมล: {u_email}")
                     st.write("---")
@@ -606,23 +727,9 @@ def check_admin_auth():
                         st.session_state['admin_logged_in'] = False
                         st.session_state['admin_user_info'] = None
                         st.rerun()
-
-        # ---------- แถวที่ 2: โลโก้ร้าน (ซ้าย) | ปุ่มตั้งค่าบัญชี (ขวา) ----------
-        with st.container(key="adm_row_main"):
-            r2_logo, r2_settings = st.columns([4.5, 1.2])
-            with r2_logo:
-                st.markdown(f"""
-                <div class="adm-hdr-logo">
-                    {hdr_logo_img}
-                    <div>
-                        <div class="adm-hdr-name">ฟ้าใสตำนัว</div>
-                        <div class="adm-hdr-tag">ระบบจัดการเคาน์เตอร์ & จอครัว</div>
-                    </div>
-                </div>
-                """, unsafe_allow_html=True)
-            with r2_settings:
+            with r1_settings:
                 with st.container(key="adm_action_wrap"):
-                    with st.popover("ตั้งค่า", use_container_width=True):
+                    with st.popover("ตั้งค่า", use_container_width=False):
                         st.markdown("### จัดการบัญชีผู้ดูแล")
                         p_tab1, p_tab2 = st.tabs(["เปลี่ยนรหัสผ่าน", "ผูกอีเมลกู้คืน"])
 
@@ -679,31 +786,42 @@ def check_admin_auth():
                                         st.success("อัปเดตอีเมลกู้คืนรหัสผ่านเรียบร้อยแล้ว!")
                                         st.rerun()
 
-        # ---------- แถวที่ 3: ช่องค้นหาข้อมูลหลังร้าน (แยกแถวอิสระเต็มความกว้าง ไม่ทับกับป้ายโต๊ะว่าง) ----------
-        with st.container(key="adm_row_search"):
-            search_admin_kw = st.text_input(
-                "ค้นหาข้อมูลหลังร้าน",
-                placeholder="ค้นหาโต๊ะ, รหัสบิล, เมนู, ลูกค้า...",
-                key="admin_header_search",
-                label_visibility="collapsed"
-            ).strip()
-
-        # ---------- แถวที่ 4 (ล่าง): วัน เดือน ปี เวลา + โต๊ะว่าง | ปุ่มออกจากระบบ ----------
-        with st.container(key="adm_row_bottom"):
-            r3_info, r3_logout = st.columns([3.8, 0.8])
-            with r3_info:
+        # ---------- แถวที่ 2 (กลาง): โลโก้ขนาดใหญ่ + ชื่อร้าน + คำอธิบาย (ซ้าย) และ ช่องค้นหา (ขวา) อยู่แถวเดียวกัน ----------
+        with st.container(key="adm_row_main"):
+            r2_logo, r2_search = st.columns([1.1, 1.0])
+            with r2_logo:
                 st.markdown(f"""
-                <div class="adm-bottom-info-bar">
-                    <div class="adm-hdr-date">
-                        <span class="adm-hdr-date-full">{thai_date_str}</span>
-                        <span class="adm-hdr-date-short">{thai_date_short}</span>
+                <div class="adm-hdr-logo">
+                    {hdr_logo_img}
+                    <div class="adm-hdr-logo-text">
+                        <div class="adm-hdr-name">ฟ้าใสตำนัว</div>
+                        <div class="adm-hdr-tag">ระบบจัดการเคาน์เตอร์ & จอครัว</div>
                     </div>
-                    <span class="adm-hdr-table">โต๊ะว่าง {available_tables_cnt}/{total_tables_cnt} โต๊ะ</span>
                 </div>
                 """, unsafe_allow_html=True)
+            with r2_search:
+                search_admin_kw = st.text_input(
+                    "ค้นหาข้อมูลหลังร้าน",
+                    placeholder="ค้นหาโต๊ะ, รหัสบิล, เมนู, ลูกค้า...",
+                    key="admin_header_search",
+                    label_visibility="collapsed"
+                ).strip()
+
+        # ---------- แถวที่ 3 (ล่าง): วันเดือนปี เวลา (ชิดซ้าย) | ป้ายโต๊ะว่าง/จำนวนโต๊ะ + ปุ่มออก (ชิดขวา) ----------
+        with st.container(key="adm_row_bottom"):
+            r3_date, r3_table, r3_logout = st.columns([3.0, 1.2, 0.7])
+            with r3_date:
+                st.markdown(f"""
+                <div class="adm-hdr-date">
+                    <span class="adm-hdr-date-full">{thai_date_str}</span>
+                    <span class="adm-hdr-date-short">{thai_date_short}</span>
+                </div>
+                """, unsafe_allow_html=True)
+            with r3_table:
+                st.markdown(f'<span class="adm-hdr-table">โต๊ะว่าง {available_tables_cnt}/{total_tables_cnt} โต๊ะ</span>', unsafe_allow_html=True)
             with r3_logout:
                 with st.container(key="adm_logout_wrap"):
-                    if st.button("ออก", key="btn_admin_logout_bottom", use_container_width=True):
+                    if st.button("ออก", key="btn_admin_logout_bottom", use_container_width=False):
                         st.session_state['admin_logged_in'] = False
                         st.session_state['admin_user_info'] = None
                         st.rerun()
