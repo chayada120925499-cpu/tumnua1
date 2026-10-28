@@ -245,7 +245,7 @@ def init_db():
         ("ข้าวสวยหอมมะลิ", "เครื่องเคียง & ข้าว", 15, 5, "static/img/menu/menu114.webp", "ข้าวหอมมะลิแท้ 100% หุงนุ่มหอมกรุ่น"),
         ("ขนมจีน", "เครื่องเคียง & ข้าว", 15, 5, "static/img/menu/menu115.webp", "เส้นขนมจีนแป้งหมักสดใหม่ นุ่มลื่น ทานคู่ส้มตำ"),
         ("หมูยอลวกจิ้ม", "เครื่องเคียง & ข้าว", 50, 20, "static/img/menu/menu116.webp", "หมูยออุบลหั่นชิ้นลวกร้อนๆ จิ้มน้ำจิ้มซีฟู้ด"),
-        ("ผักบุ้งลวก", "เครื่องเคียง & ข้าว", 15, 5, "static/img/menu/menu127.webp", "ผักบุ้งยอดอ่อนลวกกรอบสีเขียวสด ทานคู่ส้มตำ"),
+        ("ผักบุ้งลวก", "เครื่องเคียง & ข้าว", 15, 5, "static/img/menu/menu117.webp", "ผักบุ้งยอดอ่อนลวกกรอบสีเขียวสด ทานคู่ส้มตำ"),
         ("กะหล่ำปลีสด", "เครื่องเคียง & ข้าว", 10, 4, "static/img/menu/menu118.webp", "กะหล่ำปลีสดแช่เย็นกรอบหวาน ช่วยลดความเผ็ด"),
         ("แตงกวาสด", "เครื่องเคียง & ข้าว", 10, 4, "static/img/menu/menu119.webp", "แตงกวาสดหั่นชิ้นแช่เย็น กรอบฉ่ำน้ำ"),
         ("ไข่ดาว", "เครื่องเคียง & ข้าว", 10, 4, "static/img/menu/menu120.webp", "ไข่ไก่สดทอดดาวกรอบนอกไข่แดงเยิ้ม"),
@@ -264,21 +264,49 @@ def init_db():
         ("น้ำลำไย", "เครื่องดื่ม", 35, 12, "static/img/menu/menu131.webp", "น้ำลำไยเนื้อแน่น หวานหอมกลมกล่อม")
     ]
     
-    # ตรวจสอบว่าตารางว่างเปล่า หรือยังมีเมนูค้างจากระบบเก่าที่ใช้รูปลิงก์ Unsplash หรือไม่
+    # ตรวจสอบว่าตารางว่างเปล่า หรือมีการแก้ไขรายการเมนู/รูปภาพในโค้ด database.py หรือไม่
     c.execute("SELECT COUNT(*) FROM menu_items WHERE image LIKE '%unsplash%'")
     has_old_unsplash = (c.fetchone()[0] > 0)
     
     c.execute("SELECT COUNT(*) FROM menu_items")
     is_empty = (c.fetchone()[0] == 0)
 
-        # อัปเกรดนามสกุลรูปภาพในฐานข้อมูลเดิมเป็น .webp อัตโนมัติเพื่อลดขนาดและโหลดเร็วขึ้น
-    c.execute("UPDATE menu_items SET image = replace(image, '.png', '.webp') WHERE image LIKE '%.png'")
-    c.execute("UPDATE menu_items SET image = 'static/img/menu/menu124.webp' WHERE image LIKE '%menu132%'")
+    # ตารางเก็บค่า Hash ของชุดเมนูใน database.py เพื่อตรวจจับการแก้ไขโค้ดบน GitHub และอัปเดตฐานข้อมูลอัตโนมัติ
+    c.execute("""
+        CREATE TABLE IF NOT EXISTS system_meta (
+            meta_key TEXT PRIMARY KEY,
+            meta_value TEXT
+        )
+    """)
+    current_menu_hash = hashlib.sha256(repr(fahsai_menu).encode('utf-8')).hexdigest()
+    c.execute("SELECT meta_value FROM system_meta WHERE meta_key = 'fahsai_menu_hash'")
+    saved_hash_row = c.fetchone()
+    saved_menu_hash = saved_hash_row[0] if saved_hash_row else None
 
-    if is_empty or has_old_unsplash:
-        # อัปเดตชุดเมนูหลัก 131 รายการให้ใช้ไฟล์ภาพใน static/img/menu/ ทั้งหมด
-        c.execute('DELETE FROM menu_items')
-        c.executemany('INSERT OR REPLACE INTO menu_items (name, category, price, cost, image, description) VALUES (?, ?, ?, ?, ?, ?)', fahsai_menu)
+    if is_empty or has_old_unsplash or (saved_menu_hash != current_menu_hash):
+        if is_empty or has_old_unsplash:
+            c.execute('DELETE FROM menu_items')
+            c.executemany('INSERT OR REPLACE INTO menu_items (name, category, price, cost, image, description) VALUES (?, ?, ?, ?, ?, ?)', fahsai_menu)
+        else:
+            # ซิงค์ข้อมูลและรูปภาพล่าสุดจาก fahsai_menu ลงในฐานข้อมูลโดยตรง
+            for m_name, m_cat, m_price, m_cost, m_img, m_desc in fahsai_menu:
+                c.execute("SELECT id FROM menu_items WHERE name = ?", (m_name,))
+                row_exist = c.fetchone()
+                if row_exist:
+                    c.execute("""
+                        UPDATE menu_items
+                        SET category = ?, price = ?, cost = ?, image = ?, description = ?
+                        WHERE id = ?
+                    """, (m_cat, m_price, m_cost, m_img, m_desc, row_exist[0]))
+                else:
+                    c.execute("""
+                        INSERT INTO menu_items (name, category, price, cost, image, description)
+                        VALUES (?, ?, ?, ?, ?, ?)
+                    """, (m_name, m_cat, m_price, m_cost, m_img, m_desc))
+        c.execute("""
+            INSERT OR REPLACE INTO system_meta (meta_key, meta_value)
+            VALUES ('fahsai_menu_hash', ?)
+        """, (current_menu_hash,))
 
     # ข้อมูลสมาชิกจำลองเริ่มต้น 10 คน (ถ้ายังไม่มีสมาชิกในระบบ)
     c.execute("SELECT COUNT(*) FROM members")
@@ -290,7 +318,7 @@ def init_db():
             ("อรทัย", "แซ่บหลาย", "0861122334", 41, "2026-09-25 13:10:00"),
             ("นฤมล", "ทองดี", "0956677889", 35, "2026-10-01 17:50:00"),
             ("ธนกร", "มีทรัพย์", "0845566778", 28, "2026-10-02 12:15:00"),
-            ("ชญาดา", "อนงค์ชัย", "0937734851", 20, "2026-10-04 11:00:00"),
+            ("ชญาดา", "พัฒนาเลิศ", "0937734851", 20, "2026-10-04 11:00:00"),
             ("วรวิทย์", "เจริญผล", "0879988776", 15, "2026-10-05 19:30:00"),
             ("สุภาวรรณ", "ใจดี", "0912233445", 10, "2026-10-07 14:00:00"),
             ("กิตติศักดิ์", "ยอดเยี่ยม", "0834455667", 6, "2026-10-08 16:20:00")
